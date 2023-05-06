@@ -70,6 +70,10 @@
     display: flex;
     flex-direction: column;
 }
+.div-location-1 {
+    display: flex;
+    align-items: center;
+}
 .div-input-price-1 {
     display: flex;
     align-items: center;
@@ -90,6 +94,18 @@
     flex-direction: column;
     align-items: start;
     justify-content: center;
+}
+.btn-type {
+    width: 100%;
+    height: fit-content;
+    padding: 0.75rem;
+}
+.btn-type-0 {
+    width: 20%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 20px;
 }
 .div-type-1 {
     font-weight: 700;
@@ -119,4 +135,19 @@
     display: flex;
     justify-content: space-between;
     padding: 1rem 0 0 0;
+}
+.choose-input-or-choose {
+    font-size: 14px;
+    border: unset;
+    background: #FEFEFE;
+    font-family: 'Roboto', SansSerif, sans-serif;
+    font-weight: 500;
+}
+
+.choose-input-or-choose-2 {
+    font-size: 14px;
+    background: #FFC542 !important;
+    color: #FFFFFF;
+    border-radius: 2rem;
+    padding: 5px 15px 5px 15px;
 }

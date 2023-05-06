@@ -8,6 +8,7 @@ import Body from "./Component/HomePage/Body";
 import {LoginNotFound} from "./Component/Login/LoginNotFound";
 import PostInfo from "./Component/Info/PostInfo";
 import {Footer} from "./Component/HomePage/Footer";
+import ClickChooseLocation from "./Component/Map/ClickChooseLocation";
 
 export default class HouseManagement extends Component {
     constructor(props) {
@@ -60,6 +61,15 @@ export default class HouseManagement extends Component {
                                            <Header loggedInUserObj={this.state.loggedInUserObj}/>
                                            <MapContainer></MapContainer>
                                            <Footer/>
+                                       </>
+
+                                   }/>
+                        </Route>
+                        <Route>
+                            <Route path="/choose-location"
+                                   element={
+                                       <>
+                                           <ClickChooseLocation></ClickChooseLocation>
                                        </>
 
                                    }/>

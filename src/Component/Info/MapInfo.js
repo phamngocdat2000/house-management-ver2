@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Map, Marker, GoogleApiWrapper } from 'google-maps-react';
 import {API_KEY} from "../../Const/ActionType";
+import iconLocation from '../../Image/icon-location.png';
 
 class MapInfo extends Component {
     render() {
@@ -12,7 +13,9 @@ class MapInfo extends Component {
                 google={this.props.google}
                 zoom={15}
                 initialCenter={{ lat: lat, lng: lnp }}>
-                <Marker position={{ lat: lat, lng: lnp }} />
+                <Marker
+                    icon={iconLocation}
+                    position={{ lat: lat, lng: lnp }} />
             </Map>
         );
     }

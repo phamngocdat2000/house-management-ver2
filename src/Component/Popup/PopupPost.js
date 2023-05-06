@@ -60,6 +60,9 @@ function HtmlEditor(props) {
 
     const [area, setArea] = useState();
 
+    const [input, setInput] = useState(1);
+
+    const [choose, setChoose] = useState(0);
 
     React.useEffect(() => {
         if (quill) {
@@ -225,7 +228,17 @@ function HtmlEditor(props) {
                 </div>
             );
         });
-    };
+    }
+
+    const handleChooseAreaOrLocation = (type) => {
+        if (type === "input") {
+            setInput(2);
+            setChoose(1);
+        } else {
+            setChoose(2);
+            setInput(1);
+        }
+    }
 
     // console.log(selectedImage)
     // console.log(latitude)
@@ -257,7 +270,19 @@ function HtmlEditor(props) {
                     </div>
                 </div>
                 <div className="div-location">
-                    Vị trí:
+                    <div className="div-location-1">
+                        Vị trí:
+                        <div className="background-btn-choose">
+                            <button onClick={() => handleChooseAreaOrLocation("input")}
+                                    className={input % 2 === 0 ? "choose-input-or-choose-2" : "choose-input-or-choose"}>
+                                Nhập vị trí
+                            </button>
+                            <button onClick={() => handleChooseAreaOrLocation("choose")}
+                                    className={choose % 2 === 0 ? "choose-input-or-choose-2" : "choose-input-or-choose"}>
+                                Chọn trên bản đồ
+                            </button>
+                        </div>
+                    </div>
                     <div className="div-select-type-main">
                         <div className="div-type">
                             Quận/Huyện:
@@ -279,10 +304,18 @@ function HtmlEditor(props) {
                                 ))}
                             </select>
                         </div>
-                        <div className="div-type">
-                            Nhập vị trí:
-                            <AddressInput onAddressChanged={handleAddressInputChanged}/>
-                        </div>
+                        {input % 2 === 0 &&
+                            <div className="div-type">
+                                Nhập vị trí:
+                                <AddressInput onAddressChanged={handleAddressInputChanged}/>
+                            </div>
+                        }
+                        {choose % 2 === 0 &&
+                            <div className="btn-type-0">
+                                <button className="btn-type">
+                                    Mở bản đồ
+                                </button>
+                            </div>}
                     </div>
                 </div>
                 <div className="div-type-1">
