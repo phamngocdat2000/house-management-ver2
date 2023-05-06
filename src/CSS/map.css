@@ -1,0 +1,55 @@
+.map {
+    display: flex;
+    justify-content: center;
+    text-align: center;
+}
+.information-1 {
+    flex: 1 0 50%;
+    height: 80vh;
+    overflow: auto;
+}
+.information-2 {
+
+    width: 50%;
+}
+.found-list-house {
+    padding: 2rem 5rem;
+    width: 150%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: self-end;
+    flex-direction: column;
+}
+.map-main {
+    flex: 1 0 50%;
+    height: 80vh;
+    position: relative;
+}
+.map-info {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+}
+.custom-marker {
+    width: fit-content;
+    height: fit-content;
+}
+.map-info-in {
+    display: flex;
+}
+.map-image-in {
+    width: 5rem;
+    height: 5rem;
+}
+.map-in-in {
+    justify-content: center;
+    text-align: start;
+    padding: 0 1rem;
+    display: flex;
+    flex-direction: column;
+}
+.map-title-in {
+    font-size: 16px;
+    font-weight: 700;
+}

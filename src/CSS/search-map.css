@@ -1,0 +1,26 @@
+.searchColumn {
+    display: flex;
+    align-items: start;
+}
+.Autocomplete-input {
+    /* Thêm các thuộc tính style tùy chỉnh cho input */
+    background-color: #f8f8f8;
+    color: #333;
+    /* ... */
+}
+
+.Autocomplete-dropdown {
+    /* Thêm các thuộc tính style tùy chỉnh cho dropdown */
+    background-color: #fff;
+    border: 1px solid #ccc;
+    /* ... */
+}
+
+.Autocomplete-dropdown-item {
+    /* Thêm các thuộc tính style tùy chỉnh cho mỗi item trong dropdown */
+    padding: 8px;
+    /* ... */
+}
+.pac-container.pac-logo::after {
+    display: none;
+}

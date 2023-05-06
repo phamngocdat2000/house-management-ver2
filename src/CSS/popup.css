@@ -1,0 +1,122 @@
+.popup-content {
+    /*margin-top: 16rem !important;*/
+    background: rgb(255, 255, 255);
+    margin: auto;
+    width: 70%;
+    padding: 20px;
+    border-radius: 10px;
+    height: 36rem;
+    overflow-y: auto;
+}
+
+.popup-content::-webkit-scrollbar {
+    width: 10px;
+}
+
+/* Track */
+.popup-content::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+/* Handle */
+.popup-content::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 10px;
+}
+
+/* Handle on hover */
+.popup-content::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}
+
+.popup-arrow {
+    color: rgb(255, 255, 255);
+}
+
+[role='tooltip'].popup-content {
+    width: 200px;
+    box-shadow: rgba(0, 0, 0, 0.16) 0 0 3px;
+}
+
+.popup-overlay {
+    background: rgba(0, 0, 0, 0.5);
+}
+
+[data-popup='tooltip'].popup-overlay {
+    background: transparent;
+}
+
+.ant-input {
+    font-weight: bold;
+}
+
+.ql-container {
+    height: 25rem !important;
+}
+
+.div-title {
+    font-weight: 700;
+    margin-bottom: 2rem;
+}
+
+.div-price {
+    font-weight: 700;
+    margin-bottom: 2rem;
+    display: flex;
+    flex-direction: column;
+}
+.div-location {
+    font-weight: 700;
+    display: flex;
+    flex-direction: column;
+}
+.div-input-price-1 {
+    display: flex;
+    align-items: center;
+    font-weight: 370;
+}
+.div-input-price-2 {
+    width: fit-content;
+    margin-right: 0.25rem;
+}
+.div-input-room-2 {
+    width: 100% !important;
+    margin-right: 0.25rem;
+}
+.div-type {
+    font-weight: 370;
+    margin-bottom: 2rem;
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    justify-content: center;
+}
+.div-type-1 {
+    font-weight: 700;
+    margin-bottom: 2rem;
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    justify-content: center;
+}
+.div-select-type {
+    border-width: 1px;
+    border-style: solid;
+    border-color: #d9d9d9 !important;
+    border-radius: 6px;
+    transition: all 0.2s;
+    padding: 11px 6px;
+    font-size: 14px;
+}
+.div-select-type:focus {
+    border-color: #0c93e9 !important;
+}
+.div-image {
+    font-weight: 700;
+    margin-bottom: 2rem;
+}
+.div-select-type-main {
+    display: flex;
+    justify-content: space-between;
+    padding: 1rem 0 0 0;
+}

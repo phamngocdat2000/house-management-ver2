@@ -1,0 +1,98 @@
+.background {
+    height: 100vh;
+    background: url("https://images.pexels.com/photos/7932264/pexels-photo-7932264.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1") no-repeat center;
+    background-size: cover;
+    position: relative;
+    filter: blur(5px) grayscale(100%);
+}
+.content {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+.title {
+    color: orange;
+    font-size: 20px;
+    font-weight: 700;
+    text-align: center;
+    padding-bottom: 30px;
+    justify-content: center;
+    align-items: center;
+}
+.auth-login-sso {
+    align-items: center;
+    align-self: center;
+    display: flex;
+    justify-content: center;
+}
+.container-login {
+    display: flex !important;
+    flex-direction: column;
+    height: 100%;
+    justify-content: center;
+    align-items: center;
+}
+.form {
+    padding: 2rem 5rem 2rem 5rem;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    background: white;
+    border-radius: 20px;
+}
+.btn-login {
+    margin-top: 1rem !important;
+    width: 100%;
+    height: 3.5rem;
+    color: #252525 !important;
+    border-radius: 5rem !important;
+    background: #ffb375 !important;
+    font-size: 14px !important;
+    font-weight: bold !important;
+}
+.form-input {
+    margin-bottom: 1rem !important;
+    width: 100%;
+    border: orange !important;
+}
+.form-input-2 {
+    border-radius: 5rem !important;
+}
+.register-login1 {
+    padding: 1rem 0 1rem 0;
+}
+.register-login2 {
+    cursor: pointer;
+    color: orange;
+    font-weight: 500;
+    text-decoration: underline;
+}
+.css-1jy569b-MuiFormLabel-root-MuiInputLabel-root.Mui-focused {
+    color: orange !important;
+}
+.css-9ddj71-MuiInputBase-root-MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline {
+    border-color: orange !important;
+}
+.css-o9k5xi-MuiInputBase-root-MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline {
+    border-color: orange !important;
+}
+.auth-login-sso2 {
+    justify-content: space-between;
+    display: flex;
+    width: 100%;
+}
+.auth-login-with {
+    cursor: pointer;
+    width: 48%;
+    border: 1px solid orange;
+    border-radius: 0.5rem;
+}
+.forgot-password-login {
+    cursor: pointer;
+    margin-top: -1rem;
+    color: orange;
+    font-weight: 500;
+    padding: 0 1rem 0 0;
+    display: flex;
+    justify-content: end;
+}
