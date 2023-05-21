@@ -96,16 +96,11 @@ function HtmlEditor(props) {
 
     const handleSelectDistrict = (event) => {
         setLDistrict(event.target.value);
-        console.log(event.target.value);
     }
 
     const handleSelectStreet = (event) => {
         setStreet(event.target.value);
-        console.log(event.target.value);
     }
-
-    console.log(listDistrict)
-    console.log(listStreet)
 
     const handleInput = (value, check) => {
         switch (check) {
@@ -211,7 +206,6 @@ function HtmlEditor(props) {
 
     const handleTypeSearch = (event) => {
         setTypeSearch(event.target.value);
-        console.log(event.target.value);
     }
 
     const displayImages = (selectedImage) => {
@@ -239,12 +233,6 @@ function HtmlEditor(props) {
             setInput(1);
         }
     }
-
-    // console.log(selectedImage)
-    // console.log(latitude)
-    // console.log(longitude)
-    // console.log(address)
-    // console.log(typeSearch)
 
     return (
         <>

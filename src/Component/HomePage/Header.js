@@ -11,6 +11,7 @@ import Popup from "reactjs-popup";
 import PopupUser from "../Popup/PopupUser";
 import iconAccount from '../../Image/icon-account.png';
 import PopupPost from "../Popup/PopupPost";
+import ClickChooseLocation from "../Map/ClickChooseLocation";
 
 
 export default class Header extends Component {
@@ -120,15 +121,12 @@ export default class Header extends Component {
                                             Quản lý</MenuItem>
                                     </div>
                                 </Menu>
-                                <Popup
-                                    open={this.state.isPopupOpen} // Kiểm tra giá trị state để hiển thị Popup
-                                    onClose={() => this.handlePopupClose()}
-                                    // overlayStyle={{ background: "rgba(0, 0, 0, 0.5)" }}
-                                    // contentStyle={popupStyles}
-                                >
-                                    {/* Nội dung của Popup */}
-                                    <PopupPost handleOpenPopup={this.handlePopupOpen} />
-                                </Popup>
+                                <div className={this.state.isPopupOpen ? "djask-123-main" : "djask-123-main-none"}>
+                                    <div className="djask-123">
+                                        <div onClick={this.handlePopupClose} className="djask-124">x</div>
+                                        <PopupPost handleOpenPopup={this.handlePopupOpen} />
+                                    </div>
+                                </div>
                             </div> }
                             <button className="home" onClick={() => this.handleClickItem("/location")}>Bản đồ</button>
                             <button className="home" onClick={() => this.handleClickItem("/")}>Thông tin liên hệ</button>
