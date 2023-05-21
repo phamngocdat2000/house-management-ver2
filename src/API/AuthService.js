@@ -16,7 +16,12 @@ let auth = {
     },
     getHistory: () => {
         return history
-    }
+    },
+    setObjectMap: (object) => {
+        localStorage.setItem("objectMap", JSON.stringify(object));
+    },
+    getObjectMap: () => {
+        return JSON.parse(localStorage.getItem("objectMap"));
+    },
 }
-
 export default auth;
