@@ -87,11 +87,6 @@ export default class Header extends Component {
     }
 
     render() {
-        console.log(this.state.isPopupOpen)
-        console.log(this.state.lat)
-        console.log(this.state.lng)
-        console.log(this.state.address)
-
         return (
             <div className="main-header">
                 <AppBar position="static" className="header-app-bar">
