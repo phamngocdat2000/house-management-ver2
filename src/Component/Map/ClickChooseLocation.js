@@ -36,6 +36,12 @@ class ClickChooseLocation extends Component {
         })
     }
 
+    handleConfirm = () => {
+        this.props.handleOpenPopup(true, false);
+        this.props.handleMapDone(this.state.lat, this.state.lng, this.state.address)
+
+    }
+
     render() {
         const mapStyles = {
             width: '100%',
@@ -62,7 +68,7 @@ class ClickChooseLocation extends Component {
                     <div style={{height:"90%"}}>
                     </div>
                     <div className="btn-confirm-location-1">
-                        <button className="home">Xác nhận</button>
+                        <button className="home" onClick={this.handleConfirm}>Xác nhận</button>
                     </div>
                 </div>
             </div>

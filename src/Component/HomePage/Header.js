@@ -19,7 +19,7 @@ export default class Header extends Component {
         super(props);
         this.state = {
             anchorManagement: null, anchorProfile: null, keyWord: "", showModal: true, showDropdown: false,
-            isPopupOpen: false,
+            isPopupOpen: false, isMapOpen: false, lat: "", lng: "", address: ""
         };
         console.log(props);
     }
@@ -63,9 +63,19 @@ export default class Header extends Component {
         }
     };
 
-    handlePopupOpen = (popup) => {
+    handlePopupOpen = (popup, mapopen) => {
         // Cập nhật state của Header với giá trị address nhận được từ AddressInput
         this.setState({ isPopupOpen: popup });
+        this.setState({ isMapOpen: mapopen});
+    }
+
+    handleMapDone = (lat, lng, address) => {
+        // Cập nhật state của Header với giá trị address nhận được từ AddressInput
+        this.setState({
+            lat: lat,
+            lng: lng,
+            address: address
+        })
     }
 
     handlePopupClose = () => {
@@ -78,6 +88,10 @@ export default class Header extends Component {
 
     render() {
         console.log(this.state.isPopupOpen)
+        console.log(this.state.lat)
+        console.log(this.state.lng)
+        console.log(this.state.address)
+
         return (
             <div className="main-header">
                 <AppBar position="static" className="header-app-bar">
@@ -124,8 +138,18 @@ export default class Header extends Component {
                                 <div className={this.state.isPopupOpen ? "djask-123-main" : "djask-123-main-none"}>
                                     <div className="djask-123">
                                         <div onClick={this.handlePopupClose} className="djask-124">x</div>
-                                        <PopupPost handleOpenPopup={this.handlePopupOpen} />
+                                        <PopupPost handleOpenPopup={this.handlePopupOpen}
+                                                   lat={this.state.lat}
+                                                   lng={this.state.lng}
+                                                   adress={this.state.address}
+                                        />
                                     </div>
+                                </div>
+                                <div className={this.state.isMapOpen ? "djask-123-main" : "djask-123-main-none"}>
+                                    <ClickChooseLocation
+                                        handleOpenPopup={this.handlePopupOpen}
+                                        handleMapDone={this.handleMapDone}
+                                    />
                                 </div>
                             </div> }
                             <button className="home" onClick={() => this.handleClickItem("/location")}>Bản đồ</button>

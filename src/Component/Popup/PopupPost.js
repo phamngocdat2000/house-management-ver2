@@ -102,6 +102,17 @@ function HtmlEditor(props) {
         setStreet(event.target.value);
     }
 
+    const openMap = () => {
+        props.handleOpenPopup(false, true)
+    }
+
+    const handleMapDone = (lat, lng, address) => {
+        // Cập nhật state của Header với giá trị address nhận được từ AddressInput
+        setLatitude(lat)
+        setLongitude(lng)
+        setAddress(address)
+    }
+
     const handleInput = (value, check) => {
         switch (check) {
             case "price":
@@ -182,19 +193,19 @@ function HtmlEditor(props) {
                 title: title,
                 price: price,
                 description: value,
-                address: address,
+                address: choose % 2 === 0 ? props.address : address,
                 district: district,
                 street: street,
                 city: "Thành phố Hà Nội",
-                lat: latitude,
-                lnp: longitude,
+                lat: choose % 2 === 0 ? props.lat : latitude,
+                lnp: choose % 2 === 0 ? props.lng : longitude,
                 type: typeSearch,
                 imagesUrl: selectedImage,
                 bedroomsDescription: bedroom,
                 toiletDescription: toilet,
                 kitchensDescription: kitchen,
                 area: area
-            });
+            }).then();
             console.log(result)
             alert("Success!")
             window.location.reload();
@@ -300,7 +311,8 @@ function HtmlEditor(props) {
                         }
                         {choose % 2 === 0 &&
                             <div className="btn-type-0">
-                                <button className="btn-type">
+                                `${props.lat}, ${props.lng}, ${props.address}` :
+                                <button className="btn-type" onClick={openMap}>
                                     Mở bản đồ
                                 </button>
                             </div>}
