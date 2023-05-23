@@ -27,6 +27,7 @@ class MapContainer extends Component {
             priceMin: "",
             priceMax: "",
             room: "",
+            type: "",
             lat: "",
             lnp: "",
             address: "",
@@ -44,9 +45,12 @@ class MapContainer extends Component {
     async componentDidMount() {
         const search = window.location.search;
         const params = new URLSearchParams(search);
-        const keyword = params.get('keyword') && `keyword=${params.get('keyword')}`;
-        const type = params.get('type') && `types=${params.get('type')}`;
-        await service.getHouse(keyword + "&" + type)
+        const keyword = params.get('keyword') && `&keyword=${params.get('keyword')}`;
+        const type = params.get('type') && `&types=${params.get('type')}`;
+        const lat = params.get('lat') && `&lat=${params.get('lat')}`;
+        const lnp = params.get('lnp') && `&lnp=${params.get('lnp')}`;
+        const distance = params.get('distance') && `&distance=${params.get('distance')}`;
+        await service.getHouse(keyword + type + lat + lnp + distance)
             .then(data => {
                 this.setState({data: data});
                 this.setState({markers: data.houses});
@@ -62,9 +66,9 @@ class MapContainer extends Component {
         const distance = this.state.distance && `&distance=${this.state.distance}`;
         const priceMin = this.state.priceMin && `&min_price=${this.state.priceMin}`;
         const priceMax = this.state.priceMax && `&max_price=${this.state.priceMax}`;
-        const room = this.state.room && `&room=${this.state.room}`;
-
-        await service.getHouseFilter(keyword + distance + priceMin + priceMax + room)
+        const type = this.state.type.toString() && `&types=${this.state.type.toString()}`;
+        const room = this.state.room.toString() && `&room=${this.state.room.toString()}`;
+        await service.getHouseFilter(type + room + keyword + distance + priceMin + priceMax)
             .then(data => {
                 this.setState({data: data});
                 this.setState({markers: data.houses});
@@ -108,6 +112,12 @@ class MapContainer extends Component {
 
     isRoom = async (room) => {
         await this.setState({room: room});
+        await this.onGetHouseFilter();
+        console.log(this.state.markers)
+    }
+
+    isTypes = async (type) => {
+        await this.setState({type: type});
         await this.onGetHouseFilter();
         console.log(this.state.markers)
     }
@@ -167,6 +177,7 @@ class MapContainer extends Component {
                     isSetMaxPrice={this.isSetMaxPrice}
                     isSetMinPrice={this.isSetMinPrice}
                     isRoom={this.isRoom}
+                    isTypes={this.isTypes}
                 />
                 <div className="map">
                     <div className="information-1">

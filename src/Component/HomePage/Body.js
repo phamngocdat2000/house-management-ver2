@@ -84,6 +84,10 @@ export default class Body extends Component {
             .then(data => this.setState({listAddress: data}));
     }
 
+    handleRedirectChooseMap() {
+        window.location.href = "/choose-location";
+    }
+
     handleHoverLocation(event) {
         if (this.state.anchorLocation !== event.currentTarget) {
             this.setState({anchorLocation: event.currentTarget});
@@ -178,15 +182,23 @@ export default class Body extends Component {
                             <input onChange={event => this.handleSearch(event.target.value)}
                                    onKeyDown={this.handleInputKeyDown}
                                    onClick={event => this.handleSearch(event.target.value)}
-                                   className="search-input" type="text"
+                                   className={this.state.isLocation ? "search-input-2" : "search-input"} type="text"
                                    placeholder={this.state.area + this.state.location}
                                    value={this.state.keyWord}/>
-                            <button
-                                className="search-button"
-                                onClick={() => window.location.href = `/location?keyword=${this.state.keyWord}&type=${this.state.type}`}
-                            >
-                                Tìm kiếm
-                            </button>
+                            {!this.state.isLocation ?
+                                <button
+                                    className="search-button"
+                                    onClick={() => window.location.href = `/location?keyword=${this.state.keyWord}&type=${this.state.type}`}
+                                >
+                                    Tìm kiếm
+                                </button> :
+                                <div className="choose-location-on-map">
+                                    <p>Bạn có thể chọn vị trí trên bản đồ?&nbsp;
+                                        <span onClick={this.handleRedirectChooseMap}
+                                              className='register-login2'>Tại dây</span>
+                                    </p>
+                                </div>
+                            }
                         </div>
                         {this.state.keyWord && this.state.isDropDown && this.state.listAddress.length > 0 &&
                             <div className="get-address-main">
@@ -199,14 +211,6 @@ export default class Body extends Component {
                                         </button>
                                     ))}
                                 </div>
-                            </div>
-                        }
-                        {this.state.isLocation &&
-                            <div className="choose-location-on-map">
-                                <p>Bạn có thể chọn vị trí trên bản đồ?&nbsp;
-                                    <span
-                                        className='register-login2'>Tại dây</span>
-                                </p>
                             </div>
                         }
                     </div>

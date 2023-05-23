@@ -3,6 +3,7 @@ import {Map, GoogleApiWrapper, Marker} from 'google-maps-react';
 import {API_KEY} from "../../Const/ActionType";
 import '../../CSS/map-style.css';
 import iconLocation from '../../Image/icon-location.png';
+import PopupDistance from "../Popup/PopupDistance";
 
 class ClickChooseLocation extends Component {
 
@@ -12,7 +13,9 @@ class ClickChooseLocation extends Component {
         this.state = {
             lat: "",
             lng: "",
-            address: ""
+            address: "",
+            distance: "",
+            isPopupOpen: false
         };
     }
 
@@ -37,10 +40,19 @@ class ClickChooseLocation extends Component {
     }
 
     handleConfirm = () => {
-        this.props.handleOpenPopup(true, false);
-        this.props.handleMapDone(this.state.lat, this.state.lng, this.state.address)
-
+        if (window.location.pathname.includes("/choose-location")) {
+            if (this.state.lat) {
+                this.setState({isPopupOpen: true});
+            }
+        } else {
+            this.props.handleOpenPopup(true, false);
+            this.props.handleMapDone(this.state.lat, this.state.lng, this.state.address)
+        }
     }
+
+    handlePopupClose = () => {
+        this.setState({isPopupOpen: false});
+    };
 
     render() {
         const mapStyles = {
@@ -68,7 +80,19 @@ class ClickChooseLocation extends Component {
                     <div style={{height:"90%"}}>
                     </div>
                     <div className="btn-confirm-location-1">
-                        <button className="home" onClick={this.handleConfirm}>Xác nhận</button>
+                        {window.location.pathname.includes("/choose-location") ?
+                            <button className="home" onClick={this.handleConfirm}>Tiếp tục</button> :
+                            <button className="home" onClick={this.handleConfirm}>Xác nhận</button>
+                        }
+                    </div>
+                    <div className={this.state.isPopupOpen ? "djask-123-main" : "djask-123-main-none"}>
+                        <div className="djask-123">
+                            <div onClick={this.handlePopupClose} className="djask-124">x</div>
+                            <PopupDistance lat={this.state.lat}
+                                       lng={this.state.lng}
+                                       isChooseLocation={true}
+                            />
+                        </div>
                     </div>
                 </div>
             </div>

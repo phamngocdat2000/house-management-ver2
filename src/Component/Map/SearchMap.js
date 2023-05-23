@@ -20,8 +20,40 @@ export default class SearchMap extends Component {
             latitude: null,
             longitude: null,
             address: null,
+            minPrice: "",
+            maxPrice: "",
+            selectedTypeValues: [],
+            selectedRoomValues: [],
         };
     }
+
+    handleCheckboxTypeChange = async (event) => {
+        const { value, checked } = event.target;
+        if (checked) {
+            await this.setState((prevState) => ({
+                selectedTypeValues: [...prevState.selectedTypeValues, value]
+            }));
+        } else {
+            await this.setState((prevState) => ({
+                selectedTypeValues: prevState.selectedTypeValues.filter((selectedValue) => selectedValue !== value)
+            }));
+        }
+        await this.props.isTypes(this.state.selectedTypeValues);
+    };
+
+    handleCheckboxRoomChange = async (event) => {
+        const { value, checked } = event.target;
+        if (checked) {
+            await this.setState((prevState) => ({
+                selectedRoomValues: [...prevState.selectedRoomValues, value]
+            }));
+        } else {
+            await this.setState((prevState) => ({
+                selectedRoomValues: prevState.selectedRoomValues.filter((selectedValue) => selectedValue !== value)
+            }));
+        }
+        await this.props.isRoom(this.state.selectedRoomValues);
+    };
 
     handleHoverModel(event) {
         if (this.state.anchorModel !== event.currentTarget) {
@@ -76,10 +108,12 @@ export default class SearchMap extends Component {
     }
 
     async handleMinPrice(event) {
+        this.setState({minPrice:event})
         await this.props.isSetMinPrice(event);
     }
 
     async handleMaxPrice(event) {
+        this.setState({maxPrice:event})
         await this.props.isSetMaxPrice(event);
     }
 
@@ -166,13 +200,15 @@ export default class SearchMap extends Component {
                         >
                             <div className="items-other-price">
                                 <div className="items-other-price-1">
-                                    <input onChange={event => this.handleMinPrice(event.target.value)}
+                                    <input value={this.state.minPrice}
+                                           onChange={event => this.handleMinPrice(event.target.value)}
                                            onKeyDown={(event) => this.handleKeyDown(event)}
                                            className="price-input-in-map"
                                            type="number"
                                            placeholder="Min"/>
                                     <div className="item-price-space"> -</div>
-                                    <input onChange={event => this.handleMaxPrice(event.target.value)}
+                                    <input value={this.state.maxPrice}
+                                           onChange={event => this.handleMaxPrice(event.target.value)}
                                            onKeyDown={(event) => this.handleKeyDown(event)}
                                            className="price-input-in-map"
                                            type="number"
@@ -206,28 +242,40 @@ export default class SearchMap extends Component {
                             <div className="items-other-select">
                                 <FormGroup className="form-group">
                                     <FormControlLabel
-                                        control={<Checkbox
+                                        control={
+                                        <Checkbox
+                                            checked={this.state.selectedTypeValues.includes('APARTMENT')}
+                                            value="APARTMENT"
                                             sx={{
                                                 '&.Mui-checked': {
                                                     color: "#FFC542",
                                                 },
                                             }}
+                                            onChange={this.handleCheckboxTypeChange}
                                         />} label="Chung cư"/>
                                     <FormControlLabel
-                                        control={<Checkbox
+                                        control={
+                                        <Checkbox
+                                            checked={this.state.selectedTypeValues.includes('HOUSE_LAND')}
+                                            value="HOUSE_LAND"
                                             sx={{
                                                 '&.Mui-checked': {
                                                     color: "#FFC542",
                                                 },
                                             }}
+                                            onChange={this.handleCheckboxTypeChange}
                                         />} label="Nhà nguyên căn"/>
                                     <FormControlLabel
-                                        control={<Checkbox
+                                        control={
+                                        <Checkbox
+                                            checked={this.state.selectedTypeValues.includes('BEDSIT')}
+                                            value="BEDSIT"
                                             sx={{
                                                 '&.Mui-checked': {
                                                     color: "#FFC542",
                                                 },
                                             }}
+                                            onChange={this.handleCheckboxTypeChange}
                                         />} label="Phòng trọ"/>
                                 </FormGroup>
                             </div>
@@ -255,36 +303,52 @@ export default class SearchMap extends Component {
                             <div className="items-other-select">
                                 <FormGroup className="form-group">
                                     <FormControlLabel
-                                        control={<Checkbox
+                                        control={
+                                        <Checkbox
+                                            checked={this.state.selectedRoomValues.includes("1")}
+                                            value="1"
                                             sx={{
                                                 '&.Mui-checked': {
                                                     color: "#FFC542",
                                                 },
                                             }}
+                                            onChange={this.handleCheckboxRoomChange}
                                         />} label="1 phòng"/>
                                     <FormControlLabel
-                                        control={<Checkbox
+                                        control={
+                                        <Checkbox
+                                            checked={this.state.selectedRoomValues.includes("2")}
+                                            value="2"
                                             sx={{
                                                 '&.Mui-checked': {
                                                     color: "#FFC542",
                                                 },
                                             }}
+                                            onChange={this.handleCheckboxRoomChange}
                                         />} label="2 phòng"/>
                                     <FormControlLabel
-                                        control={<Checkbox
+                                        control={
+                                        <Checkbox
+                                            checked={this.state.selectedRoomValues.includes("3")}
+                                            value="3"
                                             sx={{
                                                 '&.Mui-checked': {
                                                     color: "#FFC542",
                                                 },
                                             }}
+                                            onChange={this.handleCheckboxRoomChange}
                                         />} label="3 phòng"/>
                                     <FormControlLabel
-                                        control={<Checkbox
+                                        control={
+                                        <Checkbox
+                                            checked={this.state.selectedRoomValues.includes("4")}
+                                            value="4"
                                             sx={{
                                                 '&.Mui-checked': {
                                                     color: "#FFC542",
                                                 },
                                             }}
+                                            onChange={this.handleCheckboxRoomChange}
                                         />} label="4 phòng +"/>
                                 </FormGroup>
                             </div>

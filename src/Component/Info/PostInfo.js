@@ -159,8 +159,9 @@ export default class PostInfo extends Component {
                         <div className="tongquan">
                             Thông tin chi tiết
                         </div>
-                        <div className="show-info-post-chitiet">
-                            {this.state.info.description}
+                        <div className="show-info-post-chitiet"
+                             dangerouslySetInnerHTML={{__html: this.state.info.description}}>
+                            {/*{this.state.info.description}*/}
                         </div>
                     </div>
                     <div className="show-info-user">

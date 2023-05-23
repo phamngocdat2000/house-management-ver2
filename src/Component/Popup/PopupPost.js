@@ -78,14 +78,20 @@ function HtmlEditor(props) {
             });
         }
         service.getDistrict()
-            .then(data => setListDistrict(data));
+            .then(data => {
+                setListDistrict(data)
+                setLDistrict(data[0])
+            });
 
 
     }, [props.objectPost, quill, quillRef]);
 
     useEffect(() => {
         service.getStreet(district)
-            .then(data => setListStreet(data));
+            .then(data => {
+                setListStreet(data);
+                setStreet(data[0])
+            });
     }, [district]);
 
     function handleAddressInputChanged(lat, lng, address) {
@@ -220,9 +226,9 @@ function HtmlEditor(props) {
     }
 
     const displayImages = (selectedImage) => {
-        return selectedImage.map((data) => {
+        return selectedImage.map((data, index) => {
             return (
-                <div className="handleimage">
+                <div id={index} className="handleimage">
                     <img
                         alt="not found"
                         width={"250px"}
@@ -286,8 +292,8 @@ function HtmlEditor(props) {
                         <div className="div-type">
                             Quận/Huyện:
                             <select className="div-select-type" onChange={handleSelectDistrict}>
-                                {listDistrict.map(district => (
-                                    <option key={district.id} value={district}>
+                                {listDistrict.map((district, index) => (
+                                    <option key={index} value={district}>
                                         {district}
                                     </option>
                                 ))}
@@ -296,8 +302,8 @@ function HtmlEditor(props) {
                         <div className="div-type">
                             Phường/Xã:
                             <select className="div-select-type" onChange={handleSelectStreet}>
-                                {listStreet.map(street => (
-                                    <option key={street.id} value={street}>
+                                {listStreet.map((street, index) => (
+                                    <option key={index} value={street}>
                                         {street}
                                     </option>
                                 ))}

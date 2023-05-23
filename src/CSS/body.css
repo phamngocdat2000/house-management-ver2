@@ -53,6 +53,17 @@
     color: #44444F;
     height: 65px;
 }
+.search-input-2 {
+    font-family: 'Roboto', SansSerif, sans-serif;
+    width: 0;
+    font-weight: 600;
+    padding-left: 4rem !important;
+    border-radius: 20px 20px 20px 20px !important;
+    border: 2px solid rgb(68, 68, 79) !important;
+    font-size: 20px !important;
+    color: #44444F;
+    height: 65px;
+}
 .search-icon {
 }
 .body-text1 {
@@ -116,7 +127,10 @@
     top: 685px !important;
 }
 .choose-location-on-map {
-    margin-top: 2rem;
+    margin-left: 1rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     font-size: 18px !important;
     font-weight: 600 !important;
 }
