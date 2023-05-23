@@ -94,10 +94,10 @@ export default class Header extends Component {
                         <div className="logo-project">
                             <a className="text-logo" href='/'>
                                 <p>
-                                    House
+                                    NestAway
                                 </p>
                                 <p style={{fontSize: "20px", marginTop: "-1rem"}}>
-                                    Management
+                                    Product
                                 </p>
                             </a>
                         </div>
