@@ -45,11 +45,11 @@ class MapContainer extends Component {
     async componentDidMount() {
         const search = window.location.search;
         const params = new URLSearchParams(search);
-        const keyword = params.get('keyword') && `&keyword=${params.get('keyword')}`;
-        const type = params.get('type') && `&types=${params.get('type')}`;
-        const lat = params.get('lat') && `&lat=${params.get('lat')}`;
-        const lnp = params.get('lnp') && `&lnp=${params.get('lnp')}`;
-        const distance = params.get('distance') && `&distance=${params.get('distance')}`;
+        const keyword = params.get('keyword') ? `&keyword=${params.get('keyword')}` : "";
+        const type = params.get('type') ? `&types=${params.get('type')}` : "";
+        const lat = params.get('lat') ? `&lat=${params.get('lat')}` : "";
+        const lnp = params.get('lnp') ? `&lnp=${params.get('lnp')}` : "";
+        const distance = params.get('distance') ? `&distance=${params.get('distance')}` : "";
         await service.getHouse(keyword + type + lat + lnp + distance)
             .then(data => {
                 this.setState({data: data});
@@ -62,12 +62,12 @@ class MapContainer extends Component {
     }
 
     onGetHouseFilter = async () => {
-        const keyword = this.state.keyword && `&keyword=${this.state.keyword}`;
-        const distance = this.state.distance && `&distance=${this.state.distance}`;
-        const priceMin = this.state.priceMin && `&min_price=${this.state.priceMin}`;
-        const priceMax = this.state.priceMax && `&max_price=${this.state.priceMax}`;
-        const type = this.state.type.toString() && `&types=${this.state.type.toString()}`;
-        const room = this.state.room.toString() && `&room=${this.state.room.toString()}`;
+        const keyword = this.state.keyword ? `&keyword=${this.state.keyword}` : "";
+        const distance = this.state.distance ? `&distance=${this.state.distance}` : "";
+        const priceMin = this.state.priceMin ? `&min_price=${this.state.priceMin}` : "";
+        const priceMax = this.state.priceMax ? `&max_price=${this.state.priceMax}` : "";
+        const type = this.state.type.toString() ? `&types=${this.state.type.toString()}` : "";
+        const room = this.state.room.toString() ? `&room=${this.state.room.toString()}` : "";
         await service.getHouseFilter(type + room + keyword + distance + priceMin + priceMax)
             .then(data => {
                 this.setState({data: data});

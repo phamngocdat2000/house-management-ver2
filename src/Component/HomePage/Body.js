@@ -58,7 +58,18 @@ export default class Body extends Component {
                 const selectedAddress = listAddress[selectedAddressIndex];
                 await this.handleChooseAddress(selectedAddress); // Thực hiện hành động khi người dùng chọn địa chỉ
             }
-            window.location.href = `/location?keyword=${this.state.keyWord}&type=${this.state.type}`;
+            let keyWord, type;
+            if (this.state.keyWord) {
+                keyWord = "keyword=" + this.state.keyWord
+            } else {
+                keyWord = "";
+            }
+            if (this.state.type) {
+                type = "type=" + this.state.type;
+            } else {
+                type = "";
+            }
+            window.location.href = `/location?${keyWord}&${type}`;
         }
     }
 
