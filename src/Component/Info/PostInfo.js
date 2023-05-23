@@ -31,9 +31,9 @@ export default class PostInfo extends Component {
                 name: null,
                 createdDate: null,
                 lastModifiedDate: null,
-                bedroomsDescription: null,
-                toiletDescription: null,
-                kitchensDescription: null,
+                numberOfBedrooms: null,
+                numberOfToilets: null,
+                numberOfKitchens: null,
                 area: null,
                 imagesUrl: null,
                 type: null
@@ -103,9 +103,9 @@ export default class PostInfo extends Component {
                             </div>
                             <div className="show-info-post-room">
                                 <img src={bedroom} alt=""/>
-                                {this.state.info.bedroomsDescription ?
+                                {this.state.info.numberOfBedrooms ?
                                     <>
-                                        {this.state.info.bedroomsDescription}
+                                        {this.state.info.numberOfBedrooms}
                                     </> :
                                     <>
                                         -
@@ -114,9 +114,9 @@ export default class PostInfo extends Component {
                             </div>
                             <div className="show-info-post-room">
                                 <img src={wc} alt=""/>
-                                {this.state.info.toiletDescription ?
+                                {this.state.info.numberOfToilets ?
                                     <>
-                                        {this.state.info.toiletDescription}
+                                        {this.state.info.numberOfToilets}
                                     </> :
                                     <>
                                         -
@@ -125,9 +125,9 @@ export default class PostInfo extends Component {
                             </div>
                             <div className="show-info-post-room">
                                 <img src={kitchen} alt=""/>
-                                {this.state.info.kitchensDescription ?
+                                {this.state.info.numberOfKitchens ?
                                     <>
-                                        {this.state.info.kitchensDescription}
+                                        {this.state.info.numberOfKitchens}
                                     </> :
                                     <>
                                         -

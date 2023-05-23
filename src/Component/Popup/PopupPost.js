@@ -201,9 +201,9 @@ function HtmlEditor(props) {
                 lnp: choose % 2 === 0 ? props.lng : longitude,
                 type: typeSearch,
                 imagesUrl: selectedImage,
-                bedroomsDescription: bedroom,
-                toiletDescription: toilet,
-                kitchensDescription: kitchen,
+                numberOfBedrooms: bedroom,
+                numberOfToilets: toilet,
+                numberOfKitchens: kitchen,
                 area: area
             }).then();
             console.log(result)

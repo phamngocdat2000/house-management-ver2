@@ -45,7 +45,7 @@ class MapContainer extends Component {
         const search = window.location.search;
         const params = new URLSearchParams(search);
         const keyword = params.get('keyword') && `keyword=${params.get('keyword')}`;
-        const type = params.get('type') && `type=${params.get('type')}`;
+        const type = params.get('type') && `types=${params.get('type')}`;
         await service.getHouse(keyword + "&" + type)
             .then(data => {
                 this.setState({data: data});
@@ -188,6 +188,7 @@ class MapContainer extends Component {
                                 google={this.props.google}
                                 zoom={this.state.zoom}
                                 initialCenter={this.state.currentLocation}
+                                center={this.state.currentLocation}
                                 onClick={(t, map, coord) => {
                                     const {latLng} = coord;
                                     latLng.lat();

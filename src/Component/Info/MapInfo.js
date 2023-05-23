@@ -12,7 +12,8 @@ class MapInfo extends Component {
             <Map
                 google={this.props.google}
                 zoom={15}
-                initialCenter={{ lat: lat, lng: lnp }}>
+                initialCenter={{ lat: lat, lng: lnp }}
+                center={{ lat: lat, lng: lnp }}>
                 <Marker
                     icon={iconLocation}
                     position={{ lat: lat, lng: lnp }} />
