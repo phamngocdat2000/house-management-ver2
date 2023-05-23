@@ -47,7 +47,7 @@ class ClickChooseLocation extends Component {
             width: '100%',
             height: '90%',
         };
-        console.log(`Latitude: ${this.state.lat}, Longitude: ${this.state.lng}, Address: ${this.state.address   }`);
+        console.log(`Latitude: ${this.state.lat}, Longitude: ${this.state.lng}, Address: ${this.state.address}`);
         return (
             <div>
                 <Map

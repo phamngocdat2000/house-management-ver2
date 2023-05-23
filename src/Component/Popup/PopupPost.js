@@ -311,9 +311,8 @@ function HtmlEditor(props) {
                         }
                         {choose % 2 === 0 &&
                             <div className="btn-type-0">
-                                `${props.lat}, ${props.lng}, ${props.address}` :
                                 <button className="btn-type" onClick={openMap}>
-                                    Mở bản đồ
+                                    {props.lat ? props.address : "Mở bản đồ"}
                                 </button>
                             </div>}
                     </div>

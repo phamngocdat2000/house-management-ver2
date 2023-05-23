@@ -136,7 +136,7 @@ export default class Header extends Component {
                                         <PopupPost handleOpenPopup={this.handlePopupOpen}
                                                    lat={this.state.lat}
                                                    lng={this.state.lng}
-                                                   adress={this.state.address}
+                                                   address={this.state.address}
                                         />
                                     </div>
                                 </div>

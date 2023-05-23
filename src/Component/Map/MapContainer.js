@@ -51,7 +51,7 @@ class MapContainer extends Component {
                 this.setState({data: data});
                 this.setState({markers: data.houses});
                 this.setState({currentLocation: data.centerPoint})
-                if (keyword.includes("Quận") || keyword.includes("Phường")) {
+                if (keyword && (keyword.includes("Quận") || keyword.includes("Phường"))) {
                     this.setState({zoom:14})
                 }
             })
