@@ -54,7 +54,14 @@ class MapContainer extends Component {
             .then(data => {
                 this.setState({data: data});
                 this.setState({markers: data.houses});
-                this.setState({currentLocation: data.centerPoint})
+                if (data.centerPoint.lat !== 0) {
+                    this.setState({currentLocation: data.centerPoint})
+                } else {
+                    this.setState({currentLocation: {
+                            lat: 21.0285,
+                            lng: 105.8542,
+                        }})
+                }
                 if (keyword && (keyword.includes("Quận") || keyword.includes("Phường"))) {
                     this.setState({zoom:14})
                 }
@@ -68,12 +75,43 @@ class MapContainer extends Component {
         const priceMax = this.state.priceMax ? `&max_price=${this.state.priceMax}` : "";
         const type = this.state.type.toString() ? `&types=${this.state.type.toString()}` : "";
         const room = this.state.room.toString() ? `&room=${this.state.room.toString()}` : "";
-        await service.getHouseFilter(type + room + keyword + distance + priceMin + priceMax)
-            .then(data => {
-                this.setState({data: data});
-                this.setState({markers: data.houses});
-                this.setState({currentLocation: data.centerPoint})
-            })
+        const lat = this.state.lat ? `&lat=${this.state.lat}` : "";
+        const lnp = this.state.lnp ? `&lnp=${this.state.lnp}` : "";
+        if (this.state.address) {
+            // this.setState({currentLocation: {
+            //         lat: this.state.lat,
+            //         lng: this.state.lnp,
+            //     }})
+            // this.setState({zoom:14})
+            service.getHouseFilter(lat + lnp + distance)
+                .then(data => {
+                    this.setState({data: data});
+                    this.setState({markers: data.houses});
+                    console.log("KAHNH")
+                    // if (data.centerPoint.lat !== 0) {
+                    //     this.setState({currentLocation: data.centerPoint})
+                    // } else {
+                    //     this.setState({currentLocation: {
+                    //             lat: 21.0285,
+                    //             lng: 105.8542,
+                    //         }})
+                    // }
+                })
+        } else {
+            service.getHouseFilter(type + room + keyword + distance + priceMin + priceMax)
+                .then(data => {
+                    this.setState({data: data});
+                    this.setState({markers: data.houses});
+                    // if (data.centerPoint.lat !== 0) {
+                    //     this.setState({currentLocation: data.centerPoint})
+                    // } else {
+                    //     this.setState({currentLocation: {
+                    //             lat: 21.0285,
+                    //             lng: 105.8542,
+                    //         }})
+                    // }
+                })
+        }
     }
 
     isSearch = async (keyword) => {
@@ -83,11 +121,9 @@ class MapContainer extends Component {
     }
 
     isSetLocation = async (lat, lnp, address) => {
-        await this.setState({
-            lat: lat,
-            lnp: lnp,
-            address: address
-        });
+        await this.setState({lat: lat});
+        await this.setState({lnp: lnp});
+        await this.setState({address: address});
         await this.onGetHouseFilter();
         console.log(this.state.markers)
     }

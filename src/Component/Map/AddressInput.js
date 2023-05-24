@@ -1,13 +1,14 @@
-import React, { useState } from "react";
-import { Autocomplete, useLoadScript } from "@react-google-maps/api";
+import React, {useState} from "react";
+import {Autocomplete, useLoadScript} from "@react-google-maps/api";
 import '../../CSS/search-map.css'
 import {API_KEY} from "../../Const/ActionType";
+
 const placesLibrary = ["places"];
 
 function AddressInput(props) {
     const [searchResult, setSearchResult] = useState("Result: none");
 
-    const { isLoaded } = useLoadScript({
+    const {isLoaded} = useLoadScript({
         googleMapsApiKey: API_KEY,
         libraries: placesLibrary
     });
@@ -30,9 +31,7 @@ function AddressInput(props) {
             console.log(`Formatted Address: ${formattedAddress}`);
             console.log(`Latitude: ${lat}`);
             console.log(`Longitude: ${lng}`);
-            if (typeof props.onAddressChanged === "function") {
-                props.onAddressChanged(lat, lng, formattedAddress);
-            }
+            props.onAddressChanged(lat, lng, formattedAddress);
         } else {
             alert("Please enter text");
         }
@@ -49,7 +48,7 @@ function AddressInput(props) {
                     className="Autocomplete"
                     onPlaceChanged={onPlaceChanged}
                     onLoad={onLoad}
-                    options={{ componentRestrictions: { country: "vn" }, strictBounds: true }}>
+                    options={{componentRestrictions: {country: "vn"}, strictBounds: true}}>
                     <input
                         type="text"
                         placeholder="Chọn vị trí"
