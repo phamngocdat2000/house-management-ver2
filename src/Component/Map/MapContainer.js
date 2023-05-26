@@ -32,8 +32,8 @@ class MapContainer extends Component {
             lnp: "",
             address: "",
             data: {
-                houses:[],
-                centerPoint:{
+                houses: [],
+                centerPoint: {
                     lat: "",
                     lng: "",
                 }
@@ -57,18 +57,23 @@ class MapContainer extends Component {
                 if (data.centerPoint.lat !== 0) {
                     this.setState({currentLocation: data.centerPoint})
                 } else {
-                    this.setState({currentLocation: {
+                    this.setState({
+                        currentLocation: {
                             lat: 21.0285,
                             lng: 105.8542,
-                        }})
+                        }
+                    })
                 }
                 if (keyword && (keyword.includes("Quận") || keyword.includes("Phường"))) {
-                    this.setState({zoom:14})
+                    this.setState({zoom: 14})
                 }
             })
     }
 
     onGetHouseFilter = async () => {
+        const search = window.location.search;
+        const params = new URLSearchParams(search);
+        const keywordCheck = params.get('keyword') ? `&keyword=${params.get('keyword')}` : "";
         const keyword = this.state.keyword ? `&keyword=${this.state.keyword}` : "";
         const distance = this.state.distance ? `&distance=${this.state.distance}` : "";
         const priceMin = this.state.priceMin ? `&min_price=${this.state.priceMin}` : "";
@@ -78,25 +83,28 @@ class MapContainer extends Component {
         const lat = this.state.lat ? `&lat=${this.state.lat}` : "";
         const lnp = this.state.lnp ? `&lnp=${this.state.lnp}` : "";
         if (this.state.address) {
-            // this.setState({currentLocation: {
-            //         lat: this.state.lat,
-            //         lng: this.state.lnp,
-            //     }})
-            // this.setState({zoom:14})
-            service.getHouseFilter(lat + lnp + distance)
-                .then(data => {
-                    this.setState({data: data});
-                    this.setState({markers: data.houses});
-                    console.log("KAHNH")
-                    // if (data.centerPoint.lat !== 0) {
-                    //     this.setState({currentLocation: data.centerPoint})
-                    // } else {
-                    //     this.setState({currentLocation: {
-                    //             lat: 21.0285,
-                    //             lng: 105.8542,
-                    //         }})
-                    // }
-                })
+            this.setState({
+                currentLocation: {
+                    lat: this.state.lat,
+                    lng: this.state.lnp,
+                },
+                zoom: 15
+            }, () => {
+                service.getHouseFilter(lat + lnp + distance)
+                    .then(data => {
+                        this.setState({data: data});
+                        this.setState({markers: data.houses});
+                        console.log(data.houses)
+                        // if (data.centerPoint.lat !== 0) {
+                        //     this.setState({currentLocation: data.centerPoint})
+                        // } else {
+                        //     this.setState({currentLocation: {
+                        //             lat: 21.0285,
+                        //             lng: 105.8542,
+                        //         }})
+                        // }
+                    })
+            })
         } else {
             service.getHouseFilter(type + room + keyword + distance + priceMin + priceMax)
                 .then(data => {
@@ -124,7 +132,9 @@ class MapContainer extends Component {
         await this.setState({lat: lat});
         await this.setState({lnp: lnp});
         await this.setState({address: address});
-        await this.onGetHouseFilter();
+        this.setState({}, () => {
+            this.onGetHouseFilter();
+        });
         console.log(this.state.markers)
     }
 

@@ -23,6 +23,9 @@ function AddressInput(props) {
             const name = place.name;
             const status = place.business_status;
             const formattedAddress = place.formatted_address;
+            if(place.geometry === undefined) {
+                return;
+            }
             const lat = place.geometry.location.lat();
             const lng = place.geometry.location.lng();
             console.log(place);
