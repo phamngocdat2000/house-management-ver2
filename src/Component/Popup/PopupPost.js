@@ -342,7 +342,7 @@ function HtmlEditor(props) {
                     <div className="div-select-type-main">
                         <div className="div-type">
                             Quận/Huyện:
-                            <select className="div-select-type" onChange={handleSelectDistrict}>
+                            <select value={district} className="div-select-type" onChange={handleSelectDistrict}>
                                 {listDistrict.map((district, index) => (
                                     <option key={index} value={district}>
                                         {district}
@@ -352,7 +352,7 @@ function HtmlEditor(props) {
                         </div>
                         <div className="div-type">
                             Phường/Xã:
-                            <select className="div-select-type" onChange={handleSelectStreet}>
+                            <select value={street} className="div-select-type" onChange={handleSelectStreet}>
                                 {listStreet.map((street, index) => (
                                     <option key={index} value={street}>
                                         {street}
