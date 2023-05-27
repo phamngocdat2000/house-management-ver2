@@ -167,6 +167,10 @@ function HtmlEditor(props) {
         }
         for (let i = 0; i < files.length; i++) {
             const file = files[i];
+            if (!file.type.startsWith('image/')) {
+                alert('Chỉ chấp nhận tệp ảnh');
+                return;
+            }
             // eslint-disable-next-line no-unused-vars
             let base64
             convertBase64(file).then((value) => {
