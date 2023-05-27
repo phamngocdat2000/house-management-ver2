@@ -38,7 +38,8 @@ class MapContainer extends Component {
                     lng: "",
                 }
             },
-            zoom: 11
+            zoom: 11,
+            idCheck: ''
         };
     }
 
@@ -71,9 +72,7 @@ class MapContainer extends Component {
     }
 
     onGetHouseFilter = async () => {
-        const search = window.location.search;
-        const params = new URLSearchParams(search);
-        const keywordCheck = params.get('keyword') ? `&keyword=${params.get('keyword')}` : "";
+        let result;
         const keyword = this.state.keyword ? `&keyword=${this.state.keyword}` : "";
         const distance = this.state.distance ? `&distance=${this.state.distance}` : "";
         const priceMin = this.state.priceMin ? `&min_price=${this.state.priceMin}` : "";
@@ -89,35 +88,18 @@ class MapContainer extends Component {
                     lng: this.state.lnp,
                 },
                 zoom: 15
-            }, () => {
-                service.getHouseFilter(lat + lnp + distance)
-                    .then(data => {
-                        this.setState({data: data});
-                        this.setState({markers: data.houses});
-                        console.log(data.houses)
-                        // if (data.centerPoint.lat !== 0) {
-                        //     this.setState({currentLocation: data.centerPoint})
-                        // } else {
-                        //     this.setState({currentLocation: {
-                        //             lat: 21.0285,
-                        //             lng: 105.8542,
-                        //         }})
-                        // }
-                    })
             })
+            result = await service.getHouseFilter(lat + lnp + distance);
+            if (result !== undefined) {
+                this.setState({data: result});
+                this.setState({markers: result.houses});
+            }
+
         } else {
             service.getHouseFilter(type + room + keyword + distance + priceMin + priceMax)
                 .then(data => {
                     this.setState({data: data});
                     this.setState({markers: data.houses});
-                    // if (data.centerPoint.lat !== 0) {
-                    //     this.setState({currentLocation: data.centerPoint})
-                    // } else {
-                    //     this.setState({currentLocation: {
-                    //             lat: 21.0285,
-                    //             lng: 105.8542,
-                    //         }})
-                    // }
                 })
         }
     }
@@ -180,8 +162,7 @@ class MapContainer extends Component {
         console.log(this.state.selectedPlace)
     };
 
-    handleMarkerClick = async (props, marker) => {
-        console.log("KHANH")
+    handleMarkerClick = async () => {
         await this.setState({
             showingInfoWindow: false,
         });
@@ -209,6 +190,17 @@ class MapContainer extends Component {
         });
     };
 
+    setCurrentLocation = (lat, lng, id) => {
+        this.setState({
+            currentLocation: {
+                lat: lat,
+                lng: lng,
+            },
+            zoom: 19,
+            idCheck: id
+        })
+    }
+
     render() {
         console.log(this.state.data)
         console.log(this.state.markers)
@@ -231,7 +223,10 @@ class MapContainer extends Component {
                             {this.state.markers.length > 0 ?
                                 <div className="found-list-house">
                                     {this.state.markers.map((data, index) => (
-                                        <ListHouse id={index} data={data} show={this.state.currentLocation}/>
+                                        <ListHouse id={index}
+                                                   data={data}
+                                                   check={data.id === this.state.idCheck}
+                                                   setCurrentLocation={this.setCurrentLocation} show={this.state.currentLocation}/>
                                     ))}
                                 </div>
                                 : <NotFoundResult/>

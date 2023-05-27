@@ -13,6 +13,7 @@ export default class ListHouse extends Component {
             data: props.data,
             comment: [],
             rating: [],
+            id: ""
         };
     }
 
@@ -25,10 +26,10 @@ export default class ListHouse extends Component {
     }
 
     async componentDidMount() {
-       await this.getCommentRating()
+        await this.getCommentRating()
     }
 
-    getCommentRating () {
+    getCommentRating() {
         service.getComment(this.state.data.id)
             .then(data => {
                 this.setState({comment: data})
@@ -39,7 +40,12 @@ export default class ListHouse extends Component {
             });
     }
 
-    showHouseInfo = (id) => {
+    showHouseInfo = async (id) => {
+        await this.props.setCurrentLocation(this.state.data.lat, this.state.data.lnp, id)
+        await this.setState({id: this.state.data.id})
+    }
+
+    showHouseInfoV2 = async (id) => {
         window.location.href = "/info/house?id=" + id;
     }
 
@@ -68,16 +74,23 @@ export default class ListHouse extends Component {
                         </div>
                     </div>
                     <div className="comment-rating">
-                        <div className="rating">
-                            <img src={iconRating} alt=""/>:
-                            &nbsp;
-                            {this.state.data.createdBy}
-                            &nbsp;
-                            ({this.state.rating.length}/5 Đánh giá)
-                        </div>
-                        <div className="comment">
-                            {this.state.comment.length} Bình luận
-                        </div>
+                        {this.props.check ?
+                            <div className="rating" onClick={() => this.showHouseInfoV2(this.state.data.id)}>
+                                Xem chi tiết
+                            </div> :
+                            <>
+                                <div className="rating">
+                                    <img src={iconRating} alt=""/>:
+                                    &nbsp;
+                                    {this.state.data.createdBy}
+                                    &nbsp;
+                                    ({this.state.rating.length}/5 Đánh giá)
+                                </div>
+                                <div className="comment">
+                                    {this.state.comment.length} Bình luận
+                                </div>
+                            </>
+                        }
                     </div>
                 </button>
             </>
