@@ -111,7 +111,8 @@
     margin-top: 3rem;
     background: #F4F7Fb;
     width: 100%;
-    height: fit-content;
+    height: 500px;
+    overflow: auto;
     padding: 0 2rem;
 }
 .comment-title {
