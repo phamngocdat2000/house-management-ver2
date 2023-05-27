@@ -8,16 +8,13 @@ const placesLibrary = ["places"];
 function AddressInput(props) {
     const [searchResult, setSearchResult] = useState("Result: none");
 
-    const {isLoaded} = useLoadScript({
-        googleMapsApiKey: API_KEY,
-        libraries: placesLibrary
-    });
-
     function onLoad(autocomplete) {
-        setSearchResult(autocomplete);
+        if (autocomplete) {
+            setSearchResult(autocomplete);
+        }
     }
 
-    function onPlaceChanged() {
+    async function onPlaceChanged() {
         if (searchResult != null) {
             const place = searchResult.getPlace();
             const name = place.name;
@@ -34,14 +31,12 @@ function AddressInput(props) {
             console.log(`Formatted Address: ${formattedAddress}`);
             console.log(`Latitude: ${lat}`);
             console.log(`Longitude: ${lng}`);
-            props.onAddressChanged(lat, lng, formattedAddress);
+            if (typeof props.onAddressChanged === "function") {
+                await props.onAddressChanged(lat, lng, formattedAddress);
+            }
         } else {
             alert("Please enter text");
         }
-    }
-
-    if (!isLoaded) {
-        return <div>Loading...</div>;
     }
 
     return (

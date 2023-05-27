@@ -40,9 +40,16 @@ function HtmlEditor(props) {
 
     const [latitude, setLatitude] = useState(null);
 
+    const [latitudeinput, setLatitudeInput] = useState(null);
+
+    const [longitudeInput, setLongitudeInput] = useState(null);
+
     const [longitude, setLongitude] = useState(null);
 
-    const [address, setAddress] = useState(null)
+    const [address, setAddress] = useState(null);
+
+    const [addressInput, setAddressInput] = useState(null)
+
 
     const [listDistrict, setListDistrict] = useState([]);
 
@@ -66,8 +73,8 @@ function HtmlEditor(props) {
 
     React.useEffect(() => {
         if (quill) {
-            if (props.objectPost !== undefined) {
-                const html = props.objectPost.html;
+            if (props.dataEdit !== undefined) {
+                const html = props.dataEdit.description;
                 const delta = quill.clipboard.convert(html);
                 quill.setContents(delta);
                 setValue(quillRef.current.firstChild.innerHTML);
@@ -77,27 +84,69 @@ function HtmlEditor(props) {
                 setValue(quillRef.current.firstChild.innerHTML)
             });
         }
+
         service.getDistrict()
             .then(data => {
                 setListDistrict(data)
-                setLDistrict(data[0])
+                if (props.dataEdit) {
+                    setLDistrict(props.dataEdit.district)
+                } else {
+                    setLDistrict(data[0])
+                }
             });
-
-
-    }, [props.objectPost, quill, quillRef]);
+    }, [props.dataEdit, quill, quillRef]);
 
     useEffect(() => {
+
         service.getStreet(district)
             .then(data => {
                 setListStreet(data);
-                setStreet(data[0])
+                if (props.dataEdit) {
+                    setStreet(props.dataEdit.street);
+                } else {
+                    setStreet(data[0])
+                }
             });
-    }, [district]);
+    }, [props.dataEdit, district]);
+
+    useEffect(() => {
+        console.log(props.dataEdit)
+        if (props.dataEdit) {
+            setAddress(props.dataEdit.address)
+            setArea(props.dataEdit.area)
+            setValue(props.dataEdit.description)
+            setSelectedImage(props.dataEdit.imagesUrl)
+            setBedroom(props.dataEdit.numberOfBedrooms)
+            setKitchen(props.dataEdit.numberOfKitchens)
+            setToilet(props.dataEdit.numberOfToilets)
+            setPrice(props.dataEdit.price)
+            setTitle(props.dataEdit.title);
+            setTypeSearch(props.dataEdit.type);
+            setLongitude(props.dataEdit.lnp)
+            setLatitude(props.dataEdit.lnp)
+        }
+        if (props.address) {
+            setAddress(props.address)
+        }
+        if (props.lat) {
+            setLatitude(props.lat)
+        }
+        if (props.lng) {
+            setLongitude(props.lng)
+        }
+    }, [props.dataEdit, props.address, props.lat, props.lng]);
+
 
     function handleAddressInputChanged(lat, lng, address) {
-        setLatitude(lat);
-        setLongitude(lng);
-        setAddress(address)
+        if (lat) {
+            setLatitudeInput(lat);
+        }
+        if (lng) {
+            setLongitudeInput(lng);
+        }
+        if (address) {
+            setAddressInput(address);
+        }
     }
 
     const handleSelectDistrict = (event) => {
@@ -111,14 +160,6 @@ function HtmlEditor(props) {
     const openMap = () => {
         props.handleOpenPopup(false, true)
     }
-
-    const handleMapDone = (lat, lng, address) => {
-        // Cập nhật state của Header với giá trị address nhận được từ AddressInput
-        setLatitude(lat)
-        setLongitude(lng)
-        setAddress(address)
-    }
-
     const handleInput = (value, check) => {
         switch (check) {
             case "price":
@@ -135,6 +176,7 @@ function HtmlEditor(props) {
                 break;
             case "area":
                 setArea(value);
+                break;
             default:
                 break;
         }
@@ -198,28 +240,33 @@ function HtmlEditor(props) {
     const onSubmit = async () => {
         try {
             let result
-
-            result = await service.postContent({
+            let params = {
                 title: title,
                 price: price,
                 description: value,
-                address: choose % 2 === 0 ? props.address : address,
+                address: choose % 2 === 0 ? address : addressInput,
                 district: district,
                 street: street,
                 city: "Thành phố Hà Nội",
-                lat: choose % 2 === 0 ? props.lat : latitude,
-                lnp: choose % 2 === 0 ? props.lng : longitude,
+                lat: choose % 2 === 0 ? latitude : latitudeinput,
+                lnp: choose % 2 === 0 ? longitude : longitudeInput,
                 type: typeSearch,
                 imagesUrl: selectedImage,
                 numberOfBedrooms: bedroom,
                 numberOfToilets: toilet,
                 numberOfKitchens: kitchen,
                 area: area
-            }).then();
+            }
+            if (props.dataEdit) {
+                result = await service.editPost(props.dataEdit.id, params).then();
+            } else {
+                result = await service.postContent(params).then();
+            }
             console.log(result)
             alert("Success!")
             window.location.reload();
         } catch (error) {
+            console.log(error)
             alert(error)
         }
 
@@ -322,7 +369,7 @@ function HtmlEditor(props) {
                         {choose % 2 === 0 &&
                             <div className="btn-type-0">
                                 <button className="btn-type" onClick={openMap}>
-                                    {props.lat ? props.address : "Mở bản đồ"}
+                                    {address ? address : "Mở bản đồ"}
                                 </button>
                             </div>}
                     </div>

@@ -1,8 +1,11 @@
-import {Component} from "react";
+import React, {Component} from "react";
 import '../../CSS/map-style.css';
 import iconNotFound from '../../Image/icon-not-found.svg'
 import service from "../../API/Service";
 import iconRating from '../../Image/icon-rating.png';
+import auth from "../../API/AuthService";
+import PopupPost from "../Popup/PopupPost";
+import ClickChooseLocation from "./ClickChooseLocation";
 
 export default class ListHouse extends Component {
 
@@ -13,7 +16,10 @@ export default class ListHouse extends Component {
             data: props.data,
             comment: [],
             rating: [],
-            id: ""
+            id: "",
+            userInfo: auth.getUserInfo(),
+            isPopupOpen: false, isMapOpen: false,
+            lat: "", lng: "", address: ""
         };
     }
 
@@ -49,10 +55,40 @@ export default class ListHouse extends Component {
         window.location.href = "/info/house?id=" + id;
     }
 
+    editPost = () => {
+        this.setState({isPopupOpen: true});
+        // window.location.href = "/info/house?id=" + id;
+    }
+
+    deletePost = async (id) => {
+        // window.location.href = "/info/house?id=" + id;
+    }
+
+    handlePopupOpen = (popup, mapopen) => {
+        // Cập nhật state của Header với giá trị address nhận được từ AddressInput
+        this.setState({ isPopupOpen: popup });
+        this.setState({ isMapOpen: mapopen});
+    }
+
+    handlePopupClose = () => {
+        this.setState({isPopupOpen: false}); // Đặt giá trị state để đóng Popup
+    };
+
+    handleMapDone = (lat, lng, address) => {
+        // Cập nhật state của Header với giá trị address nhận được từ AddressInput
+        this.setState({
+            lat: lat,
+            lng: lng,
+            address: address
+        })
+    }
+
     render() {
+        console.log(this.state.userInfo)
         return (
             <>
-                <button onClick={() => this.showHouseInfo(this.state.data.id)} className="comment-rating-main">
+                <button
+                    onClick={() => this.showHouseInfo(this.state.data.id)} className="comment-rating-main">
                     <div className="list-house-main">
                         <div className="list-house-img-main">
                             <img className="list-house-img"
@@ -75,9 +111,41 @@ export default class ListHouse extends Component {
                     </div>
                     <div className="comment-rating">
                         {this.props.check ?
-                            <div className="rating" onClick={() => this.showHouseInfoV2(this.state.data.id)}>
-                                Xem chi tiết
-                            </div> :
+                            <>
+                                <div className="rating" onClick={() => this.showHouseInfoV2(this.state.data.id)}>
+                                    Xem chi tiết
+                                </div>
+                                {this.state.userInfo.username === this.state.data.createdBy &&
+                                    <>
+                                        <div className="rating" onClick={this.editPost}>
+                                            Chỉnh sửa
+                                        </div>
+                                        <div className={this.state.isPopupOpen ? "djask-123-main" : "djask-123-main-none"}>
+                                            <div className="djask-123">
+                                                <div onClick={this.handlePopupClose} className="djask-124">x</div>
+                                                <PopupPost handleOpenPopup={this.handlePopupOpen}
+                                                           dataEdit={this.state.data}
+                                                           lat={this.state.lat}
+                                                           lng={this.state.lng}
+                                                           address={this.state.address}
+                                                />
+                                            </div>
+                                        </div>
+                                        <div className={this.state.isMapOpen ? "djask-123-main" : "djask-123-main-none"}>
+                                            <ClickChooseLocation
+                                                handleOpenPopup={this.handlePopupOpen}
+                                                handleMapDone={this.handleMapDone}
+                                            />
+                                        </div>
+                                    </>
+                                }
+                                {(this.state.userInfo.username === this.state.data.createdBy || this.state.userInfo.username === 'admin') &&
+                                    <div className="rating" onClick={() => this.deletePost(this.state.data.id)}>
+                                        Xoá
+                                    </div>
+                                }
+                            </>
+                             :
                             <>
                                 <div className="rating">
                                     <img src={iconRating} alt=""/>:

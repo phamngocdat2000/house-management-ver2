@@ -73,6 +73,10 @@ let service = {
     comment: (id, params) => {
         let url = "api/comment/post/" + id;
         return method.post(params, url)
+    },
+    editPost: (id, params) => {
+        let url = "api/post/" + id;
+        return method.patch(params, url)
     }
 };
 

@@ -11,6 +11,10 @@ let auth = {
     getToken: () => {
         return JSON.parse(localStorage.getItem("USER")) ? JSON.parse(localStorage.getItem("USER"))["accessToken"] : null;
     },
+    getUserInfo: () => {
+        return JSON.parse(localStorage.getItem("USER")) ? JSON.parse(localStorage.getItem("USER"))["userInfo"] : null;
+    },
+
     setHistory: (newHistory) => {
         history = newHistory
     },

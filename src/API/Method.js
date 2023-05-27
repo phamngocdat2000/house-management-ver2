@@ -158,6 +158,46 @@ const method = {
 
         }
     },
+    patch: async (data, url) => {
+        url = config.HOST + '/' + url
+        let headers = {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + auth.getToken(),
+            'Accept-Language': 'vi'
+        }
+        try {
+            let response = await fetch(url, {
+                crossDomain: true,
+                method: 'PATCH',
+                headers,
+                'Accept-Language': 'vi',
+                body: JSON.stringify(data),
+            });
+            let rs = await response.json();
+            switch (response.status) {
+                case 200: return rs
+                case 401: return logoutUser()
+                default: {
+                    console.log('err')
+                    if (rs.message) {
+                        throw (rs.message)
+                    }
+                    if (rs.description) {
+                        throw (rs.description)
+                    }
+                    throw (rs)
+                }
+            }
+        } catch (error) {
+            console.log(error)
+            if (error.msg) {
+                console.log(error.msg)
+            }
+            throw error
+
+        }
+    },
 }
 function logoutUser() {
     alert('Wrong user or password')
