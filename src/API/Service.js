@@ -77,6 +77,10 @@ let service = {
     editPost: (id, params) => {
         let url = "api/post/" + id;
         return method.patch(params, url)
+    },
+    deletePost: (id) => {
+        let url = "api/post/" + id;
+        return method.delete(url)
     }
 };
 

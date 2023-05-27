@@ -9,6 +9,10 @@ import kitchen from "../../Image/kitchen.png";
 import area from "../../Image/area.png";
 import iconAccount from "../../Image/icon-account.png";
 import {Input} from "antd";
+import ShowComment from "./ShowComment";
+import SockJS from "sockjs-client";
+import Stomp from 'stompjs';
+import config from "../../API/Config";
 
 export default class PostInfo extends Component {
 
@@ -39,13 +43,15 @@ export default class PostInfo extends Component {
                 type: null
             },
             comment: null,
-            listComment: {},
+            listComment: [],
             messages: []
         };
     }
 
 
     async componentDidMount() {
+        const socket = new SockJS(config.WS);
+        const stompClient = Stomp.over(socket);
         const search = window.location.search;
         const params = new URLSearchParams(search);
         const id = params.get('id')
@@ -59,12 +65,30 @@ export default class PostInfo extends Component {
                 console.log(data)
                 this.setState({listComment: data})
             })
+        stompClient.connect({}, () => {
+            console.log('WebSocket connection opened');
+
+            // Đăng ký lắng nghe sự kiện từ /post/49
+            stompClient.subscribe('/post/' + id, message => {
+                if (message) {
+                    service.getComment(id)
+                        .then(data => {
+                            console.log(data)
+                            this.setState({listComment: data})
+                        })
+                }
+                console.log('Received message:', message.body);
+                // Xử lý dữ liệu nhận được từ server và cập nhật trong ứng dụng của bạn
+            });
+        });
     }
 
-    componentDidUpdate(prevProps, prevState, snapshot) {
-        const search = window.location.search;
-        const params = new URLSearchParams(search);
-        const id = params.get('id')
+    componentWillUnmount() {
+        // Đóng kết nối WebSocket khi component bị unmount
+        const {stompClient} = this.state;
+        if (stompClient) {
+            stompClient.disconnect();
+        }
     }
 
     handleComment = (value) => {
@@ -72,19 +96,25 @@ export default class PostInfo extends Component {
     }
 
     handleSubmitComment = async (event) => {
+        const search = window.location.search;
+        const params = new URLSearchParams(search);
+        const id = params.get('id')
         if (event.key === 'Enter') {
             console.log(this.state.comment)
             await service.comment(this.state.info.id, {
                 content: this.state.comment
+            }).then(data => {
+                console.log(data)
             })
+            await service.getComment(id)
                 .then(data => {
-                    console.log(data)
+                    this.setState({listComment: data})
                 })
+            this.setState({comment:null})
         }
     }
 
     render() {
-        console.log(this.state.message)
         return (
             <>
                 <div className="post-info-image">
@@ -187,6 +217,15 @@ export default class PostInfo extends Component {
                                        rootClassName="div-input-comment" value={this.state.comment}
                                        onChange={event => this.handleComment(event.target.value)}
                                        onKeyDown={(event) => this.handleSubmitComment(event)}></Input>
+                            </div>
+                            <div>
+                                {this.state.listComment && this.state.listComment
+                                    .slice()
+                                    .reverse()
+                                    .map((data, index) => (
+                                        <ShowComment id={index}
+                                                     data={data}/>
+                                    ))}
                             </div>
                         </div>
                     </div>

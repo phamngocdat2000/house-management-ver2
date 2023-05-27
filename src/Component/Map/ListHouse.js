@@ -61,6 +61,16 @@ export default class ListHouse extends Component {
     }
 
     deletePost = async (id) => {
+        await service.deletePost(id).then(
+            (data) => {
+                if (data.status === 200) {
+                    window.location.reload();
+                }
+                if (data.status === 403) {
+                    alert("Bạn không có quyền!");
+                }
+            }
+        );
         // window.location.href = "/info/house?id=" + id;
     }
 

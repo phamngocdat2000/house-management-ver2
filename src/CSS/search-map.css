@@ -24,3 +24,41 @@
 .pac-container.pac-logo::after {
     display: none;
 }
+.class-is-main {
+    padding: 1rem 0 1rem 0;
+    display: flex;
+    justify-content: start;
+    align-items: center;
+}
+.class-not-is-main {
+    padding: 1rem 0 1rem 0;
+    display: flex;
+    justify-content: end;
+    align-items: center;
+}
+.check-underline {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.check-underline-2 {
+    width: 95%;
+    height: 1px;
+    border-top: 1px double wheat;
+}
+.show-info-user-comment-1 {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: start;
+}
+.show-info-user-comment-2 {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: end;
+}
+.show-fullname-1 {
+    font-weight: 500;
+    color: #ff7900;
+}
