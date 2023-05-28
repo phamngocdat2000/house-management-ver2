@@ -15,7 +15,7 @@ export default class ListHouse extends Component {
         this.state = {
             data: props.data,
             comment: [],
-            rating: [],
+            rating: 0,
             id: "",
             userInfo: auth.getUserInfo(),
             isPopupOpen: false, isMapOpen: false,
@@ -40,10 +40,19 @@ export default class ListHouse extends Component {
             .then(data => {
                 this.setState({comment: data})
             });
-        service.getRating(this.state.data.createdBy)
-            .then(data => {
-                this.setState({rating: data})
-            });
+        service.getRating(this.state.data.createdBy).then(
+            (data) => {
+                let ratingValue = 0;
+                // eslint-disable-next-line array-callback-return
+                data && data.map((value) => {
+                    ratingValue += value.ratingValue;
+                })
+                if (ratingValue !== 0) {
+                    this.setState({rating: (ratingValue / data.length).toFixed(1)})
+                }
+                console.log((ratingValue / data.length).toFixed(1))
+            }
+        )
     }
 
     showHouseInfo = async (id) => {
@@ -162,7 +171,7 @@ export default class ListHouse extends Component {
                                     &nbsp;
                                     {this.state.data.createdBy}
                                     &nbsp;
-                                    ({this.state.rating.length}/5 Đánh giá)
+                                    ({this.state.rating}/5 Đánh giá)
                                 </div>
                                 <div className="comment">
                                     {this.state.comment.length} Bình luận
