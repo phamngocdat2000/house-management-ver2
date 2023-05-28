@@ -85,6 +85,10 @@ export default class HouseManagement extends Component {
 
                                    }/>
                         </Route>
+                        <Route path="/change-password"
+                               element={
+                                   <Login changepassword={true}/>
+                               }/>
                     </Routes>
                 </BrowserRouter>
             </div>

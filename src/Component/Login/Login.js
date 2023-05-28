@@ -11,7 +11,9 @@ import fbIcon from '../../Image/fb-icon.svg';
 import iconLogin from '../../Image/icon-login.png';
 import iconRegister from '../../Image/icon-register.png';
 import iconForgotPass from '../../Image/icon-forgot-password.png';
+import iconChangePass from '../../Image/icon-change-password.png';
 import {Visibility, VisibilityOff} from '@mui/icons-material';
+import auth from "../../API/AuthService";
 
 export class Login extends Component {
     constructor(props) {
@@ -21,6 +23,7 @@ export class Login extends Component {
             username: "",
             password: "",
             confirmPassword: "",
+            oldPassword: "",
             fullName: "",
             email: "",
             phone: "",
@@ -29,6 +32,7 @@ export class Login extends Component {
             isForgotPassword: false,
             showPassword: false,
             showConfirmPassword: false,
+            showOldPassword: false,
             code: "",
             sendMailSuccess: false
         };
@@ -127,6 +131,33 @@ export class Login extends Component {
         }
     }
 
+    change = async () => {
+        if (this.state.password !== this.state.confirmPassword) {
+            alert('Password does not match');
+            return;
+        }
+        console.log(auth.getUserInfo().username)
+        try {
+            let changeResult = await service.change({
+                username: auth.getUserInfo().username,
+                oldPassword: this.state.oldPassword,
+                newPassword: this.state.password,
+            })
+            console.log(changeResult);
+            if (changeResult.status === 200) {
+                alert("Change PassWord Success");
+                window.location.href = "/"
+            }
+            this.setState({isLogin: true})
+        } catch (error) {
+            if (error === 'Invalid username or password!') {
+                alert("Mật khẩu cũ chưa đúng!")
+            } else {
+                alert(error)
+            }
+        }
+    }
+
     sendMail = async () => {
         if (!this.state.username) {
             alert('Username not null');
@@ -152,6 +183,10 @@ export class Login extends Component {
 
     handleConfirmPassWord = e => {
         this.setState({confirmPassword: e.target.value})
+    }
+
+    handleOldPassWord = e => {
+        this.setState({oldPassword: e.target.value})
     }
 
     handleFullName = e => {
@@ -208,189 +243,285 @@ export class Login extends Component {
         this.setState({showConfirmPassword: !this.state.showConfirmPassword});
     }
 
+    toggleShowOldPassword() {
+        this.setState({showOldPassword: !this.state.showOldPassword});
+    }
+
     render() {
-        return (<>
-            <div className="background">
-            </div>
-            <div className="content">
-                {this.state.isLogin &&
-                    <Container maxWidth="sm" className='container-login'>
-                        <div className='form'>
-                            <img src={iconLogin} alt="icon login"/>
-                            <div className="title">Have an account?</div>
-                            <FormControl className='form-input'>
-                                <InputLabel className='hidden-text'>Username</InputLabel>
-                                <OutlinedInput
-                                    className='form-input-2'
-                                    label="Username"
-                                    value={this.state.username}
-                                    onChange={(e) => this.handleUserName(e)}
-                                />
-                            </FormControl>
-                            <FormControl className='form-input'>
-                                <InputLabel className='hidden-text'>Password</InputLabel>
-                                <OutlinedInput
-                                    className='form-input-2'
-                                    label="Password"
-                                    value={this.state.password}
-                                    onChange={(e) => this.handlePassWord(e)}
-                                    type={this.state.showPassword ? 'text' : 'password'}
-                                    endAdornment={
-                                        <InputAdornment position="end">
-                                            <IconButton onClick={() => this.toggleShowPassword()} edge="end">
-                                                {this.state.showPassword ? <Visibility/> : <VisibilityOff/>}
-                                            </IconButton>
-                                        </InputAdornment>
-                                    }
-                                />
-                            </FormControl>
-                            <div onClick={() => this.handleForgotPassWord()} className='forgot-password-login'>
-                                <p>Forgot your password?</p>
-                            </div>
-                            <Button
-                                className='btn-login'
-                                onClick={() => this.login()}
-                            >
-                                Login</Button>
-                            <div className='register-login1'>
-                                <p>Don't have an account yet?&nbsp;
-                                    <span onClick={() => this.handleRegister()}
-                                          className='register-login2'>Register now</span>
-                                </p>
-                            </div>
-                            <div className="auth-login-sso">
-                                <div className="auth-login-sso2">
-                                    <div id="login-with-google-button" className="auth-login-with">
-                                        <div onClick={() => this.loginWithGoogle()}>
-                                            <img src={ggIcon} alt="icon gg"></img>
+        return (
+            <>
+                {!this.props.changepassword ?
+                    <>
+                        <div className="background">
+                        </div>
+                        <div className="content">
+                            {this.state.isLogin &&
+                                <Container maxWidth="sm" className='container-login'>
+                                    <div className='form'>
+                                        <img src={iconLogin} alt="icon login"/>
+                                        <div className="title">Have an account?</div>
+                                        <FormControl className='form-input'>
+                                            <InputLabel className='hidden-text'>Username</InputLabel>
+                                            <OutlinedInput
+                                                className='form-input-2'
+                                                label="Username"
+                                                value={this.state.username}
+                                                onChange={(e) => this.handleUserName(e)}
+                                            />
+                                        </FormControl>
+                                        <FormControl className='form-input'>
+                                            <InputLabel className='hidden-text'>Password</InputLabel>
+                                            <OutlinedInput
+                                                className='form-input-2'
+                                                label="Password"
+                                                value={this.state.password}
+                                                onChange={(e) => this.handlePassWord(e)}
+                                                type={this.state.showPassword ? 'text' : 'password'}
+                                                endAdornment={
+                                                    <InputAdornment position="end">
+                                                        <IconButton onClick={() => this.toggleShowPassword()}
+                                                                    edge="end">
+                                                            {this.state.showPassword ? <Visibility/> : <VisibilityOff/>}
+                                                        </IconButton>
+                                                    </InputAdornment>
+                                                }
+                                            />
+                                        </FormControl>
+                                        <div onClick={() => this.handleForgotPassWord()}
+                                             className='forgot-password-login'>
+                                            <p>Forgot your password?</p>
+                                        </div>
+                                        <Button
+                                            className='btn-login'
+                                            onClick={() => this.login()}
+                                        >
+                                            Login</Button>
+                                        <div className='register-login1'>
+                                            <p>Don't have an account yet?&nbsp;
+                                                <span onClick={() => this.handleRegister()}
+                                                      className='register-login2'>Register now</span>
+                                            </p>
+                                        </div>
+                                        <div className="auth-login-sso">
+                                            <div className="auth-login-sso2">
+                                                <div id="login-with-google-button" className="auth-login-with">
+                                                    <div onClick={() => this.loginWithGoogle()}>
+                                                        <img src={ggIcon} alt="icon gg"></img>
+                                                    </div>
+                                                </div>
+                                                <div id="login-with-facebook-button" className="auth-login-with">
+                                                    <div onClick={() => this.loginWithFacebook()}>
+                                                        <img src={fbIcon} alt="icon fb"></img>
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
-                                    <div id="login-with-facebook-button" className="auth-login-with">
-                                        <div onClick={() => this.loginWithFacebook()}>
-                                            <img src={fbIcon} alt="icon fb"></img>
+                                </Container>
+                            }
+                            {this.state.isRegister &&
+                                <Container maxWidth="sm" className='container-login'>
+                                    <div className='form'>
+                                        <img src={iconRegister} alt="icon login"/>
+                                        <div className="title">Register</div>
+                                        <FormControl className='form-input'>
+                                            <InputLabel className='hidden-text'>FullName</InputLabel>
+                                            <OutlinedInput
+                                                className='form-input-2'
+                                                label="FullName"
+                                                value={this.state.fullName}
+                                                onChange={(e) => this.handleFullName(e)}
+                                            />
+                                        </FormControl>
+                                        <FormControl className='form-input'>
+                                            <InputLabel className='hidden-text'>Username</InputLabel>
+                                            <OutlinedInput
+                                                className='form-input-2'
+                                                label="Username"
+                                                value={this.state.username}
+                                                onChange={(e) => this.handleUserName(e)}
+                                            />
+                                        </FormControl>
+                                        <FormControl className='form-input'>
+                                            <InputLabel className='hidden-text'>Email</InputLabel>
+                                            <OutlinedInput
+                                                className='form-input-2'
+                                                label="Username"
+                                                value={this.state.email}
+                                                onChange={(e) => this.handleEmail(e)}
+                                            />
+                                        </FormControl>
+                                        <FormControl className='form-input'>
+                                            <InputLabel className='hidden-text'>Phone</InputLabel>
+                                            <OutlinedInput
+                                                className='form-input-2'
+                                                label="Username"
+                                                value={this.state.phone}
+                                                onChange={(e) => this.handlePhone(e)}
+                                            />
+                                        </FormControl>
+                                        <FormControl className='form-input'>
+                                            <InputLabel className='hidden-text'>Password</InputLabel>
+                                            <OutlinedInput
+                                                className='form-input-2'
+                                                label="Password"
+                                                value={this.state.password}
+                                                onChange={(e) => this.handlePassWord(e)}
+                                                type={this.state.showPassword ? 'text' : 'password'}
+                                                endAdornment={
+                                                    <InputAdornment position="end">
+                                                        <IconButton onClick={() => this.toggleShowPassword()}
+                                                                    edge="end">
+                                                            {this.state.showPassword ? <Visibility/> : <VisibilityOff/>}
+                                                        </IconButton>
+                                                    </InputAdornment>
+                                                }
+                                            />
+                                        </FormControl>
+                                        <FormControl className='form-input'>
+                                            <InputLabel className='hidden-text'>ConfirmPassword</InputLabel>
+                                            <OutlinedInput
+                                                className='form-input-2'
+                                                label="Password"
+                                                value={this.state.confirmPassword}
+                                                onChange={(e) => this.handleConfirmPassWord(e)}
+                                                type={this.state.showConfirmPassword ? 'text' : 'password'}
+                                                endAdornment={
+                                                    <InputAdornment position="end">
+                                                        <IconButton onClick={() => this.toggleShowConfirmPassword()}
+                                                                    edge="end">
+                                                            {this.state.showConfirmPassword ? <Visibility/> :
+                                                                <VisibilityOff/>}
+                                                        </IconButton>
+                                                    </InputAdornment>
+                                                }
+                                            />
+                                        </FormControl>
+                                        <Button
+                                            className='btn-login'
+                                            onClick={() => this.register()}
+                                        >
+                                            Register</Button>
+                                        <div className='register-login1'>
+                                            <p>Already have an account?&nbsp;
+                                                <span onClick={() => this.handleLogin()}
+                                                      className='register-login2'>Log in</span>
+                                            </p>
                                         </div>
                                     </div>
-                                </div>
-                            </div>
+                                </Container>
+                            }
+                            {this.state.isForgotPassWord &&
+                                <Container maxWidth="sm" className='container-login'>
+                                    <div className='form'>
+                                        <img src={iconForgotPass} alt="icon login"/>
+                                        <div className="title">Forgot PassWord</div>
+                                        <FormControl className='form-input'>
+                                            <InputLabel className='hidden-text'>Username</InputLabel>
+                                            <OutlinedInput
+                                                className='form-input-2'
+                                                label="Username"
+                                                value={this.state.username}
+                                                onChange={(e) => this.handleUserName(e)}
+                                            />
+                                        </FormControl>
+                                        {this.state.sendMailSuccess &&
+                                            <>
+                                                <FormControl className='form-input'>
+                                                    <InputLabel className='hidden-text'>Code</InputLabel>
+                                                    <OutlinedInput
+                                                        className='form-input-2'
+                                                        label="Username"
+                                                        value={this.state.code}
+                                                        onChange={(e) => this.handleCode(e)}
+                                                    />
+                                                </FormControl>
+                                                <FormControl className='form-input'>
+                                                    <InputLabel className='hidden-text'>Password</InputLabel>
+                                                    <OutlinedInput
+                                                        className='form-input-2'
+                                                        label="Password"
+                                                        value={this.state.password}
+                                                        onChange={(e) => this.handlePassWord(e)}
+                                                        type={this.state.showPassword ? 'text' : 'password'}
+                                                        endAdornment={
+                                                            <InputAdornment position="end">
+                                                                <IconButton onClick={() => this.toggleShowPassword()}
+                                                                            edge="end">
+                                                                    {this.state.showPassword ? <Visibility/> :
+                                                                        <VisibilityOff/>}
+                                                                </IconButton>
+                                                            </InputAdornment>
+                                                        }
+                                                    />
+                                                </FormControl>
+                                                <FormControl className='form-input'>
+                                                    <InputLabel className='hidden-text'>ConfirmPassword</InputLabel>
+                                                    <OutlinedInput
+                                                        className='form-input-2'
+                                                        label="Password"
+                                                        value={this.state.confirmPassword}
+                                                        onChange={(e) => this.handleConfirmPassWord(e)}
+                                                        type={this.state.showConfirmPassword ? 'text' : 'password'}
+                                                        endAdornment={
+                                                            <InputAdornment position="end">
+                                                                <IconButton
+                                                                    onClick={() => this.toggleShowConfirmPassword()}
+                                                                    edge="end">
+                                                                    {this.state.showConfirmPassword ? <Visibility/> :
+                                                                        <VisibilityOff/>}
+                                                                </IconButton>
+                                                            </InputAdornment>
+                                                        }
+                                                    />
+                                                </FormControl>
+                                            </>
+                                        }
+                                        {!this.state.sendMailSuccess &&
+                                            <Button
+                                                className='btn-login'
+                                                onClick={() => this.sendMail()}
+                                            >
+                                                Continue</Button>
+                                        }
+                                        {this.state.sendMailSuccess &&
+                                            <Button
+                                                className='btn-login'
+                                                onClick={() => this.forgot()}
+                                            >
+                                                Confirm</Button>
+                                        }
+                                    </div>
+                                </Container>
+                            }
                         </div>
-                    </Container>
-                }
-                {this.state.isRegister &&
-                    <Container maxWidth="sm" className='container-login'>
-                        <div className='form'>
-                            <img src={iconRegister} alt="icon login"/>
-                            <div className="title">Register</div>
-                            <FormControl className='form-input'>
-                                <InputLabel className='hidden-text'>FullName</InputLabel>
-                                <OutlinedInput
-                                    className='form-input-2'
-                                    label="FullName"
-                                    value={this.state.fullName}
-                                    onChange={(e) => this.handleFullName(e)}
-                                />
-                            </FormControl>
-                            <FormControl className='form-input'>
-                                <InputLabel className='hidden-text'>Username</InputLabel>
-                                <OutlinedInput
-                                    className='form-input-2'
-                                    label="Username"
-                                    value={this.state.username}
-                                    onChange={(e) => this.handleUserName(e)}
-                                />
-                            </FormControl>
-                            <FormControl className='form-input'>
-                                <InputLabel className='hidden-text'>Email</InputLabel>
-                                <OutlinedInput
-                                    className='form-input-2'
-                                    label="Username"
-                                    value={this.state.email}
-                                    onChange={(e) => this.handleEmail(e)}
-                                />
-                            </FormControl>
-                            <FormControl className='form-input'>
-                                <InputLabel className='hidden-text'>Phone</InputLabel>
-                                <OutlinedInput
-                                    className='form-input-2'
-                                    label="Username"
-                                    value={this.state.phone}
-                                    onChange={(e) => this.handlePhone(e)}
-                                />
-                            </FormControl>
-                            <FormControl className='form-input'>
-                                <InputLabel className='hidden-text'>Password</InputLabel>
-                                <OutlinedInput
-                                    className='form-input-2'
-                                    label="Password"
-                                    value={this.state.password}
-                                    onChange={(e) => this.handlePassWord(e)}
-                                    type={this.state.showPassword ? 'text' : 'password'}
-                                    endAdornment={
-                                        <InputAdornment position="end">
-                                            <IconButton onClick={() => this.toggleShowPassword()} edge="end">
-                                                {this.state.showPassword ? <Visibility/> : <VisibilityOff/>}
-                                            </IconButton>
-                                        </InputAdornment>
-                                    }
-                                />
-                            </FormControl>
-                            <FormControl className='form-input'>
-                                <InputLabel className='hidden-text'>ConfirmPassword</InputLabel>
-                                <OutlinedInput
-                                    className='form-input-2'
-                                    label="Password"
-                                    value={this.state.confirmPassword}
-                                    onChange={(e) => this.handleConfirmPassWord(e)}
-                                    type={this.state.showConfirmPassword ? 'text' : 'password'}
-                                    endAdornment={
-                                        <InputAdornment position="end">
-                                            <IconButton onClick={() => this.toggleShowConfirmPassword()} edge="end">
-                                                {this.state.showConfirmPassword ? <Visibility/> : <VisibilityOff/>}
-                                            </IconButton>
-                                        </InputAdornment>
-                                    }
-                                />
-                            </FormControl>
-                            <Button
-                                className='btn-login'
-                                onClick={() => this.register()}
-                            >
-                                Register</Button>
-                            <div className='register-login1'>
-                                <p>Already have an account?&nbsp;
-                                    <span onClick={() => this.handleLogin()}
-                                          className='register-login2'>Log in</span>
-                                </p>
-                            </div>
-                        </div>
-                    </Container>
-                }
-                {this.state.isForgotPassWord &&
-                    <Container maxWidth="sm" className='container-login'>
-                        <div className='form'>
-                            <img src={iconForgotPass} alt="icon login"/>
-                            <div className="title">Forgot PassWord</div>
-                            <FormControl className='form-input'>
-                                <InputLabel className='hidden-text'>Username</InputLabel>
-                                <OutlinedInput
-                                    className='form-input-2'
-                                    label="Username"
-                                    value={this.state.username}
-                                    onChange={(e) => this.handleUserName(e)}
-                                />
-                            </FormControl>
-                            {this.state.sendMailSuccess &&
-                                <>
+                    </> :
+                    <>
+                        <div className="content">
+                            <Container maxWidth="sm" className='container-login'>
+                                <div className='form'>
+                                    <img src={iconChangePass} alt="icon login"/>
                                     <FormControl className='form-input'>
-                                        <InputLabel className='hidden-text'>Code</InputLabel>
+                                        <InputLabel className='hidden-text'>Old Password</InputLabel>
                                         <OutlinedInput
                                             className='form-input-2'
-                                            label="Username"
-                                            value={this.state.code}
-                                            onChange={(e) => this.handleCode(e)}
+                                            label="Password"
+                                            value={this.state.oldPassword}
+                                            onChange={(e) => this.handleOldPassWord(e)}
+                                            type={this.state.showOldPassword ? 'text' : 'password'}
+                                            endAdornment={
+                                                <InputAdornment position="end">
+                                                    <IconButton onClick={() => this.toggleShowOldPassword()}
+                                                                edge="end">
+                                                        {this.state.showOldPassword ? <Visibility/> :
+                                                            <VisibilityOff/>}
+                                                    </IconButton>
+                                                </InputAdornment>
+                                            }
                                         />
                                     </FormControl>
                                     <FormControl className='form-input'>
-                                        <InputLabel className='hidden-text'>Password</InputLabel>
+                                        <InputLabel className='hidden-text'>New Password</InputLabel>
                                         <OutlinedInput
                                             className='form-input-2'
                                             label="Password"
@@ -399,8 +530,10 @@ export class Login extends Component {
                                             type={this.state.showPassword ? 'text' : 'password'}
                                             endAdornment={
                                                 <InputAdornment position="end">
-                                                    <IconButton onClick={() => this.toggleShowPassword()} edge="end">
-                                                        {this.state.showPassword ? <Visibility/> : <VisibilityOff/>}
+                                                    <IconButton onClick={() => this.toggleShowPassword()}
+                                                                edge="end">
+                                                        {this.state.showPassword ? <Visibility/> :
+                                                            <VisibilityOff/>}
                                                     </IconButton>
                                                 </InputAdornment>
                                             }
@@ -416,8 +549,9 @@ export class Login extends Component {
                                             type={this.state.showConfirmPassword ? 'text' : 'password'}
                                             endAdornment={
                                                 <InputAdornment position="end">
-                                                    <IconButton onClick={() => this.toggleShowConfirmPassword()}
-                                                                edge="end">
+                                                    <IconButton
+                                                        onClick={() => this.toggleShowConfirmPassword()}
+                                                        edge="end">
                                                         {this.state.showConfirmPassword ? <Visibility/> :
                                                             <VisibilityOff/>}
                                                     </IconButton>
@@ -425,27 +559,17 @@ export class Login extends Component {
                                             }
                                         />
                                     </FormControl>
-                                </>
-                            }
-                            {!this.state.sendMailSuccess &&
-                                <Button
-                                    className='btn-login'
-                                    onClick={() => this.sendMail()}
-                                >
-                                    Continue</Button>
-                            }
-                            {this.state.sendMailSuccess &&
-                                <Button
-                                    className='btn-login'
-                                    onClick={() => this.forgot()}
-                                >
-                                    Confirm</Button>
-                            }
+                                    <Button
+                                            className='btn-login'
+                                            onClick={() => this.change()}
+                                        >
+                                            Confirm</Button>
+                                </div>
+                            </Container>
                         </div>
-                    </Container>
+                    </>
                 }
-            </div>
-        </>);
+            </>);
     }
 }
 

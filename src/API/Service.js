@@ -14,6 +14,10 @@ let service = {
         let url = "api/auth/reset-pass";
         return method.postForm(params, url);
     },
+    change: params => {
+        let url = "api/auth/change-password";
+        return method.postForm(params, url);
+    },
     sendMail: (params, username) => {
         let url = "api/auth/forgot-mail/user/" + username;
         return method.postForm(params, url);

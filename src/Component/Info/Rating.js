@@ -19,29 +19,52 @@ const StarRating = (props) => {
             "ratingValue": value,
             "ratingContent": "user " + user + " đánh giá: " + value + " sao"
         }).then((data) => {
-            console.log(data.code)
-        }).catch((data) => {
+            console.log(data)
+        }).catch(async (data) => {
             if (data === "Rating already exist!") {
-                service.getRating(props.main).then(
-                    (data) => {
-                        data && data.map((value) => {
-                            console.log(value.username)
+                try {
+                    const data = await service.getRating(props.main);
+
+                    if (data && data.length > 0) {
+                        for (const value of data) {
                             if (value.createdByInfo && value.createdByInfo.username === user) {
                                 idConst = value.id;
-                                setId(value.id)
+                                await setId(value.id);
+                                console.log(value.id);
+                                break; // Thoát khỏi vòng lặp nếu đã tìm thấy id
                             }
-                        })
+                        }
                     }
-                )
-                service.updateRating(idConst, {
-                    "ratingValue": value,
-                    "ratingContent": "user " + user + " đánh giá: " + value + " sao"
-                }).then((data) => {
-                    console.log(data)
-                })
+                    if (idConst) {
+                        const updateData = {
+                            "ratingValue": value,
+                            "ratingContent": "user " + user + " đánh giá: " + value + " sao"
+                        };
+
+                        const response = await service.updateRating(idConst, updateData);
+                        console.log(response);
+                    }
+                } catch (error) {
+                    console.error(error);
+                }
             }
         })
-        setRatingUser(value);
+        await service.getRating(props.main).then(
+            (data) => {
+                let ratingValue = 0;
+                data && data.map((value) => {
+                    ratingValue += value.ratingValue;
+                    if (value.createdByInfo && value.createdByInfo.username === user) {
+                        setRatingUser(value.ratingValue)
+                    }
+                })
+                if (ratingValue !== 0) {
+                    setRatingMain((ratingValue / data.length).toFixed(1))
+                }
+            }
+        )
+
+        await setRatingUser(value);
     };
 
     useEffect(() => {
@@ -58,7 +81,7 @@ const StarRating = (props) => {
                         }
                     })
                     if (ratingValue !== 0) {
-                        setRatingMain((ratingValue/data.length).toFixed(1))
+                        setRatingMain((ratingValue / data.length).toFixed(1))
                     }
                 }
             )
@@ -68,12 +91,12 @@ const StarRating = (props) => {
 
     return (
         <div className="rating-post-info">
-            <p style={{marginRight:"1rem"}}>Rating: {ratingMain}/5</p>(
+            <p style={{marginRight: "1rem"}}>Rating: {ratingMain}/5</p>(
             {[1, 2, 3, 4, 5].map((value) => (
                 <span className="rating-start"
-                    key={value}
-                    onClick={() => handleClick(value)}
-                    style={{cursor: 'pointer'}}
+                      key={value}
+                      onClick={() => handleClick(value)}
+                      style={{cursor: 'pointer'}}
                 >
           {value <= ratingUser ? '★' : '☆'}
         </span>

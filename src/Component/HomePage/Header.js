@@ -195,7 +195,7 @@ export default class Header extends Component {
                                     <div className="items-app-bar2">
                                         <MenuItem className="item-app-bar3" onClick={() => this.handleMenuItemClick("Đăng bài")}>
                                             Cập nhật thông tin</MenuItem>
-                                        <MenuItem className="item-app-bar3" onClick={() => this.handleClickItem("Quản lý")}>
+                                        <MenuItem className="item-app-bar3" onClick={() => this.handleClickItem("/change-password")}>
                                             Đổi mật khẩu</MenuItem>
                                         <MenuItem className="item-app-bar3" onClick={() => this.handleLogout()}>
                                             Đăng xuất</MenuItem>
