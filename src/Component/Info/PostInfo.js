@@ -13,6 +13,7 @@ import ShowComment from "./ShowComment";
 import SockJS from "sockjs-client";
 import Stomp from 'stompjs';
 import config from "../../API/Config";
+import Rating from "./Rating";
 
 export default class PostInfo extends Component {
 
@@ -202,9 +203,12 @@ export default class PostInfo extends Component {
                             <div className="show-info-user-3">
                                 <img className="show-info-user-4" src={iconAccount} alt=""/>
                                 <div className="show-info-user-56">
-                                    <div className="show-info-user-5">admin</div>
-                                    <div className="show-info-user-6">0912370486</div>
+                                    <div className="show-info-user-5">{this.state.info.createdBy}</div>
+                                    <div className="show-info-user-6"></div>
                                 </div>
+                            </div>
+                            <div>
+                                <Rating main={this.state.info.createdBy}></Rating>
                             </div>
                         </div>
 

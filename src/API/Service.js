@@ -70,6 +70,14 @@ let service = {
         let url = "api/rating/user/" + params;
         return method.get(url);
     },
+    rating: (username, params) => {
+        let url = "api/rating/user/" + username;
+        return method.post(params, url)
+    },
+    updateRating: (id, params) => {
+        let url = "api/rating/" + id;
+        return method.put(params, url)
+    },
     comment: (id, params) => {
         let url = "api/comment/post/" + id;
         return method.post(params, url)

@@ -16,6 +16,9 @@ const method = {
             headers
         });
         let rs = await response.json();
+        if (rs.code && rs.code === "UNAUTHORIZED") {
+            return logoutUser();
+        }
         switch (response.status) {
             case 200: return rs
             case 401: return logoutUser()
@@ -42,11 +45,14 @@ const method = {
             });
 
             let rs = await response.json();
+            if (rs.code && rs.code === "UNAUTHORIZED") {
+                return logoutUser();
+            }
             switch (response.status) {
                 case 200: return rs
                 case 401: return logoutUser()
                 default: {
-                    console.log('err')
+                    console.log(rs)
                     if (rs.message) {
                         throw (rs.message)
                     }
@@ -77,6 +83,9 @@ const method = {
                 headers,
                 body: JSON.stringify(data),
             });
+            if (response.code && response.code === "UNAUTHORIZED") {
+                return logoutUser();
+            }
             switch (response.status) {
                 case 200: return response
                 case 401: return logoutUser()
@@ -175,6 +184,9 @@ const method = {
                 body: JSON.stringify(data),
             });
             let rs = await response.json();
+            if (rs.code && rs.code === "UNAUTHORIZED") {
+                return logoutUser();
+            }
             switch (response.status) {
                 case 200: return rs
                 case 401: return logoutUser()
@@ -200,7 +212,7 @@ const method = {
     },
 }
 function logoutUser() {
-    alert('Wrong user or password')
+    alert('Phiên đăng nhập đã hết hạn')
     localStorage.clear('USER')
     window.location.href = "/";
 }
