@@ -57,7 +57,9 @@ const StarRating = (props) => {
                             setRatingUser(value.ratingValue)
                         }
                     })
-                    setRatingMain((ratingValue/data.length).toFixed(1))
+                    if (ratingValue !== 0) {
+                        setRatingMain((ratingValue/data.length).toFixed(1))
+                    }
                 }
             )
         }
