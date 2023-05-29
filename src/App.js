@@ -9,6 +9,7 @@ import {LoginNotFound} from "./Component/Login/LoginNotFound";
 import PostInfo from "./Component/Info/PostInfo";
 import {Footer} from "./Component/HomePage/Footer";
 import ClickChooseLocation from "./Component/Map/ClickChooseLocation";
+import ManagePostInfo from "./Component/Info/ManagePostInfo";
 
 export default class HouseManagement extends Component {
     constructor(props) {
@@ -88,6 +89,15 @@ export default class HouseManagement extends Component {
                         <Route path="/change-password"
                                element={
                                    <Login changepassword={true}/>
+                               }/>
+                        <Route path="/manage-house"
+                               element={
+                                   <>
+                                       <Header loggedInUserObj={this.state.loggedInUserObj}/>
+                                       <ManagePostInfo></ManagePostInfo>
+                                       <Footer/>
+                                   </>
+
                                }/>
                     </Routes>
                 </BrowserRouter>

@@ -1,0 +1,47 @@
+.footer-main {
+    display: flex;
+    justify-content: space-between;
+    align-items: start;
+    padding: 100px 5rem 0 5rem;
+}
+
+.footer-abc {
+    font-weight: 400;
+    color: rgb(97, 101, 126);
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+    align-items: start;
+    height: 250px;
+}
+
+.footer-abc2 {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    height: 100%;
+    padding: 0 0 5rem 0;
+    align-items: start;
+}
+
+.img-footer {
+    width: 50px;
+    height: auto;
+}
+
+.main-footer {
+    color: #ff7900;
+    display: flex;
+    font-size: 25px;
+    font-weight: 600;
+    align-items: center;
+}
+
+.footer-click:hover {
+    color: #FF9500;
+    cursor: pointer;
+}
+
+.footer-click {
+    font-weight: 500;
+}

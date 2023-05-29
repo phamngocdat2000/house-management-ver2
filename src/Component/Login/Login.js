@@ -259,9 +259,9 @@ export class Login extends Component {
                                 <Container maxWidth="sm" className='container-login'>
                                     <div className='form'>
                                         <img src={iconLogin} alt="icon login"/>
-                                        <div className="title">Have an account?</div>
+                                        <div className="title">Đã có tài khoản?</div>
                                         <FormControl className='form-input'>
-                                            <InputLabel className='hidden-text'>Username</InputLabel>
+                                            <InputLabel className='hidden-text'>Tên đăng nhập</InputLabel>
                                             <OutlinedInput
                                                 className='form-input-2'
                                                 label="Username"
@@ -270,7 +270,7 @@ export class Login extends Component {
                                             />
                                         </FormControl>
                                         <FormControl className='form-input'>
-                                            <InputLabel className='hidden-text'>Password</InputLabel>
+                                            <InputLabel className='hidden-text'>Mật khẩu</InputLabel>
                                             <OutlinedInput
                                                 className='form-input-2'
                                                 label="Password"
@@ -289,7 +289,7 @@ export class Login extends Component {
                                         </FormControl>
                                         <div onClick={() => this.handleForgotPassWord()}
                                              className='forgot-password-login'>
-                                            <p>Forgot your password?</p>
+                                            <p>Quên mật khẩu?</p>
                                         </div>
                                         <Button
                                             className='btn-login'
@@ -297,9 +297,9 @@ export class Login extends Component {
                                         >
                                             Login</Button>
                                         <div className='register-login1'>
-                                            <p>Don't have an account yet?&nbsp;
+                                            <p>Chưa có tài khoản?&nbsp;
                                                 <span onClick={() => this.handleRegister()}
-                                                      className='register-login2'>Register now</span>
+                                                      className='register-login2'>Đăng ký</span>
                                             </p>
                                         </div>
                                         <div className="auth-login-sso">
@@ -323,9 +323,9 @@ export class Login extends Component {
                                 <Container maxWidth="sm" className='container-login'>
                                     <div className='form'>
                                         <img src={iconRegister} alt="icon login"/>
-                                        <div className="title">Register</div>
+                                        <div className="title">Đăng ký</div>
                                         <FormControl className='form-input'>
-                                            <InputLabel className='hidden-text'>FullName</InputLabel>
+                                            <InputLabel className='hidden-text'>Tên đầy đủ</InputLabel>
                                             <OutlinedInput
                                                 className='form-input-2'
                                                 label="FullName"
@@ -334,7 +334,7 @@ export class Login extends Component {
                                             />
                                         </FormControl>
                                         <FormControl className='form-input'>
-                                            <InputLabel className='hidden-text'>Username</InputLabel>
+                                            <InputLabel className='hidden-text'>Tên đăng nhập</InputLabel>
                                             <OutlinedInput
                                                 className='form-input-2'
                                                 label="Username"
@@ -352,7 +352,7 @@ export class Login extends Component {
                                             />
                                         </FormControl>
                                         <FormControl className='form-input'>
-                                            <InputLabel className='hidden-text'>Phone</InputLabel>
+                                            <InputLabel className='hidden-text'>Số điện thoại</InputLabel>
                                             <OutlinedInput
                                                 className='form-input-2'
                                                 label="Username"
@@ -361,7 +361,7 @@ export class Login extends Component {
                                             />
                                         </FormControl>
                                         <FormControl className='form-input'>
-                                            <InputLabel className='hidden-text'>Password</InputLabel>
+                                            <InputLabel className='hidden-text'>Mật khẩu</InputLabel>
                                             <OutlinedInput
                                                 className='form-input-2'
                                                 label="Password"
@@ -379,7 +379,7 @@ export class Login extends Component {
                                             />
                                         </FormControl>
                                         <FormControl className='form-input'>
-                                            <InputLabel className='hidden-text'>ConfirmPassword</InputLabel>
+                                            <InputLabel className='hidden-text'>Nhập lại mật khẩu</InputLabel>
                                             <OutlinedInput
                                                 className='form-input-2'
                                                 label="Password"
@@ -401,11 +401,11 @@ export class Login extends Component {
                                             className='btn-login'
                                             onClick={() => this.register()}
                                         >
-                                            Register</Button>
+                                            Đăng ký</Button>
                                         <div className='register-login1'>
-                                            <p>Already have an account?&nbsp;
+                                            <p>Đã có tài khoản?&nbsp;
                                                 <span onClick={() => this.handleLogin()}
-                                                      className='register-login2'>Log in</span>
+                                                      className='register-login2'>Đăng nhập</span>
                                             </p>
                                         </div>
                                     </div>
@@ -415,9 +415,9 @@ export class Login extends Component {
                                 <Container maxWidth="sm" className='container-login'>
                                     <div className='form'>
                                         <img src={iconForgotPass} alt="icon login"/>
-                                        <div className="title">Forgot PassWord</div>
+                                        <div className="title">Quên mật khẩu</div>
                                         <FormControl className='form-input'>
-                                            <InputLabel className='hidden-text'>Username</InputLabel>
+                                            <InputLabel className='hidden-text'>Tên đăng nhập</InputLabel>
                                             <OutlinedInput
                                                 className='form-input-2'
                                                 label="Username"
@@ -437,7 +437,7 @@ export class Login extends Component {
                                                     />
                                                 </FormControl>
                                                 <FormControl className='form-input'>
-                                                    <InputLabel className='hidden-text'>Password</InputLabel>
+                                                    <InputLabel className='hidden-text'>Mật khẩu</InputLabel>
                                                     <OutlinedInput
                                                         className='form-input-2'
                                                         label="Password"
@@ -456,7 +456,7 @@ export class Login extends Component {
                                                     />
                                                 </FormControl>
                                                 <FormControl className='form-input'>
-                                                    <InputLabel className='hidden-text'>ConfirmPassword</InputLabel>
+                                                    <InputLabel className='hidden-text'>Nhập lại mật khẩu</InputLabel>
                                                     <OutlinedInput
                                                         className='form-input-2'
                                                         label="Password"
@@ -482,14 +482,14 @@ export class Login extends Component {
                                                 className='btn-login'
                                                 onClick={() => this.sendMail()}
                                             >
-                                                Continue</Button>
+                                                Tiếp tục</Button>
                                         }
                                         {this.state.sendMailSuccess &&
                                             <Button
                                                 className='btn-login'
                                                 onClick={() => this.forgot()}
                                             >
-                                                Confirm</Button>
+                                                Xác nhận</Button>
                                         }
                                     </div>
                                 </Container>
@@ -502,7 +502,7 @@ export class Login extends Component {
                                 <div className='form'>
                                     <img src={iconChangePass} alt="icon login"/>
                                     <FormControl className='form-input'>
-                                        <InputLabel className='hidden-text'>Old Password</InputLabel>
+                                        <InputLabel className='hidden-text'>Mật khẩu cũ</InputLabel>
                                         <OutlinedInput
                                             className='form-input-2'
                                             label="Password"
@@ -521,7 +521,7 @@ export class Login extends Component {
                                         />
                                     </FormControl>
                                     <FormControl className='form-input'>
-                                        <InputLabel className='hidden-text'>New Password</InputLabel>
+                                        <InputLabel className='hidden-text'>Mật khẩu mới</InputLabel>
                                         <OutlinedInput
                                             className='form-input-2'
                                             label="Password"
@@ -540,7 +540,7 @@ export class Login extends Component {
                                         />
                                     </FormControl>
                                     <FormControl className='form-input'>
-                                        <InputLabel className='hidden-text'>ConfirmPassword</InputLabel>
+                                        <InputLabel className='hidden-text'>Nhập lại mật khẩu</InputLabel>
                                         <OutlinedInput
                                             className='form-input-2'
                                             label="Password"
@@ -563,7 +563,7 @@ export class Login extends Component {
                                             className='btn-login'
                                             onClick={() => this.change()}
                                         >
-                                            Confirm</Button>
+                                            Xác nhận</Button>
                                 </div>
                             </Container>
                         </div>

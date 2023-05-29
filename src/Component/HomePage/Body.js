@@ -144,8 +144,8 @@ export default class Body extends Component {
         return (
             <div className="main-body">
                 <div className="body1">
-                    <div className="body-text1">
-                        <div>Nền tảng</div>
+                    <div id="body-text1" className="body-text1">
+                        <div id="body-text2">Nền tảng</div>
                         <div style={{marginTop: "1rem"}}>tra cứu nhà trọ khu vực Hà Nội</div>
                         <div className="all-button-body1">
                             <Button onClick={() => this.handleChooseType("APARTMENT")}

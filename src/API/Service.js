@@ -93,7 +93,15 @@ let service = {
     deletePost: (id) => {
         let url = "api/post/" + id;
         return method.delete(url)
-    }
+    },
+    getPostByUsername: username => {
+        let url = "api/posts/user/" + username;
+        return method.get(url);
+    },
+    getUser: username => {
+        let url = "api/user/" + username;
+        return method.get(url);
+    },
 };
 
 export default service;

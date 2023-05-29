@@ -59,6 +59,7 @@ export default class Header extends Component {
         if (menuItem === "Đăng bài") {
             this.setState({isPopupOpen: true}); // Đặt giá trị state để mở Popup
         } else if (menuItem === "Quản lý") {
+            window.location.href = "/manage-house"
             // Xử lý hành động cho "Quản lý" ở đây
         }
     };
@@ -88,7 +89,7 @@ export default class Header extends Component {
 
     render() {
         return (
-            <div className="main-header">
+            <div id="main-header" className="main-header">
                 <AppBar position="static" className="header-app-bar">
                     <div className="menu-bar">
                         <div className="logo-project">
@@ -102,7 +103,7 @@ export default class Header extends Component {
                             </a>
                         </div>
                         <div className="items">
-                            <button className="home" onClick={() => this.handleClickItem("/")}>Home</button>
+                            <button className="home" onClick={() => this.handleClickItem("/")}>Trang chủ</button>
                             {this.props.loggedInUserObj.username &&
                                 <div>
                                 <button
@@ -126,7 +127,7 @@ export default class Header extends Component {
                                     <div className="items-app-bar">
                                         <MenuItem className="item-app-bar" onClick={() => this.handleMenuItemClick("Đăng bài")}>
                                             Đăng bài</MenuItem>
-                                        <MenuItem className="item-app-bar" onClick={() => this.handleClickItem("Quản lý")}>
+                                        <MenuItem className="item-app-bar" onClick={() => this.handleMenuItemClick("Quản lý")}>
                                             Quản lý</MenuItem>
                                     </div>
                                 </Menu>
@@ -193,7 +194,7 @@ export default class Header extends Component {
                                     MenuListProps={{onMouseLeave: () => this.handleCloseProfile()}}
                                 >
                                     <div className="items-app-bar2">
-                                        <MenuItem className="item-app-bar3" onClick={() => this.handleMenuItemClick("Đăng bài")}>
+                                        <MenuItem className="item-app-bar3">
                                             Cập nhật thông tin</MenuItem>
                                         <MenuItem className="item-app-bar3" onClick={() => this.handleClickItem("/change-password")}>
                                             Đổi mật khẩu</MenuItem>
