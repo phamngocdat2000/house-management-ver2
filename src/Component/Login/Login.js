@@ -93,7 +93,7 @@ export class Login extends Component {
 
     register = async () => {
         if (this.state.password !== this.state.confirmPassword) {
-            alert('Password does not match');
+            alert('Mật khẩu không khớp');
             return;
         }
         try {
@@ -105,7 +105,7 @@ export class Login extends Component {
                 phone: this.state.phone
             })
             console.log(registerResult);
-            alert("Register Success");
+            alert("Đăng ký thành công");
             this.setState({isLogin: true})
         } catch (error) {
             alert(error)
@@ -114,7 +114,7 @@ export class Login extends Component {
 
     forgot = async () => {
         if (this.state.password !== this.state.confirmPassword) {
-            alert('Password does not match');
+            alert('Mật khẩu không khớp');
             return;
         }
         try {
@@ -124,7 +124,7 @@ export class Login extends Component {
                 newPassword: this.state.password,
             })
             console.log(forgotResult);
-            alert("Change PassWord Success");
+            alert("Đổi mật khẩu thành công");
             this.setState({isLogin: true})
         } catch (error) {
             alert(error)
@@ -133,7 +133,7 @@ export class Login extends Component {
 
     change = async () => {
         if (this.state.password !== this.state.confirmPassword) {
-            alert('Password does not match');
+            alert('Mật khẩu không khớp');
             return;
         }
         console.log(auth.getUserInfo().username)
@@ -145,12 +145,12 @@ export class Login extends Component {
             })
             console.log(changeResult);
             if (changeResult.status === 200) {
-                alert("Change PassWord Success");
+                alert("Đổi mật khẩu thành công");
                 window.location.href = "/"
             }
             this.setState({isLogin: true})
         } catch (error) {
-            if (error === 'Invalid username or password!') {
+            if (error === 'Tên đăng nhập hoặc mật khẩu không đúng!') {
                 alert("Mật khẩu cũ chưa đúng!")
             } else {
                 alert(error)
@@ -160,13 +160,13 @@ export class Login extends Component {
 
     sendMail = async () => {
         if (!this.state.username) {
-            alert('Username not null');
+            alert('Tên đăng nhập không được để trống');
             return;
         }
         try {
             let sendMailResult = await service.sendMail({}, this.state.username)
             console.log(sendMailResult);
-            alert("Send Mail Success");
+            alert("Đã gửi mã code tới email, vui lòng kiểm tra email");
             this.setState({sendMailSuccess: true})
         } catch (error) {
             alert(error)
