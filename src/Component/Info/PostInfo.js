@@ -14,6 +14,7 @@ import SockJS from "sockjs-client";
 import Stomp from 'stompjs';
 import config from "../../API/Config";
 import Rating from "./Rating";
+import auth from "../../API/AuthService";
 
 export default class PostInfo extends Component {
 
@@ -45,7 +46,8 @@ export default class PostInfo extends Component {
             },
             comment: null,
             listComment: [],
-            messages: []
+            messages: [],
+            user: {}
         };
     }
 
@@ -82,6 +84,11 @@ export default class PostInfo extends Component {
                 // Xử lý dữ liệu nhận được từ server và cập nhật trong ứng dụng của bạn
             });
         });
+        console.log(this.state.info)
+        await service.getUser(this.state.info.createdBy).then((data) => {
+            this.setState({user: data})
+        })
+
     }
 
     componentWillUnmount() {
@@ -204,7 +211,8 @@ export default class PostInfo extends Component {
                                 <img className="show-info-user-4" src={iconAccount} alt=""/>
                                 <div className="show-info-user-56">
                                     <div className="show-info-user-5">{this.state.info.createdBy}</div>
-                                    <div className="show-info-user-6"></div>
+                                    <div className="show-info-user-6">{this.state.user.email}</div>
+                                    <div className="show-info-user-6">{this.state.user.phone}</div>
                                 </div>
                             </div>
                             <div>
@@ -216,12 +224,14 @@ export default class PostInfo extends Component {
                             <div className="comment-title">
                                 Bình luận
                             </div>
-                            <div className="div-input-comment-main">
-                                <Input placeholder="Viết bình luận"
-                                       rootClassName="div-input-comment" value={this.state.comment}
-                                       onChange={event => this.handleComment(event.target.value)}
-                                       onKeyDown={(event) => this.handleSubmitComment(event)}></Input>
-                            </div>
+                            {auth.getUserInfo() &&
+                                <div className="div-input-comment-main">
+                                    <Input placeholder="Viết bình luận"
+                                           rootClassName="div-input-comment" value={this.state.comment}
+                                           onChange={event => this.handleComment(event.target.value)}
+                                           onKeyDown={(event) => this.handleSubmitComment(event)}></Input>
+                                </div>
+                            }
                             <div>
                                 {this.state.listComment && this.state.listComment
                                     .slice()

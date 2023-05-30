@@ -69,7 +69,7 @@ const StarRating = (props) => {
 
     useEffect(() => {
         let ratingValue = 0;
-        setUser(auth.getUserInfo().username)
+        setUser(auth.getUserInfo() && auth.getUserInfo().username)
         if (props.main) {
             setMain(props.main);
             service.getRating(props.main).then(
@@ -91,8 +91,10 @@ const StarRating = (props) => {
 
     return (
         <div className="rating-post-info">
-            <p style={{marginRight: "1rem"}}>Rating: {ratingMain}/5</p>(
-            {[1, 2, 3, 4, 5].map((value) => (
+            <p style={{marginRight: "1rem"}}>Rating: {ratingMain}/5</p>
+            {auth.getUserInfo() && "("
+            }
+            {auth.getUserInfo() && [1, 2, 3, 4, 5].map((value) => (
                 <span className="rating-start"
                       key={value}
                       onClick={() => handleClick(value)}
@@ -101,7 +103,9 @@ const StarRating = (props) => {
           {value <= ratingUser ? '★' : '☆'}
         </span>
             ))}
-            )</div>
+            {auth.getUserInfo() && "("
+            }
+        </div>
     );
 };
 

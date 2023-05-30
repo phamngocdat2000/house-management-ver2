@@ -9,7 +9,7 @@ function ShowComment(props) {
     console.log(props)
     return (
         <div className="show-comment-main">
-            {props.data.createdByInfo.fullName === auth.getUserInfo().fullName ?
+            {auth.getUserInfo() && props.data.createdByInfo.fullName === auth.getUserInfo().fullName ?
                 <div className="class-is-main">
                     <img className="show-comment-user-4" src={iconAccount} alt=""/>
                     <div className="show-info-user-comment-1">

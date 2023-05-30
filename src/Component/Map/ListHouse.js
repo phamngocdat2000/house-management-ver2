@@ -61,6 +61,7 @@ export default class ListHouse extends Component {
     }
 
     showHouseInfoV2 = async (id) => {
+        console.log(id)
         window.location.href = "/info/house?id=" + id;
     }
 
@@ -103,7 +104,7 @@ export default class ListHouse extends Component {
     }
 
     render() {
-        console.log(this.state.userInfo)
+        console.log(this.state.data.id)
         return (
             <>
                 <button
@@ -134,7 +135,7 @@ export default class ListHouse extends Component {
                                 <div className="rating" onClick={() => this.showHouseInfoV2(this.state.data.id)}>
                                     Xem chi tiết
                                 </div>
-                                {this.state.userInfo.username === this.state.data.createdBy &&
+                                {this.state.userInfo && this.state.userInfo.username === this.state.data.createdBy &&
                                     <>
                                         <div className="rating" onClick={this.editPost}>
                                             Chỉnh sửa
@@ -158,7 +159,7 @@ export default class ListHouse extends Component {
                                         </div>
                                     </>
                                 }
-                                {(this.state.userInfo.username === this.state.data.createdBy || this.state.userInfo.username === 'admin') &&
+                                {this.state.userInfo && (this.state.userInfo.username === this.state.data.createdBy || this.state.userInfo.username === 'admin') &&
                                     <div className="rating" onClick={() => this.deletePost(this.state.data.id)}>
                                         Xoá
                                     </div>
