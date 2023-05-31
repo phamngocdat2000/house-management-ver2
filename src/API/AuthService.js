@@ -14,7 +14,12 @@ let auth = {
     getUserInfo: () => {
         return JSON.parse(localStorage.getItem("USER")) ? JSON.parse(localStorage.getItem("USER"))["userInfo"] : null;
     },
-
+    getVerify: () => {
+        return JSON.parse(localStorage.getItem("USER")) ? JSON.parse(localStorage.getItem("VERIFY")) : null;
+    },
+    getDataVerify: () => {
+        return JSON.parse(localStorage.getItem("USER")) ? JSON.parse(localStorage.getItem("DATA-VERIFY")) : null;
+    },
     setHistory: (newHistory) => {
         history = newHistory
     },

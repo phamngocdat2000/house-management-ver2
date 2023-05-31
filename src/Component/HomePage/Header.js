@@ -12,6 +12,7 @@ import PopupUser from "../Popup/PopupUser";
 import iconAccount from '../../Image/icon-account.png';
 import PopupPost from "../Popup/PopupPost";
 import ClickChooseLocation from "../Map/ClickChooseLocation";
+import auth from "../../API/AuthService";
 
 
 export default class Header extends Component {
@@ -66,8 +67,8 @@ export default class Header extends Component {
 
     handlePopupOpen = (popup, mapopen) => {
         // Cập nhật state của Header với giá trị address nhận được từ AddressInput
-        this.setState({ isPopupOpen: popup });
-        this.setState({ isMapOpen: mapopen});
+        this.setState({isPopupOpen: popup});
+        this.setState({isMapOpen: mapopen});
     }
 
     handleMapDone = (lat, lng, address) => {
@@ -88,6 +89,10 @@ export default class Header extends Component {
     }
 
     render() {
+        let show = false;
+        if (this.props.loggedInUserObj.username && auth.getVerify() && auth.getVerify().isVerified) {
+            show = true;
+        }
         return (
             <div id="main-header" className="main-header">
                 <AppBar position="static" className="header-app-bar">
@@ -104,52 +109,55 @@ export default class Header extends Component {
                         </div>
                         <div className="items">
                             <button className="home" onClick={() => this.handleClickItem("/")}>Trang chủ</button>
-                            {this.props.loggedInUserObj.username &&
+                            {show &&
                                 <div>
-                                <button
-                                    className="home"
-                                    style={{display: "flex"}}
-                                    aria-owns={this.state.anchorManagement ? "simple-menu" : undefined}
-                                    aria-haspopup="true"
-                                    onClick={(e) => this.handleHoverManagement(e)}
-                                >
-                                    <div>Đăng bài và quản lý</div>
-                                    <DownOutlined style={{marginLeft: "0.5rem", marginTop: "2px"}}/>
-                                </button>
-                                <Menu
-                                    id="simple-menu"
-                                    className="simple-menu"
-                                    anchorEl={this.state.anchorManagement}
-                                    open={Boolean(this.state.anchorManagement)}
-                                    onClose={() => this.handleCloseManagement()}
-                                    MenuListProps={{onMouseLeave: () => this.handleCloseManagement()}}
-                                >
-                                    <div className="items-app-bar">
-                                        <MenuItem className="item-app-bar" onClick={() => this.handleMenuItemClick("Đăng bài")}>
-                                            Đăng bài</MenuItem>
-                                        <MenuItem className="item-app-bar" onClick={() => this.handleMenuItemClick("Quản lý")}>
-                                            Quản lý</MenuItem>
+                                    <button
+                                        className="home"
+                                        style={{display: "flex"}}
+                                        aria-owns={this.state.anchorManagement ? "simple-menu" : undefined}
+                                        aria-haspopup="true"
+                                        onClick={(e) => this.handleHoverManagement(e)}
+                                    >
+                                        <div>Đăng bài và quản lý</div>
+                                        <DownOutlined style={{marginLeft: "0.5rem", marginTop: "2px"}}/>
+                                    </button>
+                                    <Menu
+                                        id="simple-menu"
+                                        className="simple-menu"
+                                        anchorEl={this.state.anchorManagement}
+                                        open={Boolean(this.state.anchorManagement)}
+                                        onClose={() => this.handleCloseManagement()}
+                                        MenuListProps={{onMouseLeave: () => this.handleCloseManagement()}}
+                                    >
+                                        <div className="items-app-bar">
+                                            <MenuItem className="item-app-bar"
+                                                      onClick={() => this.handleMenuItemClick("Đăng bài")}>
+                                                Đăng bài</MenuItem>
+                                            <MenuItem className="item-app-bar"
+                                                      onClick={() => this.handleMenuItemClick("Quản lý")}>
+                                                Quản lý</MenuItem>
+                                        </div>
+                                    </Menu>
+                                    <div className={this.state.isPopupOpen ? "djask-123-main" : "djask-123-main-none"}>
+                                        <div className="djask-123">
+                                            <div onClick={this.handlePopupClose} className="djask-124">x</div>
+                                            <PopupPost handleOpenPopup={this.handlePopupOpen}
+                                                       lat={this.state.lat}
+                                                       lng={this.state.lng}
+                                                       address={this.state.address}
+                                            />
+                                        </div>
                                     </div>
-                                </Menu>
-                                <div className={this.state.isPopupOpen ? "djask-123-main" : "djask-123-main-none"}>
-                                    <div className="djask-123">
-                                        <div onClick={this.handlePopupClose} className="djask-124">x</div>
-                                        <PopupPost handleOpenPopup={this.handlePopupOpen}
-                                                   lat={this.state.lat}
-                                                   lng={this.state.lng}
-                                                   address={this.state.address}
+                                    <div className={this.state.isMapOpen ? "djask-123-main" : "djask-123-main-none"}>
+                                        <ClickChooseLocation
+                                            handleOpenPopup={this.handlePopupOpen}
+                                            handleMapDone={this.handleMapDone}
                                         />
                                     </div>
-                                </div>
-                                <div className={this.state.isMapOpen ? "djask-123-main" : "djask-123-main-none"}>
-                                    <ClickChooseLocation
-                                        handleOpenPopup={this.handlePopupOpen}
-                                        handleMapDone={this.handleMapDone}
-                                    />
-                                </div>
-                            </div> }
+                                </div>}
                             <button className="home" onClick={() => this.handleClickItem("/location")}>Bản đồ</button>
-                            <button className="home" onClick={() => this.handleClickItem("/")}>Thông tin liên hệ</button>
+                            <button className="home" onClick={() => this.handleClickItem("/")}>Thông tin liên hệ
+                            </button>
                         </div>
                     </div>
                     <div className="profile">
@@ -164,54 +172,68 @@ export default class Header extends Component {
                             "display": "flex", "justifyContent": "center", "alignItems": "center", "padding": "31px 0"
                         }}
                         >
-                                <button
-                                    className="home-2"
-                                    style={{display: "flex"}}
-                                    aria-owns={this.state.anchorProfile ? "user-profile-menu" : undefined}
-                                    aria-haspopup="true"
-                                    onClick={(e) => this.handleHoverProfile(e)}
+                            <button
+                                className="home-2"
+                                style={{display: "flex"}}
+                                aria-owns={this.state.anchorProfile ? "user-profile-menu" : undefined}
+                                aria-haspopup="true"
+                                onClick={(e) => this.handleHoverProfile(e)}
+                            >
+                                <div
+                                    className="user-profile"
                                 >
+                                    <img src={this.props.loggedInUserObj.username.avatar !== undefined ?
+                                        this.props.loggedInUserObj.username.avatar : iconAccount
+                                    }
+                                         alt=""></img>
                                     <div
-                                        className="user-profile"
-                                    >
-                                        <img src={this.props.loggedInUserObj.username.avatar !== undefined ?
-                                            this.props.loggedInUserObj.username.avatar : iconAccount
+                                        className="text-name"
+                                        disable="true"
+                                        color="inherit">{this.props.loggedInUserObj.username.fullName}</div>
+                                    <DownOutlined style={{marginLeft: "0.5rem", marginTop: "2px"}}/>
+                                </div>
+                            </button>
+                            <Menu
+                                id="user-profile-menu"
+                                className="user-profile-menu"
+                                anchorEl={this.state.anchorProfile}
+                                open={Boolean(this.state.anchorProfile)}
+                                onClose={() => this.handleCloseProfile()}
+                                MenuListProps={{onMouseLeave: () => this.handleCloseProfile()}}
+                            >
+                                <div className="items-app-bar2">
+                                    {this.props.loggedInUserObj.username.username === 'admin' ?
+                                        <MenuItem onClick={() => this.handleClickItem("/manage-account")}
+                                                  className="item-app-bar3">
+                                            Quản lý người dùng</MenuItem> :
+                                        <>
+                                        {auth.getDataVerify() ?
+                                            <MenuItem onClick={() => this.handleClickItem("/verify-update")}
+                                                      className="item-app-bar3">
+                                                Cập nhật thông tin</MenuItem> :
+                                            <MenuItem onClick={() => this.handleClickItem("/verify")}
+                                                      className="item-app-bar3">
+                                                Cập nhật thông tin</MenuItem>
                                         }
-                                             alt=""></img>
-                                        <div
-                                            className="text-name"
-                                            disable="true"
-                                            color="inherit">{this.props.loggedInUserObj.username.fullName}</div>
-                                        <DownOutlined style={{marginLeft: "0.5rem", marginTop: "2px"}}/>
-                                    </div>
-                                </button>
-                                <Menu
-                                    id="user-profile-menu"
-                                    className="user-profile-menu"
-                                    anchorEl={this.state.anchorProfile}
-                                    open={Boolean(this.state.anchorProfile)}
-                                    onClose={() => this.handleCloseProfile()}
-                                    MenuListProps={{onMouseLeave: () => this.handleCloseProfile()}}
-                                >
-                                    <div className="items-app-bar2">
-                                        <MenuItem className="item-app-bar3">
-                                            Cập nhật thông tin</MenuItem>
-                                        <MenuItem className="item-app-bar3" onClick={() => this.handleClickItem("/change-password")}>
-                                            Đổi mật khẩu</MenuItem>
-                                        <MenuItem className="item-app-bar3" onClick={() => this.handleLogout()}>
-                                            Đăng xuất</MenuItem>
-                                    </div>
-                                </Menu>
-                                <Popup
-                                    // open={this.state.isPopupOpen} // Kiểm tra giá trị state để hiển thị Popup
-                                    // onClose={() => this.handlePopupClose()}
-                                    // overlayStyle={{ background: "rgba(0, 0, 0, 0.5)" }}
-                                    // contentStyle={popupStyles}
-                                >
-                                    {/* Nội dung của Popup */}
-                                    {/*<PopupPost handleOpenPopup={this.handlePopupOpen} />*/}
-                                </Popup>
-                            </div> }
+                                        </>
+                                    }
+                                    <MenuItem className="item-app-bar3"
+                                              onClick={() => this.handleClickItem("/change-password")}>
+                                        Đổi mật khẩu</MenuItem>
+                                    <MenuItem className="item-app-bar3" onClick={() => this.handleLogout()}>
+                                        Đăng xuất</MenuItem>
+                                </div>
+                            </Menu>
+                            <Popup
+                                // open={this.state.isPopupOpen} // Kiểm tra giá trị state để hiển thị Popup
+                                // onClose={() => this.handlePopupClose()}
+                                // overlayStyle={{ background: "rgba(0, 0, 0, 0.5)" }}
+                                // contentStyle={popupStyles}
+                            >
+                                {/* Nội dung của Popup */}
+                                {/*<PopupPost handleOpenPopup={this.handlePopupOpen} />*/}
+                            </Popup>
+                        </div>}
                     </div>
                 </AppBar>
             </div>

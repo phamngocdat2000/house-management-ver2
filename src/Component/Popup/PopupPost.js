@@ -8,6 +8,7 @@ import {initializeApp, getApp} from "firebase/app";
 import {getStorage, ref, uploadBytes} from "firebase/storage";
 import "../../CSS/popup.css";
 import AddressInput from "../Map/AddressInput";
+import auth from "../../API/AuthService";
 
 function HtmlEditor(props) {
     const firebaseConfig = {
@@ -220,14 +221,14 @@ function HtmlEditor(props) {
             }).catch((error) => {
                 console.log(error)
             })
-            const storageRef = ref(storage, "image/" + file.name);
+            const storageRef = ref(storage, "image-ver2/" + auth.getUserInfo().username + "/info/" + file.name);
             const metadata = {
                 contentType: 'image/jpeg',
             };
             await uploadBytes(storageRef, file, metadata).then(() => {
                 console.log('Uploaded image');
             });
-            fileNames.push("https://firebasestorage.googleapis.com/v0/b/management-house.appspot.com/o/image%2F" + file.name + "?alt=media");
+            fileNames.push("https://firebasestorage.googleapis.com/v0/b/management-house.appspot.com/o/image-ver2%2F" + auth.getUserInfo().username + "%2Finfo%2F" + file.name + "?alt=media");
         }
         setSelectedImage(fileNames);
     }

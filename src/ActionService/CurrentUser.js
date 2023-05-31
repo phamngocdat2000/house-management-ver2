@@ -13,6 +13,8 @@ const currentUser = (state = initState, action) => {
         case types.LOGOUT_ACCOUNT:
             newState = {};
             localStorage.clear("USER");
+            localStorage.clear("VERIFY");
+            localStorage.clear("DATA-VERIFY");
             return newState;
         case types.UPDATE_USER_INFO:
             newState = { ...newState, userInfo: action.data };

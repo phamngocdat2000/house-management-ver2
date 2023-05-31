@@ -106,7 +106,18 @@ export class Login extends Component {
             })
             console.log(registerResult);
             alert("Đăng ký thành công");
-            this.setState({isLogin: true})
+
+            let loginResult = await service.login({
+                username: this.state.username, password: this.state.password,
+            })
+            this.props.onLogin({
+                accessToken: loginResult.token
+            });
+            let userResult = await service.currentUser()
+            console.log(userResult)
+            const {username, avatar, fullName, email, active} = userResult;
+            await this.onLoginComplete({username, avatar, fullName, email, active});
+            window.location.href = "/verify";
         } catch (error) {
             alert(error)
         }

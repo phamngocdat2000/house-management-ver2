@@ -10,15 +10,38 @@ import PostInfo from "./Component/Info/PostInfo";
 import {Footer} from "./Component/HomePage/Footer";
 import ClickChooseLocation from "./Component/Map/ClickChooseLocation";
 import ManagePostInfo from "./Component/Info/ManagePostInfo";
+import VerifyUserAfterRegister from "./Component/Info/VerifyUserAfterRegister";
+import auth from "./API/AuthService";
+import service from "./API/Service";
 
 export default class HouseManagement extends Component {
     constructor(props) {
         super(props)
         this.state = {
             isLoggedIn: !!JSON.parse(localStorage.getItem('USER')),
-            loggedInUserObj: JSON.parse(localStorage.getItem('USER')) ? {username: JSON.parse(localStorage.getItem('USER'))['userInfo']} : {}
+            loggedInUserObj: JSON.parse(localStorage.getItem('USER')) ? {username: JSON.parse(localStorage.getItem('USER'))['userInfo']} : {},
+            accountStatus: "",
+            dataAccount: {}
         }
         this.setLoggedInUser = this.setLoggedInUser.bind(this)
+    }
+
+    componentDidMount = async () => {
+        if (auth.getUserInfo()) {
+            await service.getUser(auth.getUserInfo().username).then((data) => {
+                console.log(data)
+                localStorage.setItem("VERIFY", JSON.stringify(data));
+                this.setState({
+                    dataAccount: data,
+                    accountStatus: data.status
+                })
+            })
+            await service.getUserVerify().then((data) => {
+                console.log(data)
+                localStorage.setItem("DATA-VERIFY", JSON.stringify(data));
+            })
+        }
+
     }
 
     setLoggedInUser(loggedInUserObj) {
@@ -34,7 +57,8 @@ export default class HouseManagement extends Component {
                         <Route path="/"
                                element={
                                    <>
-                                       <Header loggedInUserObj={this.state.loggedInUserObj}/>
+                                       <Header accountStatus={this.state.accountStatus}
+                                               loggedInUserObj={this.state.loggedInUserObj}/>
                                        <Body/>
                                        <Footer/>
                                    </>
@@ -59,7 +83,8 @@ export default class HouseManagement extends Component {
                             <Route path="/location"
                                    element={
                                        <>
-                                           <Header loggedInUserObj={this.state.loggedInUserObj}/>
+                                           <Header accountStatus={this.state.accountStatus}
+                                                   loggedInUserObj={this.state.loggedInUserObj}/>
                                            <MapContainer></MapContainer>
                                            <Footer/>
                                        </>
@@ -79,7 +104,8 @@ export default class HouseManagement extends Component {
                             <Route path="/info/house"
                                    element={
                                        <>
-                                           <Header loggedInUserObj={this.state.loggedInUserObj}/>
+                                           <Header accountStatus={this.state.accountStatus}
+                                                   loggedInUserObj={this.state.loggedInUserObj}/>
                                            <PostInfo></PostInfo>
                                            <Footer/>
                                        </>
@@ -93,12 +119,29 @@ export default class HouseManagement extends Component {
                         <Route path="/manage-house"
                                element={
                                    <>
-                                       <Header loggedInUserObj={this.state.loggedInUserObj}/>
+                                       <Header accountStatus={this.state.accountStatus}
+                                               loggedInUserObj={this.state.loggedInUserObj}/>
                                        <ManagePostInfo></ManagePostInfo>
                                        <Footer/>
                                    </>
 
                                }/>
+                        {this.state.isLoggedIn ?
+                            <Route path="/verify"
+                                   element={
+                                       <VerifyUserAfterRegister
+                                           dataAccount={this.state.dataAccount}></VerifyUserAfterRegister>
+                                   }/> :
+                            <Route path="/verify" element={<LoginNotFound/>}/>
+                        }
+                        {this.state.isLoggedIn ?
+                            <Route path="/verify-update"
+                                   element={
+                                       <VerifyUserAfterRegister
+                                           dataAccount={this.state.dataAccount}></VerifyUserAfterRegister>
+                                   }/> :
+                            <Route path="/verify-update" element={<LoginNotFound/>}/>
+                        }
                     </Routes>
                 </BrowserRouter>
             </div>

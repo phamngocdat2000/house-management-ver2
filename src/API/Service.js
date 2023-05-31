@@ -102,6 +102,18 @@ let service = {
         let url = "api/user/" + username;
         return method.get(url);
     },
+    createVerifyUser: (params) => {
+        let url = "api/verify-user";
+        return method.post(params, url)
+    },
+    updateVerifyUser: (params) => {
+        let url = "api/verify-user";
+        return method.patch(params, url)
+    },
+    getUserVerify: () => {
+        let url = "api/verify-user";
+        return method.get(url);
+    },
 };
 
 export default service;
