@@ -24,6 +24,9 @@ const method = {
             case 401: return logoutUser()
             default: {
                 console.log('err')
+                if (rs.code) {
+                    throw (rs.description)
+                }
                 throw (rs.message)
             }
         }

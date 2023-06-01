@@ -58,8 +58,24 @@ export default class Header extends Component {
     handleMenuItemClick = (menuItem) => {
         this.handleCloseManagement();
         if (menuItem === "Đăng bài") {
+            if(!auth.getVerify().isVerified && auth.getDataVerify()) {
+                alert("Vui lòng đợi admin duyệt trong 24h");
+                return;
+            }
+            if(!auth.getVerify().isVerified) {
+                alert("Vui lòng cập nhật ảnh CMND/CCCD và nhận diện gương mặt");
+                return;
+            }
             this.setState({isPopupOpen: true}); // Đặt giá trị state để mở Popup
         } else if (menuItem === "Quản lý") {
+            if(!auth.getVerify().isVerified && auth.getDataVerify()) {
+                alert("Vui lòng đợi admin duyệt trong 24h");
+                return;
+            }
+            if(!auth.getVerify().isVerified) {
+                alert("Vui lòng cập nhật ảnh CMND/CCCD và nhận diện gương mặt");
+                return;
+            }
             window.location.href = "/manage-house"
             // Xử lý hành động cho "Quản lý" ở đây
         }
@@ -109,7 +125,7 @@ export default class Header extends Component {
                         </div>
                         <div className="items">
                             <button className="home" onClick={() => this.handleClickItem("/")}>Trang chủ</button>
-                            {show &&
+                            {this.props.loggedInUserObj.username &&
                                 <div>
                                     <button
                                         className="home"

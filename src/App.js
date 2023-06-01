@@ -39,6 +39,8 @@ export default class HouseManagement extends Component {
             await service.getUserVerify().then((data) => {
                 console.log(data)
                 localStorage.setItem("DATA-VERIFY", JSON.stringify(data));
+            }).catch((error) => {
+                console.log(error)
             })
         }
 
