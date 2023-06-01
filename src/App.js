@@ -13,6 +13,7 @@ import ManagePostInfo from "./Component/Info/ManagePostInfo";
 import VerifyUserAfterRegister from "./Component/Info/VerifyUserAfterRegister";
 import auth from "./API/AuthService";
 import service from "./API/Service";
+import ManageUser from "./Component/Info/ManageUser";
 
 export default class HouseManagement extends Component {
     constructor(props) {
@@ -21,7 +22,8 @@ export default class HouseManagement extends Component {
             isLoggedIn: !!JSON.parse(localStorage.getItem('USER')),
             loggedInUserObj: JSON.parse(localStorage.getItem('USER')) ? {username: JSON.parse(localStorage.getItem('USER'))['userInfo']} : {},
             accountStatus: "",
-            dataAccount: {}
+            dataAccount: {},
+            listUserVerify: []
         }
         this.setLoggedInUser = this.setLoggedInUser.bind(this)
     }
@@ -43,6 +45,15 @@ export default class HouseManagement extends Component {
                 console.log(error)
             })
         }
+        if (auth.getUserInfo() && auth.getUserInfo().username === "admin") {
+            await service.getListUserVerify().then(async (data) => {
+                console.log(data);
+                this.setState({listUserVerify:data})
+                localStorage.setItem("LIST-USER", JSON.stringify(data));
+            }).catch((error) => {
+                console.log(error)
+            })
+        }
 
     }
 
@@ -51,7 +62,7 @@ export default class HouseManagement extends Component {
     }
 
     render() {
-        console.log(this.state.isLoggedIn)
+        console.log(this.state.listUserVerify)
         return (
             <div className="App">
                 <BrowserRouter>
@@ -128,6 +139,19 @@ export default class HouseManagement extends Component {
                                    </>
 
                                }/>
+                        {this.state.loggedInUserObj.username && this.state.loggedInUserObj.username.username === "admin" ?
+                            <Route path="/manage-account"
+                               element={
+                                   <>
+                                       <Header accountStatus={this.state.accountStatus}
+                                               loggedInUserObj={this.state.loggedInUserObj}/>
+                                       <ManageUser listUser={this.state.listUserVerify}></ManageUser>
+                                       <Footer/>
+                                   </>
+
+                               }/> :
+                            <Route path="/manage-account" element={<LoginNotFound/>}/>
+                        }
                         {this.state.isLoggedIn ?
                             <Route path="/verify"
                                    element={
@@ -143,6 +167,18 @@ export default class HouseManagement extends Component {
                                            dataAccount={this.state.dataAccount}></VerifyUserAfterRegister>
                                    }/> :
                             <Route path="/verify-update" element={<LoginNotFound/>}/>
+                        }
+                        {this.state.loggedInUserObj.username && this.state.loggedInUserObj.username.username === "admin"
+                            && this.state.listUserVerify ?
+                            <Route path="/access"
+                                   element={
+                                       <VerifyUserAfterRegister
+                                           dataUser={this.state.listUserVerify}
+                                           dataAccount={this.state.dataAccount}>
+                                       </VerifyUserAfterRegister>
+                                   }/>
+                             :
+                            <Route path="/access" element={<LoginNotFound/>}/>
                         }
                     </Routes>
                 </BrowserRouter>

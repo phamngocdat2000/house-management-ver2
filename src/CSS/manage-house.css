@@ -4,3 +4,12 @@
     align-items: center;
     flex-wrap: wrap;
 }
+.manage-user-title {
+    font-size: 20px;
+    font-weight: 500;
+    color: #FF9500;
+    margin-bottom: 2rem;
+}
+.manage-user {
+    margin-bottom: 10rem;
+}

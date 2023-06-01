@@ -236,6 +236,12 @@
     border-radius: 40px 0 0 0;
     border: unset;
 }
+.list-house-img-ver2 {
+    width: 20vh;
+    height: 20vh;
+    border-radius: 40px 0 0 40px;
+    border: unset;
+}
 .comment-rating-main {
     display: flex;
     flex-direction: column;

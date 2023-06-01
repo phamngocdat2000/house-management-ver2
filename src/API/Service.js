@@ -114,6 +114,14 @@ let service = {
         let url = "api/verify-user";
         return method.get(url);
     },
+    getListUserVerify: () => {
+        let url = "api/verifies-user?page_index=1&page_size=20";
+        return method.get(url);
+    },
+    acceptVerify: (username, params) => {
+        let url = "api/verify-user/accept/" + username;
+        return method.postForm(params, url)
+    },
 };
 
 export default service;

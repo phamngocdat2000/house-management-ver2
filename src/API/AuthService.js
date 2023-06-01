@@ -15,10 +15,13 @@ let auth = {
         return JSON.parse(localStorage.getItem("USER")) ? JSON.parse(localStorage.getItem("USER"))["userInfo"] : null;
     },
     getVerify: () => {
-        return JSON.parse(localStorage.getItem("USER")) ? JSON.parse(localStorage.getItem("VERIFY")) : null;
+        return JSON.parse(localStorage.getItem("VERIFY")) ? JSON.parse(localStorage.getItem("VERIFY")) : null;
     },
     getDataVerify: () => {
-        return JSON.parse(localStorage.getItem("USER")) ? JSON.parse(localStorage.getItem("DATA-VERIFY")) : null;
+        return JSON.parse(localStorage.getItem("DATA-VERIFY")) ? JSON.parse(localStorage.getItem("DATA-VERIFY")) : null;
+    },
+    getListUser: () => {
+        return JSON.parse(localStorage.getItem("LIST-USER")) ? JSON.parse(localStorage.getItem("LIST-USER")) : null;
     },
     setHistory: (newHistory) => {
         history = newHistory

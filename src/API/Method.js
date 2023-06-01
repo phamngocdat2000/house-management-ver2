@@ -78,6 +78,7 @@ const method = {
         let headers = {
             'Accept': 'application/json',
             'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + auth.getToken(),
             'Accept-Language': 'vi',
         }
         try {

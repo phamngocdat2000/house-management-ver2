@@ -14,6 +14,31 @@ export default class VerifyUserAfterRegister extends Component {
         let selectedImage1
         let selectedImage2
         let selectedImage3
+        if (window.location.pathname.includes("access")) {
+            const search = window.location.search;
+            const params = new URLSearchParams(search);
+            const username = params.get('username');
+            console.log(auth.getListUser())
+            if (auth.getListUser()) {
+                for (let i = 0; i < auth.getListUser().length; i++) {
+                    if (auth.getListUser()[i].username === username) {
+                        auth.getListUser()[i] && auth.getListUser()[i].imagesUrl
+                        && auth.getListUser()[i].imagesUrl.length > 0
+                        && auth.getListUser()[i].imagesUrl.map((data) => {
+                            if (data.includes("%2Ffront%2F")) {
+                                selectedImage1 = data
+                            }
+                            if (data.includes("%2Fback%2F")) {
+                                selectedImage2 = data
+                            }
+                            if (data.includes("%2Fface%2F")) {
+                                selectedImage3 = data
+                            }
+                        })
+                    }
+                }
+            }
+        }
         auth.getDataVerify() && auth.getDataVerify().imagesUrl
         && auth.getDataVerify().imagesUrl.length > 0
         && auth.getDataVerify().imagesUrl.map((data) => {
@@ -170,7 +195,8 @@ export default class VerifyUserAfterRegister extends Component {
     };
 
     confirm = () => {
-        if (!this.state.selectedImage1.length > 0 || !this.state.selectedImage2.length > 0 || !this.state.selectedImage3.length > 0) {
+        if (!window.location.pathname.includes("/access")
+            && (!this.state.selectedImage1.length > 0 || !this.state.selectedImage2.length > 0 || !this.state.selectedImage3.length > 0)) {
             alert("Vui lòng tải lên đủ 3 ảnh")
             return;
         }
@@ -189,7 +215,7 @@ export default class VerifyUserAfterRegister extends Component {
                 }
             }).catch((error) => alert(error)
             )
-        } else {
+        } else if (window.location.pathname.includes("/verify")){
             service.createVerifyUser({
                 imagesUrl: [
                     this.state.selectedImage1,
@@ -204,12 +230,27 @@ export default class VerifyUserAfterRegister extends Component {
                 }
             }).catch((error) => alert(error)
             )
+        } else if (window.location.pathname.includes("/access")) {
+            const search = window.location.search;
+            const params = new URLSearchParams(search);
+            const username = params.get('username');
+            service.acceptVerify(username, null).then((data) => {
+                if (data.status === 200) {
+                    console.log(data)
+                    alert("User: " + username + " đã được cập nhật trạng thái")
+                    window.history.back();
+                } else {
+                    alert("Có lỗi xảy ra, vui lòng liên hệ IT để hỗ trợ")
+                    console.log(data)
+                }
+            }).catch((error) => alert(error)
+            )
         }
     }
 
     render() {
         return (
-            <> {auth.getVerify() && !auth.getVerify().isVerified ?
+            <> {(auth.getVerify() && !auth.getVerify().isVerified) || window.location.pathname.includes("access") ?
                 <div className="content">
                     <Container maxWidth="sm" className='container-login'>
                         <div className='form form-ver2'>
@@ -292,7 +333,7 @@ export default class VerifyUserAfterRegister extends Component {
                                 className='btn-login-123-ver1'
                             >
                                 Xác nhận</Button>
-                            <Button onClick={() => window.location.href = "/"}
+                            <Button onClick={() => window.history.back()}
                                     className='btn-login-123'
                             >
                                 Có lẽ để sau</Button>
