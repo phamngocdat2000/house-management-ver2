@@ -5,6 +5,21 @@ export default class ListUser extends Component {
     // eslint-disable-next-line no-useless-constructor
     constructor(props) {
         super(props);
+        this.state = {
+            status:""
+        }
+    }
+
+    componentDidMount() {
+        if (this.props.status === -1) {
+            this.setState({status:"KHÁCH HÀNG"})
+        }
+        if (this.props.status === 0) {
+            this.setState({status:"CHỜ DUYỆT"})
+        }
+        if (this.props.status === 1) {
+            this.setState({status:"NGƯỜI BÁN"})
+        }
     }
 
     render() {
@@ -25,7 +40,7 @@ export default class ListUser extends Component {
                             <img className="list-house-img-ver2"
                                  src={imgFace ? imgFace : iconNotFound} alt=""/>
                         </div>
-                        <div className="list-house-info">
+                        <div className="list-user-info">
                             <div className="list-house-title">
                                 {this.props.data.username}
                             </div>
@@ -36,7 +51,7 @@ export default class ListUser extends Component {
                                 Lần cập nhật cuối cùng: {this.props.data.lastModifiedDate}
                             </div>
                             <div className="list-house-last-update">
-                                Trạng thái: {this.props.data.status}
+                                Trạng thái: {this.state.status}
                             </div>
                         </div>
                     </div>

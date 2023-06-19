@@ -6,6 +6,7 @@ import {getApp, initializeApp} from "firebase/app";
 import auth from "../../API/AuthService";
 import "../../CSS/verify.css";
 import service from "../../API/Service";
+import notice from "../../ActionService/Notice";
 
 
 export default class VerifyUserAfterRegister extends Component {
@@ -90,7 +91,7 @@ export default class VerifyUserAfterRegister extends Component {
 
     handleImage = async (files, type) => {
         if (files.length > 1) {
-            alert("Chỉ được chọn 1 ảnh");
+            notice.inf("Chỉ được chọn 1 ảnh");
             return;
         }
         console.log(files);
@@ -107,7 +108,7 @@ export default class VerifyUserAfterRegister extends Component {
         for (let i = 0; i < files.length; i++) {
             const file = files[i];
             if (!file.type.startsWith('image/')) {
-                alert('Chỉ chấp nhận tệp ảnh');
+                notice.inf('Chỉ chấp nhận tệp ảnh');
                 return;
             }
             // eslint-disable-next-line no-unused-vars
@@ -197,7 +198,7 @@ export default class VerifyUserAfterRegister extends Component {
     confirm = () => {
         if (!window.location.pathname.includes("/access")
             && (!this.state.selectedImage1.length > 0 || !this.state.selectedImage2.length > 0 || !this.state.selectedImage3.length > 0)) {
-            alert("Vui lòng tải lên đủ 3 ảnh")
+            notice.err("Vui lòng tải lên đủ 3 ảnh")
             return;
         }
         if (window.location.pathname.includes("/verify-update")) {
@@ -210,10 +211,10 @@ export default class VerifyUserAfterRegister extends Component {
                 description: "Nhờ admin xác thực tài khoản"
             }).then((data) => {
                 if (data.status && data.status === "PENDING") {
-                    alert("Vui lòng đợi trong vòng 24h để admin kiểm định");
+                    notice.success("Vui lòng đợi trong vòng 24h để admin kiểm định");
                     window.location.href = "/"
                 }
-            }).catch((error) => alert(error)
+            }).catch((error) => notice.err(error)
             )
         } else if (window.location.pathname.includes("/verify")){
             service.createVerifyUser({
@@ -225,10 +226,10 @@ export default class VerifyUserAfterRegister extends Component {
                 description: "Nhờ admin xác thực tài khoản"
             }).then((data) => {
                 if (data.status && data.status === "PENDING") {
-                    alert("Vui lòng đợi trong vòng 24h để admin kiểm định");
+                    notice.success("Vui lòng đợi trong vòng 24h để admin kiểm định");
                     window.location.href = "/"
                 }
-            }).catch((error) => alert(error)
+            }).catch((error) => notice.err(error)
             )
         } else if (window.location.pathname.includes("/access")) {
             const search = window.location.search;
@@ -237,13 +238,13 @@ export default class VerifyUserAfterRegister extends Component {
             service.acceptVerify(username, null).then((data) => {
                 if (data.status === 200) {
                     console.log(data)
-                    alert("User: " + username + " đã được cập nhật trạng thái")
+                    notice.success("User: " + username + " đã được cập nhật trạng thái")
                     window.history.back();
                 } else {
-                    alert("Có lỗi xảy ra, vui lòng liên hệ IT để hỗ trợ")
+                    notice.err("Có lỗi xảy ra, vui lòng liên hệ IT để hỗ trợ")
                     console.log(data)
                 }
-            }).catch((error) => alert(error)
+            }).catch((error) => notice.err(error)
             )
         }
     }

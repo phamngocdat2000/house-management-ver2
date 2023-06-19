@@ -1,5 +1,6 @@
 import config from './Config';
 import auth from './AuthService';
+import notice from "../ActionService/Notice";
 
 const method = {
     get: async (url) => {
@@ -216,7 +217,7 @@ const method = {
     },
 }
 function logoutUser() {
-    alert('Phiên đăng nhập đã hết hạn')
+    notice.err('Phiên đăng nhập đã hết hạn')
     localStorage.clear('USER')
     window.location.href = "/";
 }

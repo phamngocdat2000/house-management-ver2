@@ -9,6 +9,7 @@ import {getStorage, ref, uploadBytes} from "firebase/storage";
 import "../../CSS/popup.css";
 import AddressInput from "../Map/AddressInput";
 import auth from "../../API/AuthService";
+import notice from "../../ActionService/Notice";
 
 function HtmlEditor(props) {
     const firebaseConfig = {
@@ -211,7 +212,7 @@ function HtmlEditor(props) {
         for (let i = 0; i < files.length; i++) {
             const file = files[i];
             if (!file.type.startsWith('image/')) {
-                alert('Chỉ chấp nhận tệp ảnh');
+                notice.inf('Chỉ chấp nhận tệp ảnh');
                 return;
             }
             // eslint-disable-next-line no-unused-vars
@@ -264,11 +265,11 @@ function HtmlEditor(props) {
                 result = await service.postContent(params).then();
             }
             console.log(result)
-            alert("Success!")
+            notice.success("Đăng bài thành công!")
             window.location.reload();
         } catch (error) {
             console.log(error)
-            alert(error)
+            notice.err(error)
         }
 
     }

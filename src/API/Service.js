@@ -10,6 +10,10 @@ let service = {
         let url = "api/user";
         return method.post(params, url);
     },
+    editUser: params => {
+        let url = "api/user";
+        return method.patch(params, url);
+    },
     forgot: params => {
         let url = "api/auth/reset-pass";
         return method.postForm(params, url);
@@ -121,6 +125,10 @@ let service = {
     acceptVerify: (username, params) => {
         let url = "api/verify-user/accept/" + username;
         return method.postForm(params, url)
+    },
+    getAllUserWithAdmin: () => {
+        let url = "api/admin/users";
+        return method.get(url);
     },
 };
 

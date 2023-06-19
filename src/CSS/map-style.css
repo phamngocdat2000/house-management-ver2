@@ -199,6 +199,16 @@
     align-items: start;
 }
 
+.list-user-info {
+    padding: 2vh;
+    width: 34vh;
+    height: 16vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: start;
+}
+
 .list-house-title {
     font-size: 15px;
     text-align: start;

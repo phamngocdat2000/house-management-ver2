@@ -2,6 +2,7 @@ import React, {useState} from "react";
 import {Autocomplete, useLoadScript} from "@react-google-maps/api";
 import '../../CSS/search-map.css'
 import {API_KEY} from "../../Const/ActionType";
+import notice from "../../ActionService/Notice";
 
 const placesLibrary = ["places"];
 
@@ -35,7 +36,7 @@ function AddressInput(props) {
                 await props.onAddressChanged(lat, lng, formattedAddress);
             }
         } else {
-            alert("Please enter text");
+            notice.err("Không bỏ trống trường này");
         }
     }
 

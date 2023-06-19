@@ -1,0 +1,51 @@
+.gradient-custom {
+    /* fallback for old browsers */
+    background: #f6d365;
+
+    /* Chrome 10-25, Safari 5.1-6 */
+    background: -webkit-linear-gradient(to right bottom, rgba(246, 211, 101, 1), rgba(253, 160, 133, 1));
+
+    /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+    background: linear-gradient(to right bottom, rgba(246, 211, 101, 1), rgba(253, 160, 133, 1))
+}
+.icon-edit-ver2:hover {
+    color: #ff7900 !important;
+    background: #ff7900 !important;
+}
+.icon-edit-ver3 {
+    margin-top: 0.25rem;
+    margin-bottom: 1rem;
+}
+.check-check {
+    font-weight: bold !important;
+    font-size: 20px !important;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+.mdb-main {
+    height: 10rem !important;
+}
+.roll-back {
+    height: 3rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    cursor: pointer;
+}
+.roll-back:hover {
+    background: #ff8e6c;
+    border-bottom-left-radius: .5rem;
+}
+.image-user-profile-none {
+    display: none;
+}
+.label-image {
+    cursor: pointer;
+    margin-top: -5rem !important;
+}
+.label-image:hover {
+    color: #ff8e6c;
+}

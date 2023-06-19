@@ -14,6 +14,8 @@ import iconForgotPass from '../../Image/icon-forgot-password.png';
 import iconChangePass from '../../Image/icon-change-password.png';
 import {Visibility, VisibilityOff} from '@mui/icons-material';
 import auth from "../../API/AuthService";
+import notice from "../../ActionService/Notice";
+import checkPassword from "../../ActionService/Utils";
 
 export class Login extends Component {
     constructor(props) {
@@ -70,6 +72,14 @@ export class Login extends Component {
     }
 
     login = async () => { //login with page
+        if (!this.state.username) {
+            notice.err('Tên đăng nhập không được để trống');
+            return;
+        }
+        if (!this.state.password) {
+            notice.err('Mật khẩu không được để trống');
+            return;
+        }
         let loginResult = {token: undefined}
         if (this.state.username && this.state.password) {
             try {
@@ -86,14 +96,14 @@ export class Login extends Component {
                 await this.onLoginComplete({username, avatar, fullName, email, active});
                 window.location.href = "/";
             } catch (error) {
-                alert(error)
+                notice.err(error);
             }
         }
     }
 
     register = async () => {
         if (this.state.password !== this.state.confirmPassword) {
-            alert('Mật khẩu không khớp');
+            notice.err('Mật khẩu không khớp');
             return;
         }
         try {
@@ -105,16 +115,16 @@ export class Login extends Component {
                 phone: this.state.phone
             })
             console.log(registerResult);
-            alert("Đăng ký thành công");
+            notice.success("Đăng ký thành công");
             this.setState({isLogin: true})
         } catch (error) {
-            alert(error)
+            notice.err(error)
         }
     }
 
     forgot = async () => {
         if (this.state.password !== this.state.confirmPassword) {
-            alert('Mật khẩu không khớp');
+            notice.err('Mật khẩu không khớp');
             return;
         }
         try {
@@ -124,16 +134,16 @@ export class Login extends Component {
                 newPassword: this.state.password,
             })
             console.log(forgotResult);
-            alert("Đổi mật khẩu thành công");
+            notice.success("Đổi mật khẩu thành công");
             this.setState({isLogin: true})
         } catch (error) {
-            alert(error)
+            notice.err(error)
         }
     }
 
     change = async () => {
         if (this.state.password !== this.state.confirmPassword) {
-            alert('Mật khẩu không khớp');
+            notice.err('Mật khẩu không khớp');
             return;
         }
         console.log(auth.getUserInfo().username)
@@ -145,31 +155,31 @@ export class Login extends Component {
             })
             console.log(changeResult);
             if (changeResult.status === 200) {
-                alert("Đổi mật khẩu thành công");
+                notice.success("Đổi mật khẩu thành công");
                 window.location.href = "/"
             }
             this.setState({isLogin: true})
         } catch (error) {
             if (error === 'Tên đăng nhập hoặc mật khẩu không đúng!') {
-                alert("Mật khẩu cũ chưa đúng!")
+                notice.err("Mật khẩu cũ chưa đúng!")
             } else {
-                alert(error)
+                notice.err(error)
             }
         }
     }
 
     sendMail = async () => {
         if (!this.state.username) {
-            alert('Tên đăng nhập không được để trống');
+            notice.err('Tên đăng nhập không được để trống');
             return;
         }
         try {
             let sendMailResult = await service.sendMail({}, this.state.username)
             console.log(sendMailResult);
-            alert("Đã gửi mã code tới email, vui lòng kiểm tra email");
+            notice.success("Đã gửi mã code tới email, vui lòng kiểm tra email");
             this.setState({sendMailSuccess: true})
         } catch (error) {
-            alert(error)
+            notice.err(error)
         }
     }
 
@@ -179,6 +189,18 @@ export class Login extends Component {
 
     handlePassWord = e => {
         this.setState({password: e.target.value})
+        if (this.state.isRegister || this.state.isForgotPassWord) {
+            if (e.target.value.length <= 0) {
+                notice.inf("Mật khẩu phải có tối thiểu 8 kí tự, có thể bao gồm chữ in hoa, chữ thường và kí tự đặc biệt")
+            }
+            if (checkPassword.strong.test(e.target.value)) {
+                notice.success("Mật khẩu mạnh")
+            } else if (checkPassword.medium.test(e.target.value)) {
+                notice.warn("Mật khẩu trung bình")
+            } else if (checkPassword.weak.test(e.target.value)) {
+                notice.err("Mật khẩu yếu")
+            }
+        }
     }
 
     handleConfirmPassWord = e => {
@@ -198,7 +220,10 @@ export class Login extends Component {
     }
 
     handlePhone = e => {
-        this.setState({phone: e.target.value})
+        this.setState({phone: e.target.value.replace(/\D/g, '')})
+        if (e.target.value.length <= 0) {
+            notice.inf("Số điện thoại bao gồm 10 số và không có chữ")
+        }
     }
 
     handleCode = e => {
@@ -358,6 +383,7 @@ export class Login extends Component {
                                                 label="Username"
                                                 value={this.state.phone}
                                                 onChange={(e) => this.handlePhone(e)}
+                                                inputProps={{ maxLength: 10}}
                                             />
                                         </FormControl>
                                         <FormControl className='form-input'>

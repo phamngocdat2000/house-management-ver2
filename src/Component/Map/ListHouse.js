@@ -6,6 +6,7 @@ import iconRating from '../../Image/icon-rating.png';
 import auth from "../../API/AuthService";
 import PopupPost from "../Popup/PopupPost";
 import ClickChooseLocation from "./ClickChooseLocation";
+import notice from "../../ActionService/Notice";
 
 export default class ListHouse extends Component {
 
@@ -77,7 +78,7 @@ export default class ListHouse extends Component {
                     window.location.reload();
                 }
                 if (data.status === 403) {
-                    alert("Bạn không có quyền!");
+                    notice.err("Bạn không có quyền!");
                 }
             }
         );

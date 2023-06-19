@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import auth from "../../API/AuthService";
 import service from "../../API/Service";
+import notice from "../../ActionService/Notice";
 
 const StarRating = (props) => {
     const [ratingMain, setRatingMain] = useState(0);
@@ -12,7 +13,7 @@ const StarRating = (props) => {
 
     const handleClick = async (value) => {
         if (props.main && props.main === user) {
-            alert("Bạn không thể tự đánh giá bản thân!")
+            notice.inf("Bạn không thể tự đánh giá bản thân!")
         }
         let idConst;
         await service.rating(main, {

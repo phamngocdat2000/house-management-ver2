@@ -2,7 +2,7 @@ import './App.css';
 import MapContainer from "./Component/Map/MapContainer";
 import {BrowserRouter, Routes, Route} from "react-router-dom";
 import Login from "./Component/Login/Login";
-import {Component} from "react";
+import React, {Component} from "react";
 import Header from "./Component/HomePage/Header";
 import Body from "./Component/HomePage/Body";
 import {LoginNotFound} from "./Component/Login/LoginNotFound";
@@ -14,6 +14,9 @@ import VerifyUserAfterRegister from "./Component/Info/VerifyUserAfterRegister";
 import auth from "./API/AuthService";
 import service from "./API/Service";
 import ManageUser from "./Component/Info/ManageUser";
+import {ToastContainer} from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
+import UserProfile from "./Component/Info/UserProfile";
 
 export default class HouseManagement extends Component {
     constructor(props) {
@@ -23,7 +26,9 @@ export default class HouseManagement extends Component {
             loggedInUserObj: JSON.parse(localStorage.getItem('USER')) ? {username: JSON.parse(localStorage.getItem('USER'))['userInfo']} : {},
             accountStatus: "",
             dataAccount: {},
-            listUserVerify: []
+            listUserVerify: [],
+            listUserActive: [],
+            listUser: []
         }
         this.setLoggedInUser = this.setLoggedInUser.bind(this)
     }
@@ -48,10 +53,30 @@ export default class HouseManagement extends Component {
         if (auth.getUserInfo() && auth.getUserInfo().username === "admin") {
             await service.getListUserVerify().then(async (data) => {
                 console.log(data);
-                this.setState({listUserVerify:data})
+                this.setState({listUserVerify: data})
                 localStorage.setItem("LIST-USER", JSON.stringify(data));
             }).catch((error) => {
                 console.log(error)
+            })
+        }
+        if (auth.getUserInfo() && auth.getUserInfo().username === "admin") {
+            await service.getAllUserWithAdmin().then(data => {
+                const listUserActive = [];
+                const listUser = [];
+                for (let i = 0; i < data.length; i++) {
+                    if (data[i].verifyStatus !== 'PENDING') {
+                        if (data[i].isVerified) {
+                            if (auth.getUserInfo())
+                                listUserActive.push(data[i])
+                        } else {
+                            listUser.push(data[i])
+                        }
+                    }
+                }
+                this.setState({
+                    listUserActive: listUserActive,
+                    listUser: listUser
+                })
             })
         }
 
@@ -62,7 +87,6 @@ export default class HouseManagement extends Component {
     }
 
     render() {
-        console.log(this.state.listUserVerify)
         return (
             <div className="App">
                 <BrowserRouter>
@@ -141,15 +165,17 @@ export default class HouseManagement extends Component {
                                }/>
                         {this.state.loggedInUserObj.username && this.state.loggedInUserObj.username.username === "admin" ?
                             <Route path="/manage-account"
-                               element={
-                                   <>
-                                       <Header accountStatus={this.state.accountStatus}
-                                               loggedInUserObj={this.state.loggedInUserObj}/>
-                                       <ManageUser listUser={this.state.listUserVerify}></ManageUser>
-                                       <Footer/>
-                                   </>
+                                   element={
+                                       <>
+                                           <Header accountStatus={this.state.accountStatus}
+                                                   loggedInUserObj={this.state.loggedInUserObj}/>
+                                           <ManageUser listAllUser={this.state.listUser}
+                                                       listAllUserActive={this.state.listUserActive}
+                                                       listUser={this.state.listUserVerify}></ManageUser>
+                                           <Footer/>
+                                       </>
 
-                               }/> :
+                                   }/> :
                             <Route path="/manage-account" element={<LoginNotFound/>}/>
                         }
                         {this.state.isLoggedIn ?
@@ -169,7 +195,7 @@ export default class HouseManagement extends Component {
                             <Route path="/verify-update" element={<LoginNotFound/>}/>
                         }
                         {this.state.loggedInUserObj.username && this.state.loggedInUserObj.username.username === "admin"
-                            && this.state.listUserVerify ?
+                        && this.state.listUserVerify ?
                             <Route path="/access"
                                    element={
                                        <VerifyUserAfterRegister
@@ -177,11 +203,20 @@ export default class HouseManagement extends Component {
                                            dataAccount={this.state.dataAccount}>
                                        </VerifyUserAfterRegister>
                                    }/>
-                             :
+                            :
                             <Route path="/access" element={<LoginNotFound/>}/>
+                        }
+                        {this.state.loggedInUserObj.username && this.state.loggedInUserObj.username.username !== "admin"
+                            &&
+                            <Route path="/change-info"
+                                   element={
+                                       <UserProfile user={auth.getVerify()}>
+                                       </UserProfile>
+                                   }/>
                         }
                     </Routes>
                 </BrowserRouter>
+                <ToastContainer/>
             </div>
         );
     }

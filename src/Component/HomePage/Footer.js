@@ -14,7 +14,7 @@ export class Footer extends Component {
             <>
                 <div>
                     <Container fixed>
-                        <div className="footer-main">
+                        <div id="footer" className="footer-main">
                             <div className="footer-abc">
                                 <div className="main-footer">
                                     <img className="img-footer" src={icon} alt="icon"/>

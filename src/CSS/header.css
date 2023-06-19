@@ -50,6 +50,9 @@
     font-size: 16px;
     font-weight: 800;
 }
+.home:hover {
+    background: rgba(255, 82, 0, 0.62);
+}
 .home-2 {
     cursor: pointer;
     font-family: 'Roboto', SansSerif, serif;

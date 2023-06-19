@@ -6,13 +6,13 @@ import {Button, Menu, MenuItem} from "@mui/material";
 import service from '../../API/Service';
 import '../../CSS/header.css';
 import {DownOutlined} from "@ant-design/icons";
-import {Dropdown} from 'react-bootstrap';
 import Popup from "reactjs-popup";
-import PopupUser from "../Popup/PopupUser";
 import iconAccount from '../../Image/icon-account.png';
 import PopupPost from "../Popup/PopupPost";
 import ClickChooseLocation from "../Map/ClickChooseLocation";
 import auth from "../../API/AuthService";
+import { toast } from 'react-toastify';
+import notice from "../../ActionService/Notice";
 
 
 export default class Header extends Component {
@@ -22,7 +22,6 @@ export default class Header extends Component {
             anchorManagement: null, anchorProfile: null, keyWord: "", showModal: true, showDropdown: false,
             isPopupOpen: false, isMapOpen: false, lat: "", lng: "", address: ""
         };
-        console.log(props);
     }
 
     handleLogout() {
@@ -58,22 +57,38 @@ export default class Header extends Component {
     handleMenuItemClick = (menuItem) => {
         this.handleCloseManagement();
         if (menuItem === "Đăng bài") {
-            if(!auth.getVerify().isVerified && auth.getDataVerify()) {
-                alert("Vui lòng đợi admin duyệt trong 24h");
+            let roleAdmin = false;
+            // eslint-disable-next-line array-callback-return
+            auth.getVerify() && auth.getVerify().authorities.map(data => {
+                if (data.role === 'ROLE_ADMIN') {
+                    roleAdmin = true;
+                    this.setState({isPopupOpen: true});
+                }
+            })
+            if (!auth.getVerify().isVerified && auth.getDataVerify() && !roleAdmin) {
+                notice.inf("Vui lòng đợi admin duyệt trong 24h");
                 return;
             }
-            if(!auth.getVerify().isVerified) {
-                alert("Vui lòng cập nhật ảnh CMND/CCCD và nhận diện gương mặt");
+            if (!auth.getVerify().isVerified && !roleAdmin) {
+                notice.inf("Vui lòng cập nhật ảnh CMND/CCCD và nhận diện gương mặt");
                 return;
             }
             this.setState({isPopupOpen: true}); // Đặt giá trị state để mở Popup
         } else if (menuItem === "Quản lý") {
-            if(!auth.getVerify().isVerified && auth.getDataVerify()) {
-                alert("Vui lòng đợi admin duyệt trong 24h");
+            let roleAdmin = false;
+            // eslint-disable-next-line array-callback-return
+            auth.getVerify() && auth.getVerify().authorities.map(data => {
+                if (data.role === 'ROLE_ADMIN') {
+                    roleAdmin = true;
+                    window.location.href = "/manage-house";
+                }
+            })
+            if (!auth.getVerify().isVerified && auth.getDataVerify() && !roleAdmin) {
+                notice.inf("Vui lòng đợi admin duyệt trong 24h");
                 return;
             }
-            if(!auth.getVerify().isVerified) {
-                alert("Vui lòng cập nhật ảnh CMND/CCCD và nhận diện gương mặt");
+            if (!auth.getVerify().isVerified && !roleAdmin) {
+                notice.inf("Vui lòng cập nhật ảnh CMND/CCCD và nhận diện gương mặt");
                 return;
             }
             window.location.href = "/manage-house"
@@ -103,6 +118,13 @@ export default class Header extends Component {
     handleClickItem = (url) => {
         window.location.href = url
     }
+
+    scrollToId = (id) => {
+        const element = document.getElementById(id);
+        if (element) {
+            element.scrollIntoView({ behavior: 'smooth' });
+        }
+    };
 
     render() {
         let show = false;
@@ -172,7 +194,7 @@ export default class Header extends Component {
                                     </div>
                                 </div>}
                             <button className="home" onClick={() => this.handleClickItem("/location")}>Bản đồ</button>
-                            <button className="home" onClick={() => this.handleClickItem("/")}>Thông tin liên hệ
+                            <button className="home" onClick={() => this.scrollToId("footer")}>Thông tin liên hệ
                             </button>
                         </div>
                     </div>
@@ -223,14 +245,17 @@ export default class Header extends Component {
                                                   className="item-app-bar3">
                                             Quản lý người dùng</MenuItem> :
                                         <>
-                                        {auth.getDataVerify() ?
-                                            <MenuItem onClick={() => this.handleClickItem("/verify-update")}
-                                                      className="item-app-bar3">
-                                                Cập nhật thông tin</MenuItem> :
-                                            <MenuItem onClick={() => this.handleClickItem("/verify")}
-                                                      className="item-app-bar3">
+                                            {auth.getDataVerify() ?
+                                                <MenuItem onClick={() => this.handleClickItem("/verify-update")}
+                                                          className="item-app-bar3">
+                                                    Xác minh tài khoản</MenuItem> :
+                                                <MenuItem onClick={() => this.handleClickItem("/verify")}
+                                                          className="item-app-bar3">
+                                                    Xác minh tài khoản</MenuItem>
+                                            }
+                                            <MenuItem className="item-app-bar3"
+                                                      onClick={() => this.handleClickItem("/change-info")}>
                                                 Cập nhật thông tin</MenuItem>
-                                        }
                                         </>
                                     }
                                     <MenuItem className="item-app-bar3"

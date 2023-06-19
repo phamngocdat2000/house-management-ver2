@@ -9,17 +9,41 @@ export default class ManageUser extends Component {
     render() {
         return (
             <div className="manage-user">
-                <Container fixed>
-                    <div className="manage-user-title">
-                        TÀI KHOẢN ĐANG CHỜ DUYỆT
+                    <div className="manage-house-main">
+                        <div>
+                            <div className="manage-user-title">
+                                TÀI KHOẢN KHÁCH HÀNG
+                            </div>
+                            <div className="manage-house">
+                                {this.props.listAllUser && this.props.listAllUser.map((data, index) => (
+                                    <ListUser status={-1} id={index} data={data}></ListUser>
+                                ))
+                                }
+                            </div>
+                        </div>
+                        <div>
+                            <div className="manage-user-title">
+                                TÀI KHOẢN ĐĂNG KÝ BÁN HÀNG
+                            </div>
+                            <div className="manage-house">
+                                {this.props.listUser && this.props.listUser.map((data, index) => (
+                                    <ListUser status={0} id={index} data={data}></ListUser>
+                                ))
+                                }
+                            </div>
+                        </div>
+                        <div>
+                            <div className="manage-user-title">
+                                TÀI KHOẢN ĐÃ ĐƯỢC DUYỆT
+                            </div>
+                            <div className="manage-house">
+                                {this.props.listAllUserActive && this.props.listAllUserActive.map((data, index) => (
+                                    <ListUser status={1} id={index} data={data}></ListUser>
+                                ))
+                                }
+                            </div>
+                        </div>
                     </div>
-                    <div className="manage-house">
-                        {this.props.listUser && this.props.listUser.map((data, index) => (
-                            <ListUser id={index} data={data}></ListUser>
-                        ))
-                        }
-                    </div>
-                </Container>
             </div>
         )
     }
