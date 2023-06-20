@@ -29,7 +29,8 @@ export default class HouseManagement extends Component {
             listUserVerify: [],
             listUserActive: [],
             listUserInActive: [],
-            listUser: []
+            listUser: [],
+            listAllUser: []
         }
         this.setLoggedInUser = this.setLoggedInUser.bind(this)
     }
@@ -62,6 +63,9 @@ export default class HouseManagement extends Component {
         }
         if (auth.getUserInfo() && auth.getUserInfo().username === "admin") {
             await service.getAllUserWithAdmin().then(data => {
+                this.setState({
+                    listAllUser: data
+                })
                 const listUserActive = [];
                 const listUserInActive = [];
                 const listUser = [];
@@ -246,6 +250,15 @@ export default class HouseManagement extends Component {
                             <Route path="/change-info"
                                    element={
                                        <UserProfile user={auth.getVerify()}>
+                                       </UserProfile>
+                                   }/>
+                        }
+                        {this.state.loggedInUserObj.username && this.state.loggedInUserObj.username.username === "admin"
+                            &&
+                            <Route path="/user-info"
+                                   element={
+                                       <UserProfile user={auth.getVerify()}
+                                           listUser={this.state.listAllUser}>
                                        </UserProfile>
                                    }/>
                         }

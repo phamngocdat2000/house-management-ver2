@@ -29,6 +29,8 @@ export default function UserProfile(props) {
     const [fullName, setFullName] = useState("");
     const [avaUrl, setAvaUrl] = useState("");
     const [edit, setEdit] = useState(false);
+    const [isVerified, setIsVerified] = useState(false);
+
     const firebaseConfig = {
         apiKey: "AIzaSyCoMsA-H7LMuMAtH5zUBq1oWPXO-JUcVzs",
         authDomain: "management-house.firebaseapp.com",
@@ -43,11 +45,29 @@ export default function UserProfile(props) {
     const storage = getStorage(firebaseApp, "gs://management-house.appspot.com");
 
     useEffect(() => {
-        setPhone(props.user.phone)
-        setEmail(props.user.email)
-        setFullName(props.user.fullName)
-        setAvaUrl(props.user.avaUrl)
-    },[props.user])
+        const search = window.location.search;
+        const params = new URLSearchParams(search);
+        const username = params.get('username')
+        if (username) {
+            if (props.listUser) {
+                props.listUser.forEach((item) => {
+                    if (item.username && item.username === username) {
+                        setPhone(item.phone)
+                        setEmail(item.email)
+                        setFullName(item.fullName)
+                        setAvaUrl(item.avaUrl)
+                        setIsVerified(item.isVerified)
+                    }
+                });
+            }
+        } else {
+            setPhone(props.user.phone)
+            setEmail(props.user.email)
+            setFullName(props.user.fullName)
+            setAvaUrl(props.user.avaUrl)
+            setIsVerified(props.user.isVerified)
+        }
+    },[props.user, props.listUser])
 
     const handleEmail = (e) => {
         setEmail(e.target.value)
@@ -180,7 +200,7 @@ export default function UserProfile(props) {
                                                 </MDBRow>
                                                 <hr className="mt-0 mb-4" />
                                                 <div className="MDBCardText">
-                                                    {props.user.isVerified &&
+                                                    {isVerified &&
                                                         <>
                                                             <MDBCardText>
                                                                 Tài khoản đã được xác thực
@@ -235,7 +255,7 @@ export default function UserProfile(props) {
                                                 </MDBRow>
                                                 <hr className="mt-0 mb-4" />
                                                 <div className="MDBCardText">
-                                                    {props.user.isVerified &&
+                                                    {isVerified &&
                                                         <>
                                                             <MDBCardText>
                                                                 Tài khoản đã được xác thực

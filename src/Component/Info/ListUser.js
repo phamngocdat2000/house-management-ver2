@@ -65,7 +65,7 @@ export default class ListUser extends Component {
                     </div>
                     <div className="comment-rating">
                         <div className="rating"
-                             onClick={() => window.location.href = "/manage-account?username=" + this.props.data.username}>
+                             onClick={() => window.location.href = "/user-info?username=" + this.props.data.username}>
                             Xem chi tiết
                         </div>
                         {this.props.data.verifyStatus === "PENDING" &&
