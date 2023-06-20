@@ -1,8 +1,10 @@
 .manage-house {
     display: flex;
-    justify-content: center;
+    flex-direction: column;
+    justify-content: start;
     align-items: center;
     flex-wrap: wrap;
+    width: 100%;
 }
 .manage-user-title {
     font-size: 20px;
@@ -10,10 +12,24 @@
     color: #FF9500;
     margin-bottom: 2rem;
 }
+.manage-user-main {
+    width: 100%;
+}
 .manage-user {
     margin-bottom: 10rem;
 }
 .manage-house-main {
     display: flex;
     justify-content: center;
+}
+.manage-post-info {
+    display: flex;
+    width: 100%;
+    justify-content: center;
+}
+.manage-house-title {
+    font-size: 25px;
+    font-weight: 500;
+    color: #FF9500;
+    margin-bottom: 1rem;
 }

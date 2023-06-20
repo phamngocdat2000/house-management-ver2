@@ -10,20 +10,35 @@ export default class ManagePostInfo extends Component {
         super(props);
         this.state = {
             user: {},
-            data: [],
-            idCheck: ''
+            dataDone: [],
+            dataPending: [],
+            idCheck: '',
+            statusCheck: ''
         };
     }
-    componentDidMount() {
+
+    componentDidMount = async () => {
+        const dataDone = [];
+        const dataPending = [];
         this.setState({
             user: auth.getUserInfo()
         })
-        service.getPostByUsername(auth.getUserInfo().username).then(
+        await service.getPostByUsername(auth.getUserInfo().username).then(
             (data) => {
-                console.log(data)
-                this.setState({
-                    data: data
-                })
+                if (data) {
+                    data.forEach((item) => {
+                        if (item.status && item.status === 1) {
+                            dataDone.push(item);
+                        } else {
+                            dataPending.push(item);
+                        }
+                    });
+
+                    this.setState({
+                        dataDone: dataDone,
+                        dataPending: dataPending
+                    })
+                }
             }
         )
     }
@@ -34,22 +49,69 @@ export default class ManagePostInfo extends Component {
         })
     }
 
+    setStatusCheck = async (value) => {
+        this.setState({
+            statusCheck: value
+        })
+        await service.getPostByUsername(auth.getUserInfo().username).then(
+            (data) => {
+                if (data) {
+                    const dataDone = [];
+                    const dataPending = [];
+                    data.forEach((item) => {
+                        if (item.status && item.status === 1) {
+                            dataDone.push(item);
+                        } else {
+                            dataPending.push(item);
+                        }
+                    });
+
+                    this.setState({
+                        dataDone: dataDone,
+                        dataPending: dataPending
+                    })
+                }
+            }
+        )
+    }
+
     render() {
         return (
             <>
-                <Container fixed>
+                <div className="manage-post-info">
                     <div className="manage-house">
-                        {this.state.data && this.state.data.map((data, id) => (
+                        <div className="manage-house-title">
+                            Bài viết mới
+                        </div>
+                        {this.state.dataDone && this.state.dataDone.map((data, id) => (
                             <ListHouse id={id}
                                        data={data}
                                        setClass={true}
                                        check={data.id === this.state.idCheck}
                                        setCurrentLocation={this.setCurrentLocation}
+                                       manage={1}
+                                       setStatusCheck={this.setStatusCheck}
                             >
                             </ListHouse>
                         ))}
                     </div>
-                </Container>
+                    <div className="manage-house">
+                        <div className="manage-house-title">
+                            Đã cho thuê
+                        </div>
+                        {this.state.dataPending && this.state.dataPending.map((data, id) => (
+                            <ListHouse id={id}
+                                       data={data}
+                                       setClass={true}
+                                       check={data.id === this.state.idCheck}
+                                       setCurrentLocation={this.setCurrentLocation}
+                                       manage={0}
+                                       setStatusCheck={this.setStatusCheck}
+                            >
+                            </ListHouse>
+                        ))}
+                    </div>
+                </div>
             </>
         )
     }

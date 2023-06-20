@@ -130,6 +130,10 @@ let service = {
         let url = "api/admin/users";
         return method.get(url);
     },
+    banUserWithAdmin: (params) => {
+        let url = "api/admin/ban";
+        return method.post(params, url);
+    },
 };
 
 export default service;

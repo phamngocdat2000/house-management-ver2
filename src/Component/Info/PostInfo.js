@@ -8,6 +8,8 @@ import bedroom from "../../Image/bedroom.png";
 import kitchen from "../../Image/kitchen.png";
 import area from "../../Image/area.png";
 import iconAccount from "../../Image/icon-account.png";
+import iconHouse from "../../Image/icon-house.png";
+import iconCoins from "../../Image/icon-coins.png";
 import {Input} from "antd";
 import ShowComment from "./ShowComment";
 import SockJS from "sockjs-client";
@@ -15,6 +17,7 @@ import Stomp from 'stompjs';
 import config from "../../API/Config";
 import Rating from "./Rating";
 import auth from "../../API/AuthService";
+import ImageSlider from "./ImageSlider";
 
 export default class PostInfo extends Component {
 
@@ -118,7 +121,7 @@ export default class PostInfo extends Component {
                 .then(data => {
                     this.setState({listComment: data})
                 })
-            this.setState({comment:null})
+            this.setState({comment: null})
         }
     }
 
@@ -126,64 +129,69 @@ export default class PostInfo extends Component {
         return (
             <>
                 <div className="post-info-image">
-                    {this.state.info.imagesUrl && this.state.info.imagesUrl.map((data, id) => (
-                        <img className="image-abcd" id={id} src={data} alt=""/>
-                    ))}
+                    {this.state.info.imagesUrl &&
+                        // <img className="image-abcd" id={id} src={data} alt=""/>
+                        <ImageSlider images={this.state.info.imagesUrl}/>
+                    }
                 </div>
                 <div className="main-abcd">
                     <div className="show-info-post">
-                        <div className="show-info-post-title">
-                            {this.state.info.title}
+                        <div className="show-icon">
+                            <img src={iconHouse} alt=""/>
+                            &nbsp;&nbsp;&nbsp;{this.state.info.title}
                         </div>
-                        <div className="show-info-post-des">
-                            <div className="show-info-post-price">
-                                {this.state.info.price} VND
-                            </div>
-                            <div className="show-info-post-room">
-                                <img src={bedroom} alt=""/>
-                                {this.state.info.numberOfBedrooms ?
-                                    <>
-                                        {this.state.info.numberOfBedrooms}
-                                    </> :
-                                    <>
-                                        -
-                                    </>
-                                }
-                            </div>
-                            <div className="show-info-post-room">
-                                <img src={wc} alt=""/>
-                                {this.state.info.numberOfToilets ?
-                                    <>
-                                        {this.state.info.numberOfToilets}
-                                    </> :
-                                    <>
-                                        -
-                                    </>
-                                }
-                            </div>
-                            <div className="show-info-post-room">
-                                <img src={kitchen} alt=""/>
-                                {this.state.info.numberOfKitchens ?
-                                    <>
-                                        {this.state.info.numberOfKitchens}
-                                    </> :
-                                    <>
-                                        -
-                                    </>
-                                }
-                            </div>
-                            <div className="show-info-post-room">
-                                <img src={area} alt=""/>
-                                {this.state.info.area ?
-                                    <>
-                                        {this.state.info.area}
-                                    </> :
-                                    <>
-                                        -
-                                    </>
-                                }
-                                m2
-                            </div>
+                        <div className="show-icon">
+                            <img src={iconCoins} alt=""/>
+                            &nbsp;&nbsp;&nbsp;Giá: {this.state.info.price} VND
+                        </div>
+                        <div className="show-icon">
+                            <img src={bedroom} alt=""/>
+                            &nbsp;&nbsp;&nbsp;Số giường ngủ:&nbsp;
+                            {this.state.info.numberOfBedrooms ?
+                                <>
+                                    {this.state.info.numberOfBedrooms}
+                                </> :
+                                <>
+                                    -
+                                </>
+                            }
+                        </div>
+                        <div className="show-icon">
+                            <img src={wc} alt=""/>
+                            &nbsp;&nbsp;&nbsp;Nhà vệ sinh:&nbsp;
+                            {this.state.info.numberOfToilets ?
+                                <>
+                                    {this.state.info.numberOfToilets}
+                                </> :
+                                <>
+                                    -
+                                </>
+                            }
+                        </div>
+                        <div className="show-icon">
+                            <img src={kitchen} alt=""/>
+                            &nbsp;&nbsp;&nbsp;Số bếp:&nbsp;
+                            {this.state.info.numberOfKitchens ?
+                                <>
+                                    {this.state.info.numberOfKitchens}
+                                </> :
+                                <>
+                                    -
+                                </>
+                            }
+                        </div>
+                        <div className="show-icon">
+                            <img src={area} alt=""/>
+                            &nbsp;&nbsp;&nbsp;Diện tích:&nbsp;
+                            {this.state.info.area ?
+                                <>
+                                    {this.state.info.area}
+                                </> :
+                                <>
+                                    -
+                                </>
+                            }
+                            m2
                         </div>
                         <div className="tongquan">
                             Tổng quan

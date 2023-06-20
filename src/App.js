@@ -28,6 +28,7 @@ export default class HouseManagement extends Component {
             dataAccount: {},
             listUserVerify: [],
             listUserActive: [],
+            listUserInActive: [],
             listUser: []
         }
         this.setLoggedInUser = this.setLoggedInUser.bind(this)
@@ -62,24 +63,56 @@ export default class HouseManagement extends Component {
         if (auth.getUserInfo() && auth.getUserInfo().username === "admin") {
             await service.getAllUserWithAdmin().then(data => {
                 const listUserActive = [];
+                const listUserInActive = [];
                 const listUser = [];
                 for (let i = 0; i < data.length; i++) {
-                    if (data[i].verifyStatus !== 'PENDING') {
+                    if (data[i].active) {
                         if (data[i].isVerified) {
                             if (auth.getUserInfo())
                                 listUserActive.push(data[i])
                         } else {
                             listUser.push(data[i])
                         }
+                    } else {
+                        listUserInActive.push(data[i])
                     }
                 }
                 this.setState({
                     listUserActive: listUserActive,
-                    listUser: listUser
+                    listUser: listUser,
+                    listUserInActive: listUserInActive
                 })
             })
         }
 
+    }
+
+    banAccount = async () => {
+        if (auth.getUserInfo() && auth.getUserInfo().username === "admin") {
+            await service.getAllUserWithAdmin().then(data => {
+                const listUserActive = [];
+                const listUserInActive = [];
+                const listUser = [];
+                for (let i = 0; i < data.length; i++) {
+                    console.log(data[i])
+                    if (data[i].active) {
+                        if (data[i].isVerified) {
+                            if (auth.getUserInfo())
+                                listUserActive.push(data[i])
+                        } else {
+                            listUser.push(data[i])
+                        }
+                    } else {
+                        listUserInActive.push(data[i])
+                    }
+                }
+                this.setState({
+                    listUserActive: listUserActive,
+                    listUser: listUser,
+                    listUserInActive: listUserInActive
+                })
+            })
+        }
     }
 
     setLoggedInUser(loggedInUserObj) {
@@ -171,7 +204,9 @@ export default class HouseManagement extends Component {
                                                    loggedInUserObj={this.state.loggedInUserObj}/>
                                            <ManageUser listAllUser={this.state.listUser}
                                                        listAllUserActive={this.state.listUserActive}
-                                                       listUser={this.state.listUserVerify}></ManageUser>
+                                                       listAllUserInActive={this.state.listUserInActive}
+                                                       listUser={this.state.listUserVerify}
+                                                       banAccount={this.banAccount}></ManageUser>
                                            <Footer/>
                                        </>
 

@@ -7,6 +7,8 @@ import auth from "../../API/AuthService";
 import PopupPost from "../Popup/PopupPost";
 import ClickChooseLocation from "./ClickChooseLocation";
 import notice from "../../ActionService/Notice";
+import iconEnable from "../../Image/enable.svg";
+import iconDisable from "../../Image/disable.svg";
 
 export default class ListHouse extends Component {
 
@@ -64,6 +66,58 @@ export default class ListHouse extends Component {
     showHouseInfoV2 = async (id) => {
         console.log(id)
         window.location.href = "/info/house?id=" + id;
+    }
+
+    enablePost = async(id) => {
+        let params = {
+            title: this.state.data.title,
+            price: this.state.data.price,
+            description: this.state.data.description,
+            address: this.state.data.address,
+            district: this.state.data.district,
+            street: this.state.data.street,
+            city: "Thành phố Hà Nội",
+            lat: this.state.data.lat,
+            lnp: this.state.data.lnp,
+            type: this.state.data.type,
+            imagesUrl: this.state.data.imagesUrl,
+            numberOfBedrooms: this.state.data.numberOfBedrooms,
+            numberOfToilets: this.state.data.numberOfToilets,
+            numberOfKitchens: this.state.data.numberOfKitchens,
+            area: this.state.data.area,
+            status: 1,
+        }
+        await service.editPost(id, params).then((data) => {
+            if (data) {
+                this.props.setStatusCheck(data.id + data.status)
+            }
+        });
+    }
+
+    disablePost = async(id) => {
+        let params = {
+            title: this.state.data.title,
+            price: this.state.data.price,
+            description: this.state.data.description,
+            address: this.state.data.address,
+            district: this.state.data.district,
+            street: this.state.data.street,
+            city: "Thành phố Hà Nội",
+            lat: this.state.data.lat,
+            lnp: this.state.data.lnp,
+            type: this.state.data.type,
+            imagesUrl: this.state.data.imagesUrl,
+            numberOfBedrooms: this.state.data.numberOfBedrooms,
+            numberOfToilets: this.state.data.numberOfToilets,
+            numberOfKitchens: this.state.data.numberOfKitchens,
+            area: this.state.data.area,
+            status: 0,
+        }
+        await service.editPost(id, params).then((data) => {
+            if (data) {
+                this.props.setStatusCheck(data.id + data.status)
+            }
+        });
     }
 
     editPost = () => {
@@ -163,6 +217,24 @@ export default class ListHouse extends Component {
                                 {this.state.userInfo && (this.state.userInfo.username === this.state.data.createdBy || this.state.userInfo.username === 'admin') &&
                                     <div className="rating" onClick={() => this.deletePost(this.state.data.id)}>
                                         Xoá
+                                    </div>
+                                }
+                                {this.props.manage === 1 &&
+                                    <div className="rating"
+                                         onClick={() => this.disablePost(this.state.data.id)}>
+                                        Online
+                                        <span style={{marginLeft:"0.25rem"}}>
+                                            <img src={iconEnable} alt="enable"/>
+                                        </span>
+                                    </div>
+                                }
+                                {this.props.manage === 0 &&
+                                    <div className="rating"
+                                         onClick={() => this.enablePost(this.state.data.id)}>
+                                        Offline
+                                        <span style={{marginLeft:"0.25rem"}}>
+                                            <img src={iconDisable} alt="disable"/>
+                                        </span>
                                     </div>
                                 }
                             </>

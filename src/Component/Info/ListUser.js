@@ -1,44 +1,52 @@
 import React, {Component} from "react";
 import iconNotFound from "../../Image/icon-not-found.svg";
+import PopupPost from "../Popup/PopupPost";
+import ClickChooseLocation from "../Map/ClickChooseLocation";
+import iconEnable from "../../Image/enable.svg";
+import iconDisable from "../../Image/disable.svg";
+import iconRating from "../../Image/icon-rating.png";
+import service from "../../API/Service";
 
 export default class ListUser extends Component {
     // eslint-disable-next-line no-useless-constructor
     constructor(props) {
         super(props);
         this.state = {
-            status:""
+            status: ""
         }
     }
 
     componentDidMount() {
         if (this.props.status === -1) {
-            this.setState({status:"KHÁCH HÀNG"})
+            this.setState({status: "KHÁCH HÀNG"})
         }
         if (this.props.status === 0) {
-            this.setState({status:"CHỜ DUYỆT"})
+            this.setState({status: "CHỜ DUYỆT"})
         }
         if (this.props.status === 1) {
-            this.setState({status:"NGƯỜI BÁN"})
+            this.setState({status: "NGƯỜI BÁN"})
         }
     }
 
-    render() {
-        let imgFace;
-        // eslint-disable-next-line array-callback-return
-        this.props.data.imagesUrl && this.props.data.imagesUrl.map((data) => {
-            if (data.includes("%2Fface%2F")) {
-                imgFace = data;
-                console.log(imgFace)
+    banAccount = (username) => {
+        service.banUserWithAdmin({
+            username: username
+        }).then((data) => {
+            if (data) {
+                this.props.banAccount()
             }
         })
+    }
+
+    render() {
         return (
             <>
                 <button
-                    onClick={() => window.location.href = "/access?username=" + this.props.data.username} className="comment-rating-main">
+                    className="comment-rating-main">
                     <div className="list-house-main">
                         <div className="list-house-img-main">
                             <img className="list-house-img-ver2"
-                                 src={imgFace ? imgFace : iconNotFound} alt=""/>
+                                 src={this.props.data.avaUrl ? this.props.data.avaUrl : iconNotFound} alt=""/>
                         </div>
                         <div className="list-user-info">
                             <div className="list-house-title">
@@ -54,6 +62,23 @@ export default class ListUser extends Component {
                                 Trạng thái: {this.state.status}
                             </div>
                         </div>
+                    </div>
+                    <div className="comment-rating">
+                        <div className="rating"
+                             onClick={() => window.location.href = "/manage-account?username=" + this.props.data.username}>
+                            Xem chi tiết
+                        </div>
+                        {this.props.data.verifyStatus === "PENDING" &&
+                            <div className="rating"
+                                 onClick={() => window.location.href = "/access?username=" + this.props.data.username}>
+                                Duyệt tài khoản
+                            </div>
+                        }
+                        {this.props.status !== -1 &&
+                            <div className="rating" onClick={() => this.banAccount(this.props.data.username)}>
+                                Khoá tài khoản
+                            </div>
+                        }
                     </div>
                 </button>
             </>

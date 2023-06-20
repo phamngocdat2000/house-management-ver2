@@ -18,7 +18,7 @@
     height: 100%;
     display: flex;
     justify-content: center;
-    align-items: self-end;
+    align-items: baseline;
     flex-direction: column;
 }
 .map-main {

@@ -2,13 +2,20 @@
     display: flex;
     width: 100%;
     overflow: auto;
-    margin-bottom: 2rem;
+    margin-bottom: 5rem;
+    justify-content: center;
+    align-items: center;
+    height: 500px;
 }
 .image-abcd {
     height: 400px;
 }
 .show-info-post {
     width: 70%;
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+    align-items: start;
 }
 .show-info-user {
     display: flex;
@@ -54,6 +61,16 @@
     align-items: center;
     width: 3rem;
 }
+.show-icon {
+    display: flex;
+    justify-content: start;
+    align-items: start;
+    width: 100%;
+    font-size: 18px;
+    font-weight: 600;
+    font-family: "Times New Roman", Times, serif;
+    margin-bottom: 1rem;
+}
 .tongquan {
     font-family: 'Roboto', SansSerif, sans-serif;
     font-size: 20px;
@@ -61,6 +78,7 @@
     color: #44444F;
     text-align: start;
     margin-bottom: 1rem;
+    margin-top: 5rem;
 }
 .address {
     font-size: 16px;
@@ -130,4 +148,22 @@
 .rating-start {
     color: #FF9500;
     font-size: 30px;
+}
+.image-slider-btn {
+    cursor: pointer;
+    border: none;
+    height: 100px;
+}
+.image-slider-btn:hover {
+    border: none;
+    background: #FF9500;
+    color: #FF9500;
+}
+.image-slider-img {
+    width: 50rem;
+}
+.image-slider {
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
