@@ -24,7 +24,7 @@ const ImageSlider = ({images}) => {
                 <img src={iconPrevious} alt="previous"/>
             </button>
             <div className="image-slider-img">
-                <img style={{height:"300px"}} src={currentImage} alt="Slider" />
+                <img style={{height:450,width:750}} src={currentImage} alt="Slider" />
             </div>
             <button className="image-slider-btn"
                     onClick={nextImage}

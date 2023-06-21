@@ -1,5 +1,5 @@
 import {Component} from "react";
-import ListUser from "./ListUser";
+import ListUser from "../Utils/ListUser";
 
 export default class ManageUser extends Component {
     constructor(props) {

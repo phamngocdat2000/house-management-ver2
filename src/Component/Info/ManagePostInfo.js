@@ -1,7 +1,7 @@
 import {Component} from "react";
 import auth from "../../API/AuthService";
 import service from "../../API/Service";
-import ListHouse from "../Map/ListHouse";
+import ListHouse from "../Utils/ListHouse";
 import {Container} from "@mui/material";
 import "../../CSS/manage-house.css";
 

@@ -4,6 +4,7 @@ import iconSearch from "../../Image/icon-search-in-map.png"
 import {DownOutlined} from "@ant-design/icons";
 import {Menu, Checkbox, FormGroup, FormControlLabel} from "@mui/material";
 import AddressInput from "./AddressInput";
+import RangeSlider from "../Utils/RangeSlider";
 
 export default class SearchMap extends Component {
     constructor(props) {
@@ -20,8 +21,8 @@ export default class SearchMap extends Component {
             latitude: null,
             longitude: null,
             address: null,
-            minPrice: "",
-            maxPrice: "",
+            minPrice: null,
+            maxPrice: null,
             selectedTypeValues: [],
             selectedRoomValues: [],
         };
@@ -107,14 +108,14 @@ export default class SearchMap extends Component {
         await this.props.isSetDistance(event);
     }
 
-    async handleMinPrice(event) {
-        this.setState({minPrice:event})
-        await this.props.isSetMinPrice(event);
+    async handleMinPrice(value) {
+        this.setState({minPrice:value[0]})
+        await this.props.isSetMinPrice(value[0]);
     }
 
-    async handleMaxPrice(event) {
-        this.setState({maxPrice:event})
-        await this.props.isSetMaxPrice(event);
+    async handleMaxPrice(value) {
+        this.setState({maxPrice:value[1]})
+        await this.props.isSetMaxPrice(value[1]);
     }
 
     handleKeyDown = (event) => {
@@ -200,19 +201,23 @@ export default class SearchMap extends Component {
                         >
                             <div className="items-other-price">
                                 <div className="items-other-price-1">
-                                    <input value={this.state.minPrice}
-                                           onChange={event => this.handleMinPrice(event.target.value)}
-                                           onKeyDown={(event) => this.handleKeyDown(event)}
-                                           className="price-input-in-map"
-                                           type="number"
-                                           placeholder="Min"/>
-                                    <div className="item-price-space"> -</div>
-                                    <input value={this.state.maxPrice}
-                                           onChange={event => this.handleMaxPrice(event.target.value)}
-                                           onKeyDown={(event) => this.handleKeyDown(event)}
-                                           className="price-input-in-map"
-                                           type="number"
-                                           placeholder="Max"/>
+                                    <RangeSlider minPrice={this.state.minPrice}
+                                                 maxPrice={this.state.maxPrice}
+                                                 handleMinPrice={(value) => this.handleMinPrice(value)}
+                                                 handleMaxPrice={(value) => this.handleMaxPrice(value)}/>
+                                    {/*<input value={this.state.minPrice}*/}
+                                    {/*       onChange={event => this.handleMinPrice(event.target.value)}*/}
+                                    {/*       onKeyDown={(event) => this.handleKeyDown(event)}*/}
+                                    {/*       className="price-input-in-map"*/}
+                                    {/*       type="number"*/}
+                                    {/*       placeholder="Min"/>*/}
+                                    {/*<div className="item-price-space"> -</div>*/}
+                                    {/*<input value={this.state.maxPrice}*/}
+                                    {/*       onChange={event => this.handleMaxPrice(event.target.value)}*/}
+                                    {/*       onKeyDown={(event) => this.handleKeyDown(event)}*/}
+                                    {/*       className="price-input-in-map"*/}
+                                    {/*       type="number"*/}
+                                    {/*       placeholder="Max"/>*/}
                                 </div>
                                 <div className="items-other-price-2">
                                     Đơn vị: VND

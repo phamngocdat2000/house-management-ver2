@@ -136,12 +136,14 @@
 .items-other-price {
     display: flex;
     flex-direction: column;
+    padding: 2rem 2rem 0 2rem;
 }
 
 .items-other-price-1 {
     display: flex;
     justify-content: center;
     align-items: center;
+    width: fit-content;
 }
 
 .item-price-space {

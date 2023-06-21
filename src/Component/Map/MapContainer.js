@@ -2,10 +2,10 @@ import React, {Component} from 'react';
 import {Map, Marker, InfoWindow, GoogleApiWrapper} from 'google-maps-react';
 import '../../CSS/map.css';
 import SearchMap from "./SearchMap";
-import NotFoundResult from "./NotFoundResult";
+import NotFoundResult from "../Utils/NotFoundResult";
 import service from "../../API/Service";
 import iconMaker from '../../Image/marker.png';
-import ListHouse from "./ListHouse";
+import ListHouse from "../Utils/ListHouse";
 import iconNotFound from "../../Image/icon-not-found.svg";
 import {API_KEY} from "../../Const/ActionType";
 
@@ -127,12 +127,14 @@ class MapContainer extends Component {
     }
 
     isSetMinPrice = async (priceMin) => {
+        console.log(priceMin)
         await this.setState({priceMin: priceMin});
         await this.onGetHouseFilter();
         console.log(this.state.markers)
     }
 
     isSetMaxPrice = async (priceMax) => {
+        console.log(priceMax)
         await this.setState({priceMax: priceMax});
         await this.onGetHouseFilter();
         console.log(this.state.markers)

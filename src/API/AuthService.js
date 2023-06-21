@@ -18,7 +18,9 @@ let auth = {
         return JSON.parse(localStorage.getItem("VERIFY")) ? JSON.parse(localStorage.getItem("VERIFY")) : null;
     },
     getDataVerify: () => {
-        return JSON.parse(localStorage.getItem("DATA-VERIFY")) ? JSON.parse(localStorage.getItem("DATA-VERIFY")) : null;
+        if (localStorage.getItem("DATA-VERIFY") !== "undefined" && localStorage.getItem("DATA-VERIFY") !== undefined) {
+            return JSON.parse(localStorage.getItem("DATA-VERIFY")) ? JSON.parse(localStorage.getItem("DATA-VERIFY")) : null;
+        }
     },
     getListUser: () => {
         return JSON.parse(localStorage.getItem("LIST-USER")) ? JSON.parse(localStorage.getItem("LIST-USER")) : null;

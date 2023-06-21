@@ -65,11 +65,11 @@ export default class Header extends Component {
                     this.setState({isPopupOpen: true});
                 }
             })
-            if (!auth.getVerify().isVerified && auth.getDataVerify() && !roleAdmin) {
+            if (auth.getVerify() && !auth.getVerify().isVerified && auth.getDataVerify() && !roleAdmin) {
                 notice.inf("Vui lòng đợi admin duyệt trong 24h");
                 return;
             }
-            if (!auth.getVerify().isVerified && !roleAdmin) {
+            if (auth.getVerify() && !auth.getVerify().isVerified && !roleAdmin) {
                 notice.inf("Vui lòng cập nhật ảnh CMND/CCCD và nhận diện gương mặt");
                 return;
             }

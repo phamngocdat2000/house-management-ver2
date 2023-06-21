@@ -5,7 +5,7 @@ import service from "../../API/Service";
 import iconRating from '../../Image/icon-rating.png';
 import auth from "../../API/AuthService";
 import PopupPost from "../Popup/PopupPost";
-import ClickChooseLocation from "./ClickChooseLocation";
+import ClickChooseLocation from "../Map/ClickChooseLocation";
 import notice from "../../ActionService/Notice";
 import iconEnable from "../../Image/enable.svg";
 import iconDisable from "../../Image/disable.svg";
@@ -158,8 +158,11 @@ export default class ListHouse extends Component {
         })
     }
 
+    formatPrice = (price) => {
+        return price.toLocaleString("en-US", { minimumFractionDigits: 0 });
+    };
+
     render() {
-        console.log(this.state.data.id)
         return (
             <>
                 <button
@@ -177,7 +180,7 @@ export default class ListHouse extends Component {
                                 {this.state.data.address}
                             </div>
                             <div className="list-house-price">
-                                {this.state.data.price} VND
+                                {this.formatPrice(this.state.data.price)} VND
                             </div>
                             <div className="list-house-last-update">
                                 Ngày đăng: {this.state.data.lastModifiedDate}

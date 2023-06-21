@@ -61,10 +61,16 @@
     align-items: center;
     width: 3rem;
 }
+.show-icon-main {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 60%;
+}
 .show-icon {
     display: flex;
     justify-content: start;
-    align-items: start;
+    align-items: center;
     width: 100%;
     font-size: 18px;
     font-weight: 600;
