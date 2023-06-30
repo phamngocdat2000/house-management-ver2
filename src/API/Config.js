@@ -1,5 +1,5 @@
 const config = {
-    HOST: "http://35.247.146.225:8080",
-    WS: "http://35.247.146.225:8080/ws"
+    HOST: "http://127.0.0.1:8080",
+    WS: "http://127.0.0.1:8080/ws"
 };
 export default config;
